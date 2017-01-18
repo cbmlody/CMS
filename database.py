@@ -5,10 +5,11 @@ import csv
 class PeopleList:
     """Class represents list of objects"""
     def __init__(self):
-        pass
+        self.people_list = []
 
     @staticmethod
     def import_csv():
+        """Method import csv with employees, mentors and students and returns list with all objects"""
         imported_list = []
         with open("employees.csv", 'r') as f:
             data = csv.reader(f)
@@ -34,7 +35,7 @@ class PeopleList:
                 data_writer.writerow(each)
 
     def get_list(self):
-        pass
+
 
     def add(self):
         pass
