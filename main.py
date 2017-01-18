@@ -4,9 +4,9 @@ import user
 
 list_all = PeopleList()
 list_all.people_list = list_all.import_csv()
-
-print(list_all.people_list)
-
+list_all.people_list.append(Manager())
+for person in list_all.people_list:
+    print(person.name)
 students_list = []
 mentors_list = []
 employees_list = []
