@@ -7,7 +7,7 @@ class Person:
     Class represents every user
     """
 
-    def __init__(self, username, password, name):
+    def __init__(self, *args):
         """
         Person class constructor
 
@@ -15,9 +15,10 @@ class Person:
         :param password: randomly generated password
         :param name: person's full name
         """
-        self.username = username
-        self.password = password
-        self.name = name
+        self.username = args[0]
+        self.password = args[1]
+        self.name = args[2]
+        self.status = args[3]
 
     @staticmethod
     def get_password():
@@ -49,8 +50,8 @@ class Employee(Person):
     Class represents every Employee
     """
 
-    def __init__(self, username, password, name):
-        Person.__init__(self, username, password, name)
+    def __init__(self, username, password, name, status=1):
+        Person.__init__(self, username, password, name, status)
 
 
 class Mentor(Employee):
@@ -58,8 +59,8 @@ class Mentor(Employee):
     Class represents every Mentor
     """
 
-    def __init__(self, username, password, name):
-        Employee.__init__(self, username, password, name)
+    def __init__(self, username, password, name, status=1):
+        Employee.__init__(self, username, password, name, status)
 
 
 class Manager(Employee):
@@ -67,8 +68,8 @@ class Manager(Employee):
     Class represents every Manager
     """
 
-    def __init__(self, username, password, name):
-        Employee.__init__(self, username, password, name)
+    def __init__(self, username, password, name, status=1):
+        Person.__init__(self, username, password, name, status)
         self.username = "Jerry"
         self.password = "123wer"
         self.name = "Jerzy Mardaus"
@@ -79,6 +80,6 @@ class Student(Person):
     Class represents every Student
     """
 
-    def __init__(self, username, password, name, grades):
-        Person.__init__(self, username, password, name)
+    def __init__(self, username, password, name, grades, status=1):
+        Person.__init__(self, username, password, name, status)
         self.grades = grades.split(';')
