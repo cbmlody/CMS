@@ -1,5 +1,6 @@
 import random
 import string
+import roll
 
 
 class Person:
@@ -83,3 +84,7 @@ class Student(Person):
     def __init__(self, *args, grades=""):
         Person.__init__(self, *args, grades)
         self.grades = grades.split(';')
+        self.attendance = Attendance()
+
+    def check_grades(self):
+        return "Dear {}, your grades are: {}".format(self.name, self.grades)
