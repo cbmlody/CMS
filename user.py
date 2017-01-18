@@ -73,7 +73,7 @@ class Mentor(Employee):
         """
 
         for student in student_list:
-            inputs = ui.get_inputs(["Attendance: "], "{} is present?".format(student.name))
+            inputs = ui.get_inputs(["Attendance [ 0 / 1 ]: "], "{} is present?".format(student.name))
             student.attendance.append(roll.Attendance(inputs))
 
     @staticmethod
@@ -114,3 +114,11 @@ class Student(Person):
 
     def check_grades(self):
         return "Dear {}, your grades are: {}".format(self.name, self.grades)
+
+
+    def view_attendance(self):
+        """
+        Shows attendance
+        :return self.attendance: list of Attendance objects
+        """
+        return self.attendance
