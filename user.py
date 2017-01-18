@@ -11,7 +11,7 @@ class Person:
 
     @staticmethod
     def get_password():
-
+        """Method return random, safe password"""
         password = ''
         to_shuffle = []
         lower_letter = string.ascii_lowercase
@@ -29,8 +29,36 @@ class Person:
         return self.username
 
     def login(self, username, password):
+        """Method check username and password"""
         if username == self.username and password == self.password:
             return "Welcome {}!".format(self.username)
         else:
             return "Username or password is incorrect!"
 
+
+class Employee(Person):
+    """Class represents every Employee"""
+    def __init__(self, username, password, name):
+        Person.__init__(self, username, password, name)
+
+
+class Mentor(Employee):
+    """Class represents every Mentor"""
+    def __init__(self, username, password, name):
+        Employee.__init__(self, username, password, name)
+
+
+class Manager(Employee):
+    """Class represents every Manager"""
+    def __init__(self, username, password, name):
+        Employee.__init__(self, username, password, name)
+        self.username = "Jerry"
+        self.password = "123wer"
+        self.name = "Jerzy Mardaus"
+
+
+class Student(Person):
+    """Class represents every Student"""
+    def __init__(self, username, password, name):
+        Person.__init__(self, username, password, name)
+        self.grades = []
