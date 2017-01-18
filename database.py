@@ -18,12 +18,12 @@ class PeopleList:
         with open("employees.csv", 'r') as f:
             data = csv.reader(f)
             for person in data:
-                self.people_list.append(Employee(person[0], person[1], person[2]))
+                self.people_list.append(Employee(person[0], person[1], person[2], person[3]))
 
         with open("mentors.csv", 'r') as f:
             data = csv.reader(f)
             for person in data:
-                self.people_list.append(Mentor(person[0], person[1], person[2]))
+                self.people_list.append(Mentor(person[0], person[1], person[2], person[3]))
 
         with open("students.csv", 'r') as f:
             data = csv.reader(f)
@@ -70,7 +70,7 @@ class PeopleList:
         :return: None
         """
 
-        if person_type == "Employee":
+        if person_type == "Manager":
             mentor_to_add = Mentor(inputs)
             self.people_list.append(mentor_to_add)
         elif person_type == "Mentor":
@@ -79,7 +79,7 @@ class PeopleList:
 
     def remove(self, person_type, username):
 
-        if person_type == "Employee":
+        if person_type == "Manager":
             for person in self.people_list:
                 if person.__class__.__name__ == "Mentor":
                     if person.username == username:

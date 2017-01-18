@@ -16,9 +16,9 @@ class Person:
         :param name: person's full name
         """
         self.username = args[0]
-        self.password = args[1]
-        self.name = args[2]
-        self.status = args[3]
+        self.password = Person.get_password()
+        self.name = args[1]
+        self.status = 1
 
     @staticmethod
     def get_password():
@@ -50,8 +50,8 @@ class Employee(Person):
     Class represents every Employee
     """
 
-    def __init__(self, username, password, name, status=1):
-        Person.__init__(self, username, password, name, status)
+    def __init__(self, *args):
+        Person.__init__(self, *args)
 
 
 class Mentor(Employee):
@@ -59,8 +59,8 @@ class Mentor(Employee):
     Class represents every Mentor
     """
 
-    def __init__(self, username, password, name, status=1):
-        Employee.__init__(self, username, password, name, status)
+    def __init__(self, *args):
+        Employee.__init__(self, *args)
 
 
 class Manager(Employee):
@@ -68,7 +68,7 @@ class Manager(Employee):
     Class represents every Manager
     """
 
-    def __init__(self, username, password, name, status=1):
+    def __init__(self, username,name, status, password):
         Person.__init__(self, username, password, name, status)
         self.username = "Jerry"
         self.password = "123wer"
@@ -80,6 +80,6 @@ class Student(Person):
     Class represents every Student
     """
 
-    def __init__(self, username, password, name, grades, status=1):
-        Person.__init__(self, username, password, name, status)
+    def __init__(self, *args, grades=""):
+        Person.__init__(self, *args, grades)
         self.grades = grades.split(';')
