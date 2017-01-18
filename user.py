@@ -95,11 +95,12 @@ class Manager(Employee):
     Class represents every Manager
     """
 
-    def __init__(self, username, name, status, password):
+    def __init__(self, username="Jerzy", name="Jerzy Mardaus", status=1, password="qwe123"):
         Person.__init__(self, username, password, name, status)
-        self.username = "Jerry"
-        self.password = "123wer"
-        self.name = "Jerzy Mardaus"
+        self.username = username
+        self.password = password
+        self.name = name
+        self.status = status
 
 
 class Student(Person):
@@ -114,7 +115,6 @@ class Student(Person):
 
     def check_grades(self):
         return "Dear {}, your grades are: {}".format(self.name, self.grades)
-
 
     def view_attendance(self):
         """
