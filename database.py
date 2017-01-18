@@ -3,29 +3,33 @@ import csv
 
 
 class PeopleList:
-    """Class represents list of objects"""
+    """
+    Class represents list of objects
+    """
+
     def __init__(self):
         self.people_list = []
 
-    @staticmethod
-    def import_csv():
-        """Method import csv with employees, mentors and students and returns list with all objects"""
-        imported_list = []
+    def import_csv(self):
+        """
+        Method import csv with employees, mentors and students and returns list with all objects
+        """
+
         with open("employees.csv", 'r') as f:
             data = csv.reader(f)
             for person in data:
-                imported_list.append(Employee(person[0], person[1], person[2]))
+                self.people_list.append(Employee(person[0], person[1], person[2]))
 
         with open("mentors.csv", 'r') as f:
             data = csv.reader(f)
             for person in data:
-                imported_list.append(Mentor(person[0], person[1], person[2]))
+                self.people_list.append(Mentor(person[0], person[1], person[2]))
 
         with open("students.csv", 'r') as f:
             data = csv.reader(f)
             for person in data:
-                imported_list.append(Student(person[0], person[1], person[2], person[3]))
-        return imported_list
+                self.people_list.append(Student(person[0], person[1], person[2], person[3]))
+        return self.people_list
 
     @staticmethod
     def export_to_csv(filename, data):
@@ -34,7 +38,22 @@ class PeopleList:
             for each in data:
                 data_writer.writerow(each)
 
+    def login(self, username, password):
+        """
+        Checks if user exists and can log in
+
+        :param username: string with username
+        :param password: string with password
+        :return: message
+        """
+
+        if (username, password) in [(x.username, x.password) for x in self.people_list]:
+            return "Welcome {}!".format(username)
+        else:
+            return "Username or password is incorrect!"
+
     def get_list(self):
+        pass
 
 
     def add(self):
