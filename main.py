@@ -9,10 +9,12 @@ import datetime
 from time import sleep
 
 
+LIST_TABLE_TITLES = ["Fullname", "username", "Status"]
+
+
 def main():
 
     date = str(datetime.date.today())
-    LIST_TABLE_TITLES = ["Fullname", "username", "Status"]
     list_all = PeopleList()
     list_all.people_list = list_all.import_csv()
     list_all.people_list.append(Manager())
@@ -95,7 +97,7 @@ def main():
                 option = int(input("Which assignment do you want to send?: -> "))
                 with open("submited.ccms", "a+") as submited:
                     if 0 < option < counter:
-                        submited.write(username + ":" + dict_assignment[option] +":"+ date +"\n")
+                        submited.write(username + ":" + dict_assignment[option] + ":" + date + "\n")
                     elif option == 0:
                         pass
 
@@ -112,14 +114,14 @@ def main():
 
             if user_input == "1":
                 students_list = list_all.get_list("Student")
-                for person in students_list:
-                    print(person.name)
+                student_data = [[x.name, x.username, x.status] for x in students_list]
+                print((ui.print_table(student_data, LIST_TABLE_TITLES)))
                 input("Press enter to go back")
 
             elif user_input == "2":
                 inputs = ui.get_inputs(["Title: ", "Submission date: ", "Project: ", "Max points: "], "Provide info about assignment")
                 print(inputs)
-                with open("assignment_m.ccms","a+") as assign:
+                with open("assignment_m.ccms", "a+") as assign:
                     for item in inputs:
                         assign.write(item + ";")
 
@@ -127,10 +129,17 @@ def main():
                 pass
 
             elif user_input == "4":
-                pass
+                inputs = ui.get_inputs(["username: ", "Fullname: "], "Provide personal information")
+                inputs.insert(1, "")
+                inputs.insert(3, "1")
+                list_all.add("Mentor", inputs)
+                # PeopleList.export_to_csv("mentors.csv", list_all.get_list("Mentor"))
+                input("Press enter to go back")
 
             elif user_input == "5":
-                pass
+                inputs = ui.get_inputs(["username: "], "Provide username to remove")
+                list_all.remove("Student", *inputs)
+                input("Press enter to go back")
 
             elif user_input == "0":
                 os.system("clear")
@@ -145,7 +154,10 @@ def main():
             user_input = input("-> ")
 
             if user_input == "1":
-                pass
+                students_list = list_all.get_list("Student")
+                student_data = [[x.name, x.username, x.status] for x in students_list]
+                print((ui.print_table(student_data, LIST_TABLE_TITLES)))
+                input("Press enter to go back")
 
             elif user_input == "0":
                 os.system("clear")
