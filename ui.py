@@ -124,3 +124,15 @@ def get_inputs(list_labels, title):
     for item in list_labels:
         inputs.append(input(item))
     return inputs
+
+
+def handle_menu():
+
+    options = ["Store manager",
+               "Human resources manager",
+               "Tool manager",
+               "Accounting manager",
+               "Selling manager",
+               "Customer Relationship Management (CRM)"]
+
+    ui.print_menu("Main menu", options, "Exit program")

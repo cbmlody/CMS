@@ -46,11 +46,13 @@ class PeopleList:
         :param password: string with password
         :return: message
         """
-
-        if (username, password) in [(x.username, x.password) for x in self.people_list]:
-            return "Welcome {}!".format(username)
-        else:
-            return "Username or password is incorrect!"
+        for x in self.people_list:
+            if x.username == username and x.password == password:
+                if x.status == "1":
+                    return x
+                else:
+                    return "Inactive user"
+        return None
 
     def get_list(self, person_type):
         """
@@ -58,7 +60,7 @@ class PeopleList:
         :param person_type: str
         :return: list of objects
         """
-        list_to_return = [x for x in self.people_list if x.__class__.__name__ == person_type and x.status == 1]
+        list_to_return = [x for x in self.people_list if x.__class__.__name__ == person_type and x.status == "1"]
         return list_to_return
 
     def add(self, person_type, inputs):
@@ -78,18 +80,23 @@ class PeopleList:
             self.people_list.append(student_to_add)
 
     def remove(self, person_type, username):
-
+        """
+        Set user status=0, user is inactive
+        :param person_type:
+        :param username:
+        :return: None
+        """
         if person_type == "Manager":
             for person in self.people_list:
                 if person.__class__.__name__ == "Mentor":
                     if person.username == username:
-                        self.people_list[person].status = 0
+                        self.people_list[person].status = "0"
 
         elif person_type == "Mentor":
             for person in self.people_list:
                 if person.__class__.__name__ == "Student":
                     if person.username == username:
-                        self.people_list[person].status = 0
+                        self.people_list[person].status = "0"
 
     def update(self):
         pass

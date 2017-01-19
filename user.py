@@ -18,30 +18,18 @@ class Person:
         :param name: person's full name
         """
         self.username = args[0]
-        self.password = Person.get_password()
-        self.name = args[1]
-        self.status = 1
+        self.password = args[1]
+        self.name = args[2]
+        self.status = "1"
 
-    @staticmethod
-    def get_password():
+    def change_password(self):
         """
-        Method return random, safe password
+        Method return password
 
-        :return: password(str) randomly generated password
+        :return: password(str)
         """
-
-        password = ''
-        to_shuffle = []
-        lower_letter = string.ascii_lowercase
-        upper_letter = string.ascii_uppercase
-        digits = string.digits
-        for i in range(2):
-            to_shuffle.append(random.choice(lower_letter))
-            to_shuffle.append(random.choice(upper_letter))
-            to_shuffle.append(random.choice(digits))
-        random.shuffle(to_shuffle)
-        password = ''.join(to_shuffle)
-        return password
+        inputs = ui.get_inputs(["password: "], "Type in new password: ")
+        self.password = inputs[0]
 
     def __str__(self):
         return self.username
@@ -95,7 +83,7 @@ class Manager(Employee):
     Class represents every Manager
     """
 
-    def __init__(self, username="Jerzy", name="Jerzy Mardaus", status=1, password="qwe123"):
+    def __init__(self, username="Jerzy", password="qwe123", name="Jerzy Mardaus", status="1"):
         Person.__init__(self, username, password, name, status)
         self.username = username
         self.password = password
