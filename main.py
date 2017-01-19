@@ -4,10 +4,13 @@ import ui
 import os
 import user
 import hashlib
+import assignment
+import datetime
 from time import sleep
 
 
 def main():
+    date = str(datetime.date.today())
     list_all = PeopleList()
     list_all.people_list = list_all.import_csv()
     list_all.people_list.append(Manager())
@@ -77,12 +80,26 @@ def main():
                 pass
 
             elif user_input == "2":
-                pass
+                dict_assignment = {}
+                os.system("clear")
+                with open("assignment_m.ccms", "r") as assign:
+                    counter = 1
+                    for line in assign:
+                        splitted = line.split(";")
+                        print(counter, ".)", splitted[0])
+                        dict_assignment[counter] = splitted[0]
+                        counter += 1
+                print("Type 0 to exit")
+                option = int(input("Which assignment do you want to send?: -> "))
+                with open("submited.ccms", "a+") as submited:
+                    if 0 < option < counter:
+                        submited.write(username + ":" + dict_assignment[option] +":"+ date +"\n")
+                    elif option == 0:
+                        pass
 
             elif user_input == "0":
                 os.system("clear")
                 break
-
             else:
                 print("There is no such option")
 
@@ -92,10 +109,17 @@ def main():
             user_input = input("-> ")
 
             if user_input == "1":
-                pass
+                students_list = list_all.get_list("Student")
+                for person in students_list:
+                    print(person.name)
+                input("Press enter to go back")
 
             elif user_input == "2":
-                pass
+                inputs = ui.get_inputs(["Title: ", "Submission date: ", "Project: ", "Max points: "], "Provide info about assignment")
+                print(inputs)
+                with open("assignment_m.ccms","a+") as assign:
+                    for item in inputs:
+                        assign.write(item + ";")
 
             elif user_input == "3":
                 pass
