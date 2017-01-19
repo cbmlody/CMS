@@ -100,12 +100,12 @@ class Student(Person):
     """
 
     def __init__(self, *args, grades=""):
-        Person.__init__(self, *args, grades)
-        self.grades = grades.split(';')
+        Person.__init__(self, *args)
+        self.grades = grades
         self.attendance = []
 
     def check_grades(self):
-        return "Dear {}, your grades are: {}".format(self.name, self.grades)
+        return "Dear {}, your grades are: {}".format(self.name, self.grades.split(";"))
 
     def view_attendance(self):
         """

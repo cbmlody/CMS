@@ -51,7 +51,6 @@ def main():
             elif user_input == "3":
                 inputs = ui.get_inputs(["username: ", "Fullname: "], "Provide personal information")
                 inputs.insert(1, "")
-                print(inputs)
                 list_all.add("Manager", inputs)
                 input("Press enter to go back")
 
@@ -73,7 +72,7 @@ def main():
             user_input = input("-> ")
 
             if user_input == "1":
-                pass
+                print(login.check_grades())
 
             elif user_input == "2":
                 pass
