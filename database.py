@@ -79,24 +79,17 @@ class PeopleList:
             student_to_add = Student(*inputs)
             self.people_list.append(student_to_add)
 
-    def remove(self, person_type, username):
+    def remove(self,person_type, username):
         """
         Set user status=0, user is inactive
         :param person_type:
         :param username:
         :return: None
         """
-        if person_type == "Manager":
-            for person in self.people_list:
-                if person.__class__.__name__ == "Mentor":
-                    if person.username == username:
-                        self.people_list[person].status = "0"
+        for person in self.get_list(person_type):
+            if person.username == username:
+                person.status = "0"
 
-        elif person_type == "Mentor":
-            for person in self.people_list:
-                if person.__class__.__name__ == "Student":
-                    if person.username == username:
-                        self.people_list[person].status = "0"
 
     def update(self):
         pass

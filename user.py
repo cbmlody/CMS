@@ -21,7 +21,7 @@ class Person:
         self.username = args[0]
         self.password = args[1]
         self.name = args[2]
-        self.status = "1"
+        self.status = args[3]
 
     def change_password(self):
         """

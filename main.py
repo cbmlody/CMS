@@ -51,13 +51,14 @@ def main():
             elif user_input == "3":
                 inputs = ui.get_inputs(["username: ", "Fullname: "], "Provide personal information")
                 inputs.insert(1, "")
+                inputs.insert(3, "1")
                 list_all.add("Manager", inputs)
-                PeopleList.export_to_csv("mentors.csv", )
+                # PeopleList.export_to_csv("mentors.csv", )
                 input("Press enter to go back")
 
             elif user_input == "4":
                 inputs = ui.get_inputs(["username: "], "Provide username to remove")
-                list_all.remove("Mentor", inputs)
+                list_all.remove("Mentor", *inputs)
                 input("Press enter to go back")
 
             elif user_input == "0":
