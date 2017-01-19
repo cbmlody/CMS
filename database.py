@@ -52,16 +52,20 @@ class PeopleList:
                     return x
                 else:
                     return "Inactive user"
-        return None
 
-    def get_list(self, person_type):
+    def get_list(self, person_type, status="1"):
         """
         Returns list of objects of input type
         :param person_type: str
+        :param status: str status of person to get
         :return: list of objects
         """
-        list_to_return = [x for x in self.people_list if x.__class__.__name__ == person_type and x.status == "1"]
-        return list_to_return
+        if status == "1":
+            return [x for x in self.people_list if x.__class__.__name__ == person_type and x.status == "1"]
+        elif status == "0":
+            return [x for x in self.people_list if x.__class__.__name__ == person_type and x.status == "0"]
+        elif status == None:
+            return [x for x in self.people_list if x.__class__.__name__ == person_type]
 
     def add(self, person_type, inputs):
         """
