@@ -53,11 +53,12 @@ def main():
                 inputs.insert(1, "")
                 print(inputs)
                 list_all.add("Manager", inputs)
+                PeopleList.export_to_csv("mentors.csv", )
                 input("Press enter to go back")
 
             elif user_input == "4":
                 inputs = ui.get_inputs(["username: "], "Provide username to remove")
-                list_all.remove("Mentor", inputs[0])
+                list_all.remove("Mentor", inputs)
                 input("Press enter to go back")
 
             elif user_input == "0":
@@ -85,21 +86,6 @@ def main():
             else:
                 print("There is no such option")
 
-        elif isinstance(login, Employee):
-            list_options = ["List students"]
-            ui.print_menu("What would you like to do", list_options, "Exit CcMS")
-            user_input = input("-> ")
-
-            if user_input == "1":
-                pass
-
-            elif user_input == "0":
-                os.system("clear")
-                break
-
-            else:
-                print("There is no such option")
-
         if isinstance(login, Mentor):
             list_options = ["List students", "Add assignment", "Grade Assignment", "Add student", "Remove student"]
             ui.print_menu("What would you like to do", list_options, "Exit CcMS")
@@ -118,6 +104,22 @@ def main():
                 pass
 
             elif user_input == "5":
+                pass
+
+            elif user_input == "0":
+                os.system("clear")
+                break
+
+            else:
+                print("There is no such option")
+
+        else:
+
+            list_options = ["List students"]
+            ui.print_menu("What would you like to do", list_options, "Exit CcMS")
+            user_input = input("-> ")
+
+            if user_input == "1":
                 pass
 
             elif user_input == "0":
