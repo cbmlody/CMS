@@ -3,6 +3,7 @@ import getpass
 import ui
 import os
 import user
+import hashlib
 from time import sleep
 
 
@@ -33,6 +34,8 @@ def main():
     while True:
         username = input("Please provide a username: ")
         password = getpass.getpass("Please provide a password: ")
+        password = hashlib.md5(password.encode('utf-8')).hexdigest()
+
         login = list_all.login(username, password)
         if login == None:
             print("Wrong username or password")

@@ -2,6 +2,7 @@ import ui
 import random
 import string
 import roll
+import hashlib
 
 
 class Person:
@@ -30,6 +31,8 @@ class Person:
         """
         inputs = ui.get_inputs(["password: "], "Type in new password: ")
         self.password = inputs[0]
+        self.password = hashlib.md5(self.password.encode('utf-8')).hexdigest()
+
 
     def __str__(self):
         return self.username
@@ -83,7 +86,7 @@ class Manager(Employee):
     Class represents every Manager
     """
 
-    def __init__(self, username="Jerzy", password="qwe123", name="Jerzy Mardaus", status="1"):
+    def __init__(self, username="Jerzy", password="200820e3227815ed1756a6b531e7e0d2", name="Jerzy Mardaus", status="1"):
         Person.__init__(self, username, password, name, status)
         self.username = username
         self.password = password

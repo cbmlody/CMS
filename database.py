@@ -73,10 +73,10 @@ class PeopleList:
         """
 
         if person_type == "Manager":
-            mentor_to_add = Mentor(inputs)
+            mentor_to_add = Mentor(*inputs)
             self.people_list.append(mentor_to_add)
         elif person_type == "Mentor":
-            student_to_add = Student(inputs)
+            student_to_add = Student(*inputs)
             self.people_list.append(student_to_add)
 
     def remove(self, person_type, username):
