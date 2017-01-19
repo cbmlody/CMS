@@ -21,7 +21,7 @@ class Person:
         self.username = args[0]
         self.password = args[1]
         self.name = args[2]
-        self.status = "1"
+        self.status = args[3]
 
     def change_password(self):
         """
@@ -100,12 +100,12 @@ class Student(Person):
     """
 
     def __init__(self, *args, grades=""):
-        Person.__init__(self, *args, grades)
-        self.grades = grades.split(';')
+        Person.__init__(self, *args)
+        self.grades = grades
         self.attendance = []
 
     def check_grades(self):
-        return "Dear {}, your grades are: {}".format(self.name, self.grades)
+        return "Dear {}, your grades are: {}".format(self.name, self.grades.split(";"))
 
     def view_attendance(self):
         """
