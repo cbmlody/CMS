@@ -8,6 +8,7 @@ from time import sleep
 
 
 def main():
+    LIST_TABLE_TITLES = ["Fullname", "username", "Status"]
     list_all = PeopleList()
     list_all.people_list = list_all.import_csv()
     list_all.people_list.append(Manager())
@@ -38,14 +39,14 @@ def main():
 
             if user_input == "1":
                 mentors_list = list_all.get_list("Mentor")
-                for person in mentors_list:
-                    print(person.name)
+                mentor_data = [[x.name, x.username, x.status] for x in mentors_list]
+                print(ui.print_table(mentor_data, LIST_TABLE_TITLES))
                 input("Press enter to go back")
 
             elif user_input == "2":
                 students_list = list_all.get_list("Student")
-                for person in students_list:
-                    print(person.name)
+                student_data = [[x.name, x.username, x.status] for x in students_list]
+                print((ui.print_table(student_data, LIST_TABLE_TITLES)))
                 input("Press enter to go back")
 
             elif user_input == "3":
@@ -53,7 +54,7 @@ def main():
                 inputs.insert(1, "")
                 inputs.insert(3, "1")
                 list_all.add("Manager", inputs)
-                # PeopleList.export_to_csv("mentors.csv", )
+                # PeopleList.export_to_csv("mentors.csv", list_all.get_list("Mentor"))
                 input("Press enter to go back")
 
             elif user_input == "4":

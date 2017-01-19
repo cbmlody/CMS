@@ -36,7 +36,7 @@ class PeopleList:
         with open(filename, 'w') as f:
             data_writer = csv.writer(f)
             for each in data:
-                data_writer.writerow(each)
+                data_writer.writerow("".format(each.__dict__.values()))
 
     def login(self, username, password):
         """
