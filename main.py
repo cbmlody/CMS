@@ -86,7 +86,7 @@ def main():
             else:
                 print("There is no such option")
 
-        if isinstance(login, Mentor):
+        elif isinstance(login, Mentor):
             list_options = ["List students", "Add assignment", "Grade Assignment", "Add student", "Remove student"]
             ui.print_menu("What would you like to do", list_options, "Exit CcMS")
             user_input = input("-> ")
@@ -113,8 +113,7 @@ def main():
             else:
                 print("There is no such option")
 
-        else:
-
+        elif isinstance(login, Employee):
             list_options = ["List students"]
             ui.print_menu("What would you like to do", list_options, "Exit CcMS")
             user_input = input("-> ")
