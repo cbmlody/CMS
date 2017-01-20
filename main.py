@@ -39,7 +39,7 @@ def main():
             while True:
 
                 if isinstance(login, Manager):
-                    list_options = ["List mentors", "List students", "Add mentor", "Remove mentor"]
+                    list_options = ["List mentors", "List students", "Add mentor", "Remove mentor", "Check attendance"]
                     ui.print_menu("What would you like to do", list_options, "Exit CcMS")
                     user_input = input("-> ")
 
@@ -166,6 +166,9 @@ def main():
                         inputs = ui.get_inputs(["username: "], "Provide username to remove")
                         list_all.remove("Student", *inputs)
                         input("Press enter to go back")
+
+                    elif user_input == "6":
+                        print(Mentor.check_attendance(list_all.get_list("Student")))
 
                     elif user_input == "0":
                         os.system("clear")
