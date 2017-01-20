@@ -81,7 +81,15 @@ def main():
                     user_input = input("-> ")
 
                     if user_input == "1":
-                        print(login.check_grades())
+                        print('My grades:')
+                        with open("submited.ccms" , "r") as grades:
+                            for line in grades:
+                                graded = line.split(":")
+                                if username == graded[1]:
+                                    print(graded[5])
+
+                        stop = input("Click to continue")
+
 
                     elif user_input == "2":
                         dict_assignment = {}
@@ -95,11 +103,12 @@ def main():
                                 counter += 1
                         print("Type 0 to exit")
                         option = int(input("Which assignment do you want to send?: -> "))
+                        link_git = input("Type link to your's project: ")
                         with open("submited.ccms", "a+") as submited:
                             if 0 < option < counter:
-                                submited.write(username + ":" + dict_assignment[option] + ":" + date + "\n")
+                                submited.write("0:" + username + ":" + dict_assignment[option] + ":" + date + ":" + link_git + "\n")
                             elif option == 0:
-                                pass
+                                break
 
                     elif user_input == "0":
                         os.system("clear")
@@ -120,13 +129,30 @@ def main():
 
                     elif user_input == "2":
                         inputs = ui.get_inputs(["Title: ", "Submission date: ", "Project: ", "Max points: "], "Provide info about assignment")
-                        print(inputs)
                         with open("assignment_m.ccms", "a+") as assign:
                             for item in inputs:
                                 assign.write(item + ";")
+                            assign.write("\n")
 
                     elif user_input == "3":
-                        pass
+                        graded = []
+                        f = open('submited.ccms', 'r')
+                        for line in f:
+                            to_check = line.split(":")
+                            if to_check[0] == "0":
+                                print(to_check[1], "sent",to_check[2],"on",to_check[3], "link: ",to_check[4])
+                                grade = input("Score: ")
+                                to_check[0] = "1"
+                                to_check[4] = to_check[4].rstrip()
+                                to_check.append(grade)
+                                line = ":".join(to_check)
+                                graded.append(line)
+                        f.close()
+                        with open('submited.ccms', 'w') as f:
+                            for element in graded:
+                                f.write(element)
+                                f.write("\n")
+                        input("Ok!")
 
                     elif user_input == "4":
                         inputs = ui.get_inputs(["username: ", "Fullname: "], "Provide personal information")
