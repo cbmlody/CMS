@@ -1,6 +1,4 @@
 import ui
-import random
-import string
 import roll
 import hashlib
 
@@ -56,16 +54,16 @@ class Mentor(Employee):
         Employee.__init__(self, *args)
 
     @staticmethod
-    def check_attendance(student_list):
+    def check_attendance(student_list, who):
         """
         Checks class attendance
         :param student_list: list of students as objects
+        :param who: name of person checking attendance as string
         :return: None
         """
-
         for student in student_list:
             inputs = ui.get_inputs(["Attendance [ 0 / 1 ]: "], "{} is present?".format(student.name))
-            student.attendance.append(roll.Attendance(inputs))
+            roll.Attendance(student.name, *inputs, who)
 
     @staticmethod
     def view_attendance(student, student_list):
@@ -102,7 +100,6 @@ class Student(Person):
     def __init__(self, *args, grades=""):
         Person.__init__(self, *args)
         self.grades = grades
-        self.attendance = []
 
     def check_grades(self):
         return "Dear {}, your grades are: {}".format(self.name, self.grades.split(";"))

@@ -2,18 +2,14 @@ from database import *
 import getpass
 import ui
 import os
-import user
 import hashlib
-import assignment
 import datetime
-from time import sleep
 
 
 LIST_TABLE_TITLES = ["Fullname", "username", "Status"]
 
 
 def main():
-
     date = str(datetime.date.today())
     list_all = PeopleList()
     list_all.people_list = list_all.import_csv()
@@ -32,13 +28,14 @@ def main():
         elif login == "Inactive user":
             print("Your account is inactive")
 
+
         else:
             print("Welcome {}".format(login))
             # break
 
             while True:
 
-                if isinstance(login, Manager):
+                if login.__class__.__name__ == "Manager":
                     list_options = ["List mentors", "List students", "Add mentor", "Remove mentor", "Check attendance"]
                     ui.print_menu("What would you like to do", list_options, "Exit CcMS")
                     user_input = input("-> ")
@@ -59,13 +56,18 @@ def main():
                         inputs = ui.get_inputs(["username: ", "Fullname: "], "Provide personal information")
                         inputs.insert(1, hashlib.md5("1234".encode('utf-8')).hexdigest())
                         inputs.insert(3, "1")
-                        list_all.add("Manager", inputs)
-                        # PeopleList.export_to_csv("mentors.csv", list_all.get_list("Mentor"))
+                        list_all.add("Mentor", inputs)
+                        PeopleList.export_to_csv("mentors.csv", list_all.get_list("Mentor"))
                         input("Press enter to go back")
 
                     elif user_input == "4":
                         inputs = ui.get_inputs(["username: "], "Provide username to remove")
                         list_all.remove("Mentor", *inputs)
+                        input("Press enter to go back")
+
+                    elif user_input == "5":
+                        print(Mentor.check_attendance(list_all.get_list("Student"), login.name))
+                        roll.Attendance.save_roll_to_file()
                         input("Press enter to go back")
 
                     elif user_input == "0":
@@ -75,21 +77,20 @@ def main():
                     else:
                         print("There is no such option")
 
-                elif isinstance(login, Student):
+                elif login.__class__.__name__ == "Student":
                     list_options = ["View my grades", "Submit assignment"]
                     ui.print_menu("What would you like to do", list_options, "Exit CcMS")
                     user_input = input("-> ")
 
                     if user_input == "1":
                         print('My grades:')
-                        with open("submited.ccms" , "r") as grades:
+                        with open("submited.ccms", "r") as grades:
                             for line in grades:
                                 graded = line.split(":")
                                 if username == graded[1]:
                                     print(graded[5])
 
                         stop = input("Click to continue")
-
 
                     elif user_input == "2":
                         dict_assignment = {}
@@ -106,7 +107,8 @@ def main():
                         link_git = input("Type link to your's project: ")
                         with open("submited.ccms", "a+") as submited:
                             if 0 < option < counter:
-                                submited.write("0:" + username + ":" + dict_assignment[option] + ":" + date + ":" + link_git + "\n")
+                                submited.write("0:" + username + ":" + dict_assignment[
+                                    option] + ":" + date + ":" + link_git + "\n")
                             elif option == 0:
                                 break
 
@@ -116,8 +118,9 @@ def main():
                     else:
                         print("There is no such option")
 
-                elif isinstance(login, Mentor):
-                    list_options = ["List students", "Add assignment", "Grade Assignment", "Add student", "Remove student"]
+                elif login.__class__.__name__ == "Mentor":
+                    list_options = ["List students", "Add assignment", "Grade Assignment", "Add student",
+                                    "Remove student", "Check Attendance"]
                     ui.print_menu("What would you like to do", list_options, "Exit CcMS")
                     user_input = input("-> ")
 
@@ -128,7 +131,8 @@ def main():
                         input("Press enter to go back")
 
                     elif user_input == "2":
-                        inputs = ui.get_inputs(["Title: ", "Submission date: ", "Project: ", "Max points: "], "Provide info about assignment")
+                        inputs = ui.get_inputs(["Title: ", "Submission date: ", "Project: ", "Max points: "],
+                                               "Provide info about assignment")
                         with open("assignment_m.ccms", "a+") as assign:
                             for item in inputs:
                                 assign.write(item + ";")
@@ -140,7 +144,7 @@ def main():
                         for line in f:
                             to_check = line.split(":")
                             if to_check[0] == "0":
-                                print(to_check[1], "sent",to_check[2],"on",to_check[3], "link: ",to_check[4])
+                                print(to_check[1], "sent", to_check[2], "on", to_check[3], "link: ", to_check[4])
                                 grade = input("Score: ")
                                 to_check[0] = "1"
                                 to_check[4] = to_check[4].rstrip()
@@ -168,7 +172,9 @@ def main():
                         input("Press enter to go back")
 
                     elif user_input == "6":
-                        print(Mentor.check_attendance(list_all.get_list("Student")))
+                        print(Mentor.check_attendance(list_all.get_list("Student"), login.name))
+                        roll.Attendance.save_roll_to_file()
+                        input("Press enter to go back")
 
                     elif user_input == "0":
                         os.system("clear")
@@ -177,7 +183,7 @@ def main():
                     else:
                         print("There is no such option")
 
-                elif isinstance(login, Employee):
+                elif login.__class__.__name__ == "Employee":
                     list_options = ["List students"]
                     ui.print_menu("What would you like to do", list_options, "Exit CcMS")
                     user_input = input("-> ")

@@ -7,8 +7,10 @@ class PeopleList:
     Class represents list of objects
     """
 
+
     def __init__(self):
         self.people_list = []
+
 
     def import_csv(self):
         """
@@ -31,12 +33,14 @@ class PeopleList:
                 self.people_list.append(Student(person[0], person[1], person[2], person[3], person[4]))
         return self.people_list
 
+
     @staticmethod
     def export_to_csv(filename, data):
         with open(filename, 'w') as f:
             data_writer = csv.writer(f)
-            for each in data:
-                data_writer.writerow("".format(each.__dict__.values()))
+            for row in data:
+                data_writer.writerow(row.__dict__.values())
+
 
     def login(self, username, password):
         """
@@ -53,6 +57,7 @@ class PeopleList:
                 else:
                     return "Inactive user"
 
+
     def get_list(self, person_type, status="1"):
         """
         Returns list of objects of input type
@@ -66,6 +71,7 @@ class PeopleList:
             return [x for x in self.people_list if x.__class__.__name__ == person_type and x.status == "0"]
         elif status == None:
             return [x for x in self.people_list if x.__class__.__name__ == person_type]
+
 
     def add(self, person_type, inputs):
         """
@@ -83,7 +89,8 @@ class PeopleList:
             student_to_add = Student(*inputs)
             self.people_list.append(student_to_add)
 
-    def remove(self,person_type, username):
+
+    def remove(self, person_type, username):
         """
         Set user status=0, user is inactive
         :param person_type:

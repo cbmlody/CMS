@@ -46,14 +46,14 @@ def print_table(table, title_list):
         max_lengths = len_counting(line, title_lengths)
 
     # top bar
-    table_body = "-" * (sum(max_lengths.values()) + len(max_lengths)*3 - 1)
+    table_body = "-" * (sum(max_lengths.values()) + len(max_lengths) * 3 - 1)
     string_in_between = ""
     string_to_print = ""
 
     # titles
     for i in range(len(title_list)):
-        string_to_print += "|{:^{line_len}}".format(title_list[i], line_len=max_lengths[i]+2)
-        string_in_between += "|" + "-" * (max_lengths[i]+2)
+        string_to_print += "|{:^{line_len}}".format(title_list[i], line_len=max_lengths[i] + 2)
+        string_in_between += "|" + "-" * (max_lengths[i] + 2)
 
     strings_to_print = [string_to_print + "|"]
 
@@ -62,7 +62,7 @@ def print_table(table, title_list):
         string_to_print = ""
 
         for j in range(len(title_list)):
-            string_to_print += "|{:^{line_len}}".format(table[i][j], line_len=max_lengths[j]+2)
+            string_to_print += "|{:^{line_len}}".format(table[i][j], line_len=max_lengths[j] + 2)
         strings_to_print.append(string_in_between + "|")
         strings_to_print.append(string_to_print + "|")
 
@@ -95,7 +95,7 @@ def print_menu(title, list_options, exit_message):
     os.system("clear")
     print("{}:".format(title))
     for i, v in enumerate(list_options):
-        print("  ({}) {}".format(int(i+1), v))
+        print("  ({}) {}".format(int(i + 1), v))
     print("  (0)", exit_message)
 
 
@@ -127,7 +127,6 @@ def get_inputs(list_labels, title):
 
 
 def handle_menu():
-
     options = ["Store manager",
                "Human resources manager",
                "Tool manager",
@@ -135,4 +134,4 @@ def handle_menu():
                "Selling manager",
                "Customer Relationship Management (CRM)"]
 
-    ui.print_menu("Main menu", options, "Exit program")
+    print_menu("Main menu", options, "Exit program")
