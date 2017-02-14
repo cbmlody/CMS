@@ -14,24 +14,31 @@ def main():
     list_all = PeopleList()
     list_all.people_list = list_all.import_csv()
     list_all.people_list.append(Manager())
+    Attendance.import_roll_from_file()
 
     while True:
-        username = input("Please provide a username: ")
-        password = getpass.getpass("Please provide a password: ")
-        password = hashlib.md5(password.encode('utf-8')).hexdigest()
+        try:
+            username = input("Please provide a username: ")
+            password = getpass.getpass("Please provide a password: ")
+            password = hashlib.md5(password.encode('utf-8')).hexdigest()
 
-        login = list_all.login(username, password)
+            login = list_all.login(username, password)
 
-        if login == None:
-            print("Wrong username or password")
+            if login == None:
+                print("Wrong username or password")
 
-        elif login == "Inactive user":
-            print("Your account is inactive")
+            elif login == "Inactive user":
+                print("Your account is inactive")
+
+        except KeyboardInterrupt:
+            os.system("clear")
+            print("Goodbye!")
+            exit()
 
 
         else:
             print("Welcome {}".format(login))
-            # break
+            time.sleep(1)
 
             while True:
 
@@ -56,8 +63,8 @@ def main():
                         inputs = ui.get_inputs(["username: ", "Fullname: "], "Provide personal information")
                         inputs.insert(1, hashlib.md5("1234".encode('utf-8')).hexdigest())
                         inputs.insert(3, "1")
-                        list_all.add("Mentor", inputs)
-                        PeopleList.export_to_csv("mentors.csv", list_all.get_list("Mentor"))
+                        list_all.add("Manager", inputs)
+                        PeopleList.export_to_csv("mentors.csv", list_all.get_list("Mentor", None))
                         input("Press enter to go back")
 
                     elif user_input == "4":
@@ -78,7 +85,7 @@ def main():
                         print("There is no such option")
 
                 elif login.__class__.__name__ == "Student":
-                    list_options = ["View my grades", "Submit assignment"]
+                    list_options = ["View my grades", "Submit assignment", "View attendance"]
                     ui.print_menu("What would you like to do", list_options, "Exit CcMS")
                     user_input = input("-> ")
 
@@ -90,7 +97,7 @@ def main():
                                 if username == graded[1]:
                                     print(graded[5])
 
-                        stop = input("Click to continue")
+                        input("Click to continue")
 
                     elif user_input == "2":
                         dict_assignment = {}
@@ -102,6 +109,7 @@ def main():
                                 print(counter, ".)", splitted[0])
                                 dict_assignment[counter] = splitted[0]
                                 counter += 1
+
                         print("Type 0 to exit")
                         option = int(input("Which assignment do you want to send?: -> "))
                         link_git = input("Type link to your's project: ")
@@ -111,6 +119,10 @@ def main():
                                     option] + ":" + date + ":" + link_git + "\n")
                             elif option == 0:
                                 break
+
+                    elif user_input == "3":
+                        print("Roll call: {}".format(x.date for x in login.view_attendance()))
+                        input("Click to continue")
 
                     elif user_input == "0":
                         os.system("clear")
@@ -163,7 +175,7 @@ def main():
                         inputs.insert(1, hashlib.md5("1234".encode('utf-8')).hexdigest())
                         inputs.insert(3, "1")
                         list_all.add("Mentor", inputs)
-                        # PeopleList.export_to_csv("mentors.csv", list_all.get_list("Mentor"))
+                        PeopleList.export_to_csv("mentors.csv", list_all.get_list("Mentor", None))
                         input("Press enter to go back")
 
                     elif user_input == "5":

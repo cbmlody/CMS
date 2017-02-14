@@ -1,6 +1,7 @@
 import ui
 import roll
 import hashlib
+from roll import *
 
 
 class Person:
@@ -109,4 +110,4 @@ class Student(Person):
         Shows attendance
         :return self.attendance: list of Attendance objects
         """
-        return self.attendance
+        return [x.date for x in Attendance.attendance_list if x.name == self.name]
