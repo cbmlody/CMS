@@ -36,10 +36,17 @@ class PeopleList:
 
     @staticmethod
     def export_to_csv(filename, data):
+        """
+        Writeas data to csv file
+        :param filename: string with path to file
+        :param data: data to write
+        :return: None
+        """
+
         with open(filename, 'w') as f:
             data_writer = csv.writer(f)
             for row in data:
-                data_writer.writerow(row.__dict__.values())
+                data_writer.writerow([row.username, row.password, row.name, row.status])
 
 
     def login(self, username, password):
@@ -50,6 +57,7 @@ class PeopleList:
         :param password: string with password
         :return: message
         """
+
         for x in self.people_list:
             if x.username == username and x.password == password:
                 if x.status == "1":
@@ -65,6 +73,7 @@ class PeopleList:
         :param status: str status of person to get
         :return: list of objects
         """
+
         if status == "1":
             return [x for x in self.people_list if x.__class__.__name__ == person_type and x.status == "1"]
         elif status == "0":
