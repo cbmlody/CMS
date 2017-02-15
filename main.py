@@ -11,10 +11,11 @@ LIST_TABLE_TITLES = ["Fullname", "username", "Status"]
 
 def main():
     date = str(datetime.date.today())
-    list_all = PeopleList()
-    list_all.people_list = list_all.import_csv()
-    list_all.people_list.append(Manager())
-    Attendance.import_roll_from_file()
+    db = Database()
+    db.import_sql()
+    # list_all.people_list = list_all.import_sql()
+    # list_all.people_list.append(Manager())
+    # Attendance.import_roll_from_file()
 
     while True:
         try:

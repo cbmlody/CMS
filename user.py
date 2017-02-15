@@ -2,6 +2,7 @@ import ui
 import roll
 import hashlib
 from roll import *
+from query import *
 
 
 class Person:
@@ -20,17 +21,21 @@ class Person:
         self.username = args[0]
         self.password = args[1]
         self.name = args[2]
-        self.status = args[3]
+        self.status = args[3] # status = role
 
-    def change_password(self):
+    def change_password(self, new_pass, new_pass2):
         """
         Method return password
 
         :return: password(str)
         """
-        inputs = ui.get_inputs(["password: "], "Type in new password: ")
-        self.password = inputs[0]
-        self.password = hashlib.md5(self.password.encode('utf-8')).hexdigest()
+        if new_pass == new_pass2:
+            Query.change_password(self.username, new_pass)
+        else:
+            return "Passwords don't match"
+        #inputs = ui.get_inputs(["password: "], "Type in new password: ")
+        #self.password = inputs[0]
+        #self.password = hashlib.md5(self.password.encode('utf-8')).hexdigest()
 
 
     def __str__(self):
