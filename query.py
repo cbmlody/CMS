@@ -37,3 +37,8 @@ class Query:
         cls.cur.execute("UPDATE `USERS` SET password=? WHERE login=?"), (password2, username)
         cls.con.commit()
         return "Password changed"
+
+    @classmethod
+    def get_data_by_table_name(cls, table_name):
+        data = cls.cur.execute("SELECT *FROM ?", (table_name,))
+        return data.fetchall()
