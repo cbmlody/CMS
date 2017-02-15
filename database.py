@@ -36,7 +36,6 @@ class Database:
     #         for row in data:
     #             data_writer.writerow([row.username, row.password, row.name, row.status])
 
-
     def login(self, username, password):
         """
         Checks if user exists and can log in
