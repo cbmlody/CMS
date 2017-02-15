@@ -40,5 +40,5 @@ class Query:
 
     @classmethod
     def get_data_by_table_name(cls, table_name):
-        data = cls.cur.execute("SELECT *FROM ?", (table_name,))
+        data = cls.cur.execute("SELECT * FROM {}".format(table_name))
         return data.fetchall()
