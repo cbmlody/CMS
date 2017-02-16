@@ -1,19 +1,25 @@
+import database
+
+
 class Assignment:
     """Holds assignments, created by mentors"""
 
+    assignment_list = []
 
-    def __init__(self, title, description, due_date, max_points):
+
+    def __init__(self, ID, title, due_date, max_points, as_team='NULL'):
+        self.ID = ID
         self.title = title
-        self.description = description
         self.due_date = due_date
         self.max_points = max_points
+        self.as_team = as_team
 
 
-    def __str__(self):
-        return "{}\n{}\nTask is due to {}. Student can aquire maximum {} points.\n".format(self.title, self.description,
-                                                                                           self.due_date,
-                                                                                           self.max_points)
-
+    @classmethod
+    def import_from_db(cls):
+        assign_list = database.Database.cur.execute("SELECT * FROM `ASSIGNMENTS`")
+        for assignment in assign_list.fetchall():
+            Assignment(*assignment)
 
 class Submission:
     """Holds assignments submitted by students"""
@@ -29,10 +35,8 @@ class Submission:
     def __str__(self):
         return "Student submitted {} assignment on {}.\nLink: {}".format(self.title, self.submission_date, self.project)
 
-
     def grade(self, points, feedback):
         """Allows mentor to grade an assignment """
-
         self.points = points
         self.feedback = feedback
         return "{}: {}/{} points".format(self.title, self.points, self.max_points)
