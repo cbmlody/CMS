@@ -87,7 +87,3 @@ class Database:
         # for person in self.get_list(person_type):
         #     if person.username == username:
         #         person.status = "0"
-
-
-    def update(self):
-        pass
