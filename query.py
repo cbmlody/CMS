@@ -42,3 +42,13 @@ class Query:
     def get_data_by_table_name(cls, table_name):
         data = cls.cur.execute("SELECT * FROM {}".format(table_name))
         return data.fetchall()
+
+    @classmethod
+    def get_role_by_id(cls, role_id):
+        role_name = cls.cur.execute("SELECT name FROM `ROLES` r, `USERS` u  WHERE r.ID = ?", (role_id,))
+        return role_name.fetchone()
+
+    @classmethod
+    def get_full_name_login(cls, role_ID):
+        data = cls.cur.execute("SELECT full_name, login FROM `USERS` WHERE role_ID = ?", (role_ID, ))
+        return data.fetchall()
