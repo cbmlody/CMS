@@ -77,22 +77,23 @@ class Employee(Person):
 
     @staticmethod
     def menu():
-        list_options = ["List students"]
-        ui.print_menu("What would you like to do", list_options, "Exit CcMS")
-        user_input = input("-> ")
+        while True:
+            list_options = ["List students"]
+            ui.print_menu("What would you like to do", list_options, "Exit CcMS")
+            user_input = input("-> ")
 
-        if user_input == "1":
-            students = Query.get_full_name_login('3')
-            list_students = [list(row) for row in students.fetchall()]
-            print((ui.print_table(list_students, ['full_name', 'login'])))
-            input("Press enter to go back")
+            if user_input == "1":
+                students = Query.get_full_name_login('3')
+                list_students = [list(row) for row in students.fetchall()]
+                print((ui.print_table(list_students, ['full_name', 'login'])))
+                input("Press enter to go back")
 
-        elif user_input == "0":
-            os.system("clear")
-            break
+            elif user_input == "0":
+                os.system("clear")
+                break
 
-        else:
-            print("There is no such option")
+            else:
+                print("There is no such option")
 
 
 class Mentor(Employee):
@@ -110,22 +111,19 @@ class Mentor(Employee):
         ui.print_menu("What would you like to do", list_options, "Exit CcMS")
 
     @staticmethod
-
-    def check_attendance(student_list, who):
+    def check_attendance():
         """
         Checks class attendance
         :param student_list: list of students as objects
         :param who: name of person checking attendance as string
         :return: None
         """
-        for student in student_list:
-            inputs = ui.get_inputs(["Attendance [ 0 / 1 ]: "], "{} is present?".format(student.name))
-            roll.Attendance(student.name, *inputs, who)
-        all_students = Query.get_users_by_role(3)
-        # for student in all_students:
-        #     students_obj = Student()
-        #     inputs = ui.get_inputs(["Attendance [ 0 / 1 ]: "], "{} is present?".format(student.))
-        # pass
+
+        for student in Query.get_users_by_role(3):
+            student_obj = Student(*student)
+            inputs = ui.get_inputs(["Attendance [ 0 / 1 ]: "], "{} is present?".format(student_obj.name))
+            Attendance()
+        pass
 
     @staticmethod
     def view_attendance(student, student_list):
@@ -157,6 +155,7 @@ class Mentor(Employee):
         database.Database.con.commit()
         return "Checkpoint graded"
 
+    @staticmethod
     def menu():
         while True:
             list_options = ["List students", "Add assignment", "Grade Assignment", "Add student", "Remove student", "Check Attendance", "Change password", "Create teams", "List teams", "Grade checkpoint", "Students performance"]
@@ -208,7 +207,7 @@ class Mentor(Employee):
                 input("Press enter to go back")
 
             elif user_input == "6":
-                print(Mentor.check_attendance(list_all.get_list("Student"), login.name))
+                print(Mentor.check_attendance())
                 roll.Attendance.save_roll_to_file()
                 input("Press enter to go back")
 
@@ -308,7 +307,7 @@ class Manager(Employee):
             elif user_input == '5':
                 all_students = Query.get_users_data_using_roleid("3")
                 print(all_students)
-                Mentor.check_attendance(all_students)
+                Mentor.check_attendance()
                 input("Press enter to go back")
             elif user_input == '6':
                 pass
