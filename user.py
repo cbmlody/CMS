@@ -218,7 +218,7 @@ class Mentor(Employee):
                 input("Press enter to go back")
 
             elif user_input == "6":
-                print(Mentor.check_attendance())
+                Mentor.check_attendance()
                 input("Press enter to go back")
 
             elif user_input == '7':
@@ -313,8 +313,6 @@ class Manager(Employee):
                 print(database.Database.remove(username_to_del))
                 input("Press enter to go back")
             elif user_input == '5':
-                all_students = Query.get_users_data_using_roleid("3")
-                print(all_students)
                 Mentor.check_attendance()
                 input("Press enter to go back")
             elif user_input == '6':
