@@ -178,9 +178,28 @@ class Student(Person):
 
     @staticmethod
     def menu():
-        list_options = ["List mentors", "List students", "Add mentor", "Remove mentor", "Check attendance",
-                        "See student average grade", "See full statistics"]
-        ui.print_menu("What would you like to do", list_options, "Exit CcMS")
+        while True:
+            list_options = ["View my grades", "Submit assignment", "View attendance", "Submit assignment as a team",
+                            "Change password"]
+            ui.print_menu("What would you like to do", list_options, "Exit CcMS")
+            user_input = input("Input -> ")
+            if user_input == '1':
+                print("View my grades")
+                input("Press enter to go back")
+            elif user_input == '2':
+                print("Submit assignment")
+                input("Press enter to go back")
+            elif user_input == '3':
+                print("View attendance")
+                input("Press enter to go back")
+            elif user_input == '4':
+                print("Submit assignment as a team")
+                input("Press enter to go back")
+            elif user_input == '5':
+                print("Change password")
+                input("Press enter to go back")
+            elif user_input == '0':
+                sys.exit(0)
 
     def check_grades(self):
         return "Dear {}, your grades are: {}".format(self.name, self.grades.split(";"))
