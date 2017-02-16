@@ -156,7 +156,7 @@ class Mentor(Employee):
         return "Checkpoint graded"
 
     @staticmethod
-    def menu():
+    def menu(log, username):
         while True:
             list_options = ["List students", "Add assignment", "Grade Assignment", "Add student", "Remove student", "Check Attendance", "Change password", "Create teams", "List teams", "Grade checkpoint", "Students performance"]
             ui.print_menu("What would you like to do", list_options, "Exit CcMS")
@@ -212,7 +212,10 @@ class Mentor(Employee):
                 input("Press enter to go back")
 
             elif user_input == '7':
-                pass
+                input1 = input("Please enter a new password: ")
+                input2 = input("Please repeat your new password: ")
+                Person.change_password(input1, input2, username)
+                input("Press enter to go back")
 
             elif user_input == '8':
                 team_name = input("What is the name of the new team? ")
@@ -256,10 +259,8 @@ class Mentor(Employee):
                         break
                 input("Really good performance")
 
-
-            elif user_input == "0":
-                os.system("clear")
-                break
+            elif user_input == '0':
+                sys.exit(0)
 
             else:
                 print("There is no such option")
