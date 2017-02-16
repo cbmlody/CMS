@@ -1,11 +1,12 @@
-from query import *
-
+import time
+from user import *
 
 class Database:
     """
     Class represents list of objects
     """
-
+    con = sql.connect('database.db')
+    cur = con.cursor()
     # def __init__(self):
     #     self.people_list = []
 
@@ -13,13 +14,8 @@ class Database:
         """
         Method import csv with employees, mentors and students and returns list with all objects
         """
-        con = sql.connect('database.db')
         with open('database.sql', 'r') as file:
-            with con:
-                cur = con.cursor()
-                for line in file:
-                    cur.execute(line)
-        con.close()
+            self.cur.executescript(file.read())
 
 
     # @staticmethod
@@ -36,7 +32,8 @@ class Database:
     #         for row in data:
     #             data_writer.writerow([row.username, row.password, row.name, row.status])
 
-    def login(self, username, password):
+    @classmethod
+    def login(cls, username, password):
         """
         Checks if user exists and can log in
 
@@ -44,11 +41,14 @@ class Database:
         :param password: string with password
         :return: message
         """
-        log = Query.get_user(username, password)
+        log = cls.cur.execute("SELECT ID, role_ID FROM `USERS` WHERE login=? AND password=?", (username, password))
         if log:
-            return log
+            role_id = log.fetchall()[0][1]
+            role_name = cls.cur.execute("SELECT name FROM `ROLES` r, `USERS` u  WHERE r.ID = ?", (role_id,))
+            print("Welcome {}".format(username))
+            return role_name.fetchall()[0][0]
         else:
-            return "Incorrect username or password"
+            print("Incorrect username or password")
 
         # for x in self.people_list:
         #     if x.username == username and x.password == password:
@@ -73,8 +73,8 @@ class Database:
         # elif status == None:
         #     return [x for x in self.people_list if x.__class__.__name__ == person_type]
 
-
-    def add(self, login, password, full_name, role_ID):
+    @classmethod
+    def add(cls, login, password, full_name, role_ID):
         """
 
         :param login:
@@ -92,8 +92,8 @@ class Database:
         #     student_to_add = Student(*inputs)
         #     self.people_list.append(student_to_add)
 
-
-    def remove(self, username):
+    @classmethod
+    def remove(cls, username):
         """
         :param username:
         :return: None
