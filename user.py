@@ -12,6 +12,7 @@ class Person:
     Class represents every user
     """
 
+
     def __init__(self, *args):
         """
         Person class constructor
@@ -33,14 +34,27 @@ class Person:
             all_users.append(Manager(data[0], data[1], data[2], data[3]))
         return all_users
 
-    def change_password(self, new_pass, new_pass2):
+    @staticmethod
+    def check_password(log, username, user_input_old_password):
+        log_value = log.fetchall()
+        print(log_value)
+        query = database.Database.cur.execute("SELECT password FROM `USERS` WHERE ID = ?", (log_value[0][0]))
+        if user_input_old_password == query.fetchall()[0][0]:
+            return "correct"
+        else:
+            return "incorrect"
+
+    @classmethod
+    def change_password(cls, new_pass, new_pass2, username):
         """
         Method return password
 
         :return: password(str)
         """
         if new_pass == new_pass2:
-            Query.change_password(self.username, new_pass)
+            database.Database.cur.execute("UPDATE `USERS` SET password=? WHERE login=?", (new_pass, username,))
+            database.Database.con.commit()
+            return "Password changed"
         else:
             return "Passwords don't match"
         #inputs = ui.get_inputs(["password: "], "Type in new password: ")
@@ -126,7 +140,7 @@ class Manager(Employee):
         self.status = status
 
     @staticmethod
-    def menu():
+    def menu(log, username):
         while True:
             list_options = ["List mentors", "List students", "Add mentor", "Remove mentor", "Check attendance",
                             "See student average grade", "See full statistics", "Change your password"]
@@ -160,7 +174,10 @@ class Manager(Employee):
             elif user_input == '7':
                 pass
             elif user_input == '8':
-                pass
+                input1 = input("Please enter a new password: ")
+                input2 = input("Please repeat your new password: ")
+                Person.change_password(input1, input2, username)
+                input("Press enter to go back")
             elif user_input == '0':
                 sys.exit(0)
 
@@ -177,7 +194,8 @@ class Student(Person):
         self.grades = grades
 
     @staticmethod
-    def menu():
+    def menu(log, username):
+
         while True:
             list_options = ["View my grades", "Submit assignment", "View attendance", "Submit assignment as a team",
                             "Change password"]
@@ -196,7 +214,9 @@ class Student(Person):
                 print("Submit assignment as a team")
                 input("Press enter to go back")
             elif user_input == '5':
-                print("Change password")
+                input1 = input("Please enter a new password: ")
+                input2 = input("Please repeat your new password: ")
+                Person.change_password(input1, input2, username)
                 input("Press enter to go back")
             elif user_input == '0':
                 sys.exit(0)
@@ -210,6 +230,3 @@ class Student(Person):
         :return self.attendance: list of Attendance objects
         """
         return [x.date for x in Attendance.attendance_list if x.name == self.name]
-
-
-
