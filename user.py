@@ -6,6 +6,7 @@ import database
 from roll import *
 from query import *
 import os
+from assignment import *
 
 
 class Person:
@@ -80,17 +81,13 @@ class Employee(Person):
             list_options = ["List students"]
             ui.print_menu("What would you like to do", list_options, "Exit CcMS")
             user_input = input("-> ")
-
             if user_input == "1":
                 students = Query.get_full_name_login('3')
                 list_students = [list(row) for row in students.fetchall()]
                 print((ui.print_table(list_students, ['full_name', 'login'])))
                 input("Press enter to go back")
-
             elif user_input == "0":
-                os.system("clear")
-                break
-
+                sys.exit(0)
             else:
                 print("There is no such option")
 
@@ -165,7 +162,14 @@ class Mentor(Employee):
         return "Checkpoint graded"
 
     @staticmethod
-    def menu():
+    def add_assignment(inp_title, inp_due_date, inp_max_points, inp_as_team):
+        database.Database.cur.execute("INSERT INTO `ASSIGNMENTS`(title,due_date,max_points,as_team) VALUES (?, ?, ?, ?)",
+                        (inp_title, inp_due_date, inp_max_points, inp_as_team), )
+        database.Database.con.commit()
+        return "Assignment successfully added!"
+
+    @staticmethod
+    def menu(log, username):
         while True:
             list_options = ["List students", "Add assignment", "Grade Assignment", "Add student", "Remove student",
                             "Check Attendance", "Change password", "Create teams", "List teams", "Grade checkpoint",
@@ -178,15 +182,9 @@ class Mentor(Employee):
                 list_students = [list(row) for row in students.fetchall()]
                 print((ui.print_table(list_students, ['full_name', 'login'])))
                 input("Press enter to go back")
-
             elif user_input == "2":
-                inputs = ui.get_inputs(["Title: ", "Submission date: ", "Project: ", "Max points: "],
-                                       "Provide info about assignment")
-                with open("assignment_m.ccms", "a+") as assign:
-                    for item in inputs:
-                        assign.write(item + ";")
-                    assign.write("\n")
-
+                inputs = ui.get_inputs(["Title: ", "Due date: ", "Max points: ", "As team: "], "Provide info about assignment")
+                Mentor.add_assignment(inputs[0], inputs[1], inputs[2], inputs[3])
             elif user_input == "3":
                 graded = []
                 f = open('submited.ccms', 'r')
@@ -222,7 +220,10 @@ class Mentor(Employee):
                 input("Press enter to go back")
 
             elif user_input == '7':
-                pass
+                input1 = input("Please enter a new password: ")
+                input2 = input("Please repeat your new password: ")
+                Person.change_password(input1, input2, username)
+                input("Press enter to go back")
 
             elif user_input == '8':
                 team_name = input("What is the name of the new team? ")
@@ -265,7 +266,6 @@ class Mentor(Employee):
                     else:
                         break
                 input("Really good performance")
-
 
             elif user_input == "0":
                 os.system("clear")
