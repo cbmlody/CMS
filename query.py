@@ -15,22 +15,22 @@ class Query:
         users = cls.cur.execute("SELECT login, full_name, name FROM `USERS` u, `ROLES` r  WHERE u.role_ID = r.ID AND r.name=?", (role,))
         return users
 
-    # @classmethod
-    # def insert_user(cls, inp_login, inp_password, inp_full_name, inp_role_ID):
-    #     users = cls.con.execute("SELECT * FROM `USERS`")
-    #     if inp_login not in users.fetchall():
-    #         cls.cur.execute("INSERT INTO `USERS`(login, password, full_name, role_ID) VALUES (?, ?, ?, ?)",
-    #                         (inp_login, inp_password, inp_full_name,inp_role_ID),)
-    #         cls.con.commit()
-    #         return "User successfully added!"
-    #     else:
-    #         return "User exists in database"
+    @classmethod
+    def insert_user(cls, inp_login, inp_password, inp_full_name, inp_role_ID):
+        users = cls.con.execute("SELECT * FROM `USERS`")
+        if inp_login not in users.fetchall():
+            cls.cur.execute("INSERT INTO `USERS`(login, password, full_name, role_ID) VALUES (?, ?, ?, ?)",
+                            (inp_login, inp_password, inp_full_name,inp_role_ID),)
+            cls.con.commit()
+            return "User successfully added!"
+        else:
+            return "User exists in database"
 
-    # @classmethod
-    # def remove_user(cls, username):
-    #     cls.cur.execute("DELETE FROM `USERS` WHERE login = ?", (username,))
-    #     cls.con.commit()
-    #     return "User deleted"
+    @classmethod
+    def remove_user(cls, username):
+        cls.cur.execute("DELETE FROM `USERS` WHERE login = ?", (username,))
+        cls.con.commit()
+        return "User deleted"
 
     @classmethod
     def change_password(cls, username, password2):
