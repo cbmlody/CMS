@@ -1,5 +1,4 @@
-import time
-import csv
+import database
 
 
 class Attendance:
@@ -8,24 +7,16 @@ class Attendance:
     """
     attendance_list = []
 
-    def __init__(self, name, attendance, who, date=time.strftime("%d/%m/%Y")):
-        self.date = date
+    def __init__(self, name, date, status, day_of_school):
         self.name = name
-        self.attendance = attendance
-        self.who = who
-        self.attendance_list.append([self.date, self.attendance, self.name, self.who])
+        self.date = date
+        self.status = status
+        self.day_of_school = day_of_school
+        self.attendance_list.append([self.name, self.date, self.status, self.day_of_school])
 
-    @classmethod
-    def save_roll_to_file(cls):
-        with open("attendance.ccms", "a+") as att:
-            data_writer = csv.writer(att)
-            for row in Attendance.attendance_list:
-                data_writer.writerow(row)
-
-    @classmethod
-    def import_roll_from_file(self):
-        with open("attendance.ccms", "r") as att:
-            data_reader = csv.reader(att)
-            for row in data_reader:
-                Attendance(*row)
+    @staticmethod
+    def import_from_db():
+        attendances = database.Database.cur.execute("SELECT * FROM ATTENDANCES").fetchall()
+        for attendance in attendances:
+            Attendance(*attendance)
 

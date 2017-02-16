@@ -1,5 +1,6 @@
-import time
 from user import *
+import sqlite3 as sql
+
 
 class Database:
     """
@@ -88,6 +89,3 @@ class Database:
         #     if person.username == username:
         #         person.status = "0"
 
-
-    def update(self):
-        pass

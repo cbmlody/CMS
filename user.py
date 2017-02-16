@@ -1,3 +1,4 @@
+import time
 import ui
 import roll
 import sys
@@ -12,7 +13,6 @@ class Person:
     Class represents every user
     """
 
-
     def __init__(self, *args):
         """
         Person class constructor
@@ -21,10 +21,11 @@ class Person:
         :param password: randomly generated password
         :param name: person's full name
         """
-        self.username = args[0]
-        self.password = args[1]
-        self.name = args[2]
-        self.status = args[3] # status = role
+        self.id = args[0]
+        self.username = args[1]
+        self.password = args[2]
+        self.name = args[3]
+        self.status = args[4]  # status = role
 
     @classmethod
     def get_all(cls):
@@ -57,11 +58,9 @@ class Person:
             return "Password changed"
         else:
             return "Passwords don't match"
-        #inputs = ui.get_inputs(["password: "], "Type in new password: ")
-        #self.password = inputs[0]
-        #self.password = hashlib.md5(self.password.encode('utf-8')).hexdigest()
-
-
+            # inputs = ui.get_inputs(["password: "], "Type in new password: ")
+            # self.password = inputs[0]
+            # self.password = hashlib.md5(self.password.encode('utf-8')).hexdigest()
 
     def __str__(self):
         return self.username
@@ -118,12 +117,22 @@ class Mentor(Employee):
         :param who: name of person checking attendance as string
         :return: None
         """
-
-        for student in Query.get_users_by_role(3):
+        current_date = time.strftime("%d-%m-%Y")
+        try:
+            Attendance.import_from_db()
+            last_date = database.Database.cur.execute("SELECT date, day_of_school FROM `ATTENDANCES`").fetchone()
+            day = last_date[1]
+            if last_date[0] != current_date:
+                day += 1
+        except TypeError:
+            day = 1
+        students_list = database.Database.cur.execute("SELECT ID, login, password, full_name, role_ID FROM `USERS` WHERE role_ID=3")
+        for student in students_list.fetchall():
             student_obj = Student(*student)
             inputs = ui.get_inputs(["Attendance [ 0 / 1 ]: "], "{} is present?".format(student_obj.name))
-            Attendance()
-        pass
+            att = Attendance(student_obj.name, current_date, int(*inputs), day)
+            database.Database.cur.execute("INSERT INTO ATTENDANCES VALUES (?,?,?,?)", (student_obj.id, att.date, att.status, att.day_of_school,))
+            database.Database.con.commit()
 
     @staticmethod
     def view_attendance(student, student_list):
@@ -158,7 +167,9 @@ class Mentor(Employee):
     @staticmethod
     def menu():
         while True:
-            list_options = ["List students", "Add assignment", "Grade Assignment", "Add student", "Remove student", "Check Attendance", "Change password", "Create teams", "List teams", "Grade checkpoint", "Students performance"]
+            list_options = ["List students", "Add assignment", "Grade Assignment", "Add student", "Remove student",
+                            "Check Attendance", "Change password", "Create teams", "List teams", "Grade checkpoint",
+                            "Students performance"]
             ui.print_menu("What would you like to do", list_options, "Exit CcMS")
             user_input = input("-> ")
 
@@ -208,7 +219,6 @@ class Mentor(Employee):
 
             elif user_input == "6":
                 print(Mentor.check_attendance())
-                roll.Attendance.save_roll_to_file()
                 input("Press enter to go back")
 
             elif user_input == '7':
@@ -259,12 +269,10 @@ class Mentor(Employee):
 
             elif user_input == "0":
                 os.system("clear")
-                break
+                sys.exit(0)
 
             else:
                 print("There is no such option")
-
-
 
 
 class Manager(Employee):
@@ -322,16 +330,13 @@ class Manager(Employee):
                 sys.exit(0)
 
 
-
-
 class Student(Person):
     """
     Class represents every Student
     """
 
-    def __init__(self, *args, grades):
+    def __init__(self, *args):
         Person.__init__(self, *args)
-        self.grades = grades
 
     @staticmethod
     def menu(log, username):
@@ -361,12 +366,9 @@ class Student(Person):
             elif user_input == '0':
                 sys.exit(0)
 
-    def check_grades(self):
-        return "Dear {}, your grades are: {}".format(self.name, self.grades.split(";"))
-
     def view_attendance(self):
         """
         Shows attendance
         :return self.attendance: list of Attendance objects
         """
-        return [x.date for x in Attendance.attendance_list if x.name == self.name]
+        database.Database.cur.execute("SELECT user_ID FROM `ATTENDANCES` WHERE user_ID")
