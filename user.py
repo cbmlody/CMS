@@ -1,13 +1,17 @@
 import ui
 import roll
-import hashlib
+import sys
+import database
 from roll import *
+from query import *
+
 
 
 class Person:
     """
     Class represents every user
     """
+
 
     def __init__(self, *args):
         """
@@ -20,17 +24,43 @@ class Person:
         self.username = args[0]
         self.password = args[1]
         self.name = args[2]
-        self.status = args[3]
+        self.status = args[3] # status = role
 
-    def change_password(self):
+    @classmethod
+    def get_all(cls):
+        data = Query.get_data_by_table_name("USERS")
+        all_users = []
+        for person in data:
+            all_users.append(Manager(data[0], data[1], data[2], data[3]))
+        return all_users
+
+    @staticmethod
+    def check_password(log, username, user_input_old_password):
+        log_value = log.fetchall()
+        print(log_value)
+        query = database.Database.cur.execute("SELECT password FROM `USERS` WHERE ID = ?", (log_value[0][0]))
+        if user_input_old_password == query.fetchall()[0][0]:
+            return "correct"
+        else:
+            return "incorrect"
+
+    @classmethod
+    def change_password(cls, new_pass, new_pass2, username):
         """
         Method return password
 
         :return: password(str)
         """
-        inputs = ui.get_inputs(["password: "], "Type in new password: ")
-        self.password = inputs[0]
-        self.password = hashlib.md5(self.password.encode('utf-8')).hexdigest()
+        if new_pass == new_pass2:
+            database.Database.cur.execute("UPDATE `USERS` SET password=? WHERE login=?", (new_pass, username,))
+            database.Database.con.commit()
+            return "Password changed"
+        else:
+            return "Passwords don't match"
+        #inputs = ui.get_inputs(["password: "], "Type in new password: ")
+        #self.password = inputs[0]
+        #self.password = hashlib.md5(self.password.encode('utf-8')).hexdigest()
+
 
 
     def __str__(self):
@@ -45,6 +75,12 @@ class Employee(Person):
     def __init__(self, *args):
         Person.__init__(self, *args)
 
+    @staticmethod
+    def menu():
+        list_options = ["List mentors", "List students", "Add mentor", "Remove mentor", "Check attendance",
+                        "See student average grade", "See full statistics"]
+        ui.print_menu("What would you like to do", list_options, "Exit CcMS")
+
 
 class Mentor(Employee):
     """
@@ -53,6 +89,12 @@ class Mentor(Employee):
 
     def __init__(self, *args):
         Employee.__init__(self, *args)
+
+    @staticmethod
+    def menu():
+        list_options = ["List mentors", "List students", "Add mentor", "Remove mentor", "Check attendance",
+                        "See student average grade", "See full statistics"]
+        ui.print_menu("What would you like to do", list_options, "Exit CcMS")
 
     @staticmethod
     def check_attendance(student_list, who):
@@ -65,6 +107,11 @@ class Mentor(Employee):
         for student in student_list:
             inputs = ui.get_inputs(["Attendance [ 0 / 1 ]: "], "{} is present?".format(student.name))
             roll.Attendance(student.name, *inputs, who)
+        all_students = Query.get_users_by_role(3)
+        # for student in all_students:
+        #     students_obj = Student()
+        #     inputs = ui.get_inputs(["Attendance [ 0 / 1 ]: "], "{} is present?".format(student.))
+        # pass
 
     @staticmethod
     def view_attendance(student, student_list):
@@ -85,12 +132,56 @@ class Manager(Employee):
     Class represents every Manager
     """
 
-    def __init__(self, username="Jerzy", password="200820e3227815ed1756a6b531e7e0d2", name="Jerzy Mardaus", status="1"):
+    def __init__(self, username, password, name, status):
         Person.__init__(self, username, password, name, status)
         self.username = username
         self.password = password
         self.name = name
         self.status = status
+
+    @staticmethod
+    def menu(log, username):
+        while True:
+            list_options = ["List mentors", "List students", "Add mentor", "Remove mentor", "Check attendance",
+                            "See student average grade", "See full statistics", "Change your password"]
+            ui.print_menu("What would you like to do", list_options, "Exit CcMS")
+            user_input = input("Input -> ")
+            if user_input == '1':
+                mentors = Query.get_full_name_login('1')
+                list_mentors = [list(row) for row in mentors.fetchall()]
+                print((ui.print_table(list_mentors, ['full_name', 'login'])))
+                input("Press enter to go back")
+            elif user_input == '2':
+                students = Query.get_full_name_login('3')
+                list_students = [list(row) for row in students.fetchall()]
+                print((ui.print_table(list_students, ['full_name', 'login'])))
+                input("Press enter to go back")
+            elif user_input == '3':
+                data = ui.get_inputs(["login: ", "password: ", "full_name: "], "Please insert all data about mentor")
+                print(database.Database.add(data[0], data[1], data[2], 1))
+                input("Press enter to go back")
+            elif user_input == '4':
+                username_to_del = input("Please insert username to delete: ")
+                print(database.Database.remove(username_to_del))
+                input("Press enter to go back")
+            elif user_input == '5':
+                all_students = Query.get_users_data_using_roleid("3")
+                print(all_students)
+                Mentor.check_attendance(all_students)
+                input("Press enter to go back")
+            elif user_input == '6':
+                pass
+            elif user_input == '7':
+                pass
+            elif user_input == '8':
+                input1 = input("Please enter a new password: ")
+                input2 = input("Please repeat your new password: ")
+                Person.change_password(input1, input2, username)
+                input("Press enter to go back")
+            elif user_input == '0':
+                sys.exit(0)
+
+
 
 
 class Student(Person):
@@ -98,9 +189,37 @@ class Student(Person):
     Class represents every Student
     """
 
-    def __init__(self, *args, grades=""):
+    def __init__(self, *args, grades):
         Person.__init__(self, *args)
         self.grades = grades
+
+    @staticmethod
+    def menu(log, username):
+
+        while True:
+            list_options = ["View my grades", "Submit assignment", "View attendance", "Submit assignment as a team",
+                            "Change password"]
+            ui.print_menu("What would you like to do", list_options, "Exit CcMS")
+            user_input = input("Input -> ")
+            if user_input == '1':
+                print("View my grades")
+                input("Press enter to go back")
+            elif user_input == '2':
+                print("Submit assignment")
+                input("Press enter to go back")
+            elif user_input == '3':
+                print("View attendance")
+                input("Press enter to go back")
+            elif user_input == '4':
+                print("Submit assignment as a team")
+                input("Press enter to go back")
+            elif user_input == '5':
+                input1 = input("Please enter a new password: ")
+                input2 = input("Please repeat your new password: ")
+                Person.change_password(input1, input2, username)
+                input("Press enter to go back")
+            elif user_input == '0':
+                sys.exit(0)
 
     def check_grades(self):
         return "Dear {}, your grades are: {}".format(self.name, self.grades.split(";"))

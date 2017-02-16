@@ -37,39 +37,41 @@ def print_table(table, title_list):
     Returns:
         This function doesn't return anything it only prints to console.
     """
+    if len(table) > 0:
+        len_of_items = {x: 0 for x in range(len(title_list))}
 
-    len_of_items = {x: 0 for x in range(len(title_list))}
+        title_lengths = len_counting(title_list, len_of_items)
 
-    title_lengths = len_counting(title_list, len_of_items)
+        for line in table:
+            max_lengths = len_counting(line, title_lengths)
 
-    for line in table:
-        max_lengths = len_counting(line, title_lengths)
-
-    # top bar
-    table_body = "-" * (sum(max_lengths.values()) + len(max_lengths) * 3 - 1)
-    string_in_between = ""
-    string_to_print = ""
-
-    # titles
-    for i in range(len(title_list)):
-        string_to_print += "|{:^{line_len}}".format(title_list[i], line_len=max_lengths[i] + 2)
-        string_in_between += "|" + "-" * (max_lengths[i] + 2)
-
-    strings_to_print = [string_to_print + "|"]
-
-    # values
-    for i in range(len(table)):
+        # top bar
+        table_body = "-" * (sum(max_lengths.values()) + len(max_lengths) * 3 - 1)
+        string_in_between = ""
         string_to_print = ""
 
-        for j in range(len(title_list)):
-            string_to_print += "|{:^{line_len}}".format(table[i][j], line_len=max_lengths[j] + 2)
-        strings_to_print.append(string_in_between + "|")
-        strings_to_print.append(string_to_print + "|")
+        # titles
+        for i in range(len(title_list)):
+            string_to_print += "|{:^{line_len}}".format(title_list[i], line_len=max_lengths[i] + 2)
+            string_in_between += "|" + "-" * (max_lengths[i] + 2)
 
-    # wrap_up
-    strings_to_print.insert(0, ("/" + table_body + "\\"))
-    strings_to_print.append("\\" + table_body + "/")
-    return "\n" + "\n".join(strings_to_print) + "\n"
+        strings_to_print = [string_to_print + "|"]
+
+        # values
+        for i in range(len(table)):
+            string_to_print = ""
+
+            for j in range(len(title_list)):
+                string_to_print += "|{:^{line_len}}".format(table[i][j], line_len=max_lengths[j] + 2)
+            strings_to_print.append(string_in_between + "|")
+            strings_to_print.append(string_to_print + "|")
+
+        # wrap_up
+        strings_to_print.insert(0, ("/" + table_body + "\\"))
+        strings_to_print.append("\\" + table_body + "/")
+        return "\n" + "\n".join(strings_to_print) + "\n"
+    else:
+        return "Your list is empty!"
 
 
 def print_menu(title, list_options, exit_message):
