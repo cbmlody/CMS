@@ -21,17 +21,21 @@ def main():
     while True:
         username = input("Please provide a username: ")
         password = input("Please provide a password: ")
-        login_type = db.login(username, password)
+        log = db.get_user(username, password)
+        login_type = db.login(log, username)
         if login_type == "Manager":
             while True:
-                Manager.menu()
+                Manager.menu(log, username)
         elif login_type == "Mentor":
             while True:
                 Mentor.menu()
+
         elif login_type == "Employee":
-            print("Employee")
+            while True:
+                print("Employee")
         elif login_type == "Student":
-            print("Student")
+            while True:
+                Student.menu(log, username)
 
 
             # while True:
