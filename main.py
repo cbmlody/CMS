@@ -26,7 +26,8 @@ def main():
             while True:
                 Manager.menu()
         elif login_type == "Mentor":
-            print("Mentor")
+            while True:
+                Mentor.menu()
         elif login_type == "Employee":
             print("Employee")
         elif login_type == "Student":
