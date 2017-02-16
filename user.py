@@ -63,9 +63,22 @@ class Employee(Person):
 
     @staticmethod
     def menu():
-        list_options = ["List mentors", "List students", "Add mentor", "Remove mentor", "Check attendance",
-                        "See student average grade", "See full statistics"]
+        list_options = ["List students"]
         ui.print_menu("What would you like to do", list_options, "Exit CcMS")
+        user_input = input("-> ")
+
+        if user_input == "1":
+            students = Query.get_full_name_login('3')
+            list_students = [list(row) for row in students.fetchall()]
+            print((ui.print_table(list_students, ['full_name', 'login'])))
+            input("Press enter to go back")
+
+        elif user_input == "0":
+            os.system("clear")
+            break
+
+        else:
+            print("There is no such option")
 
 
 class Mentor(Employee):
@@ -207,7 +220,7 @@ class Mentor(Employee):
                     if grade not in ['green', 'yellow', 'red']:
                         input("Wrong grade")
                     else:
-                        print(Mentor.grade_checkpoint(student, grade))
+                        input(Mentor.grade_checkpoint(student, grade))
                         break
 
             elif user_input == '11':
