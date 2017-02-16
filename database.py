@@ -64,7 +64,7 @@ class Database:
         #             return "Inactive user"
 
 
-    def get_list(self, person_type):
+    #def get_list(self, person_type):
         """
         Returns list of objects of input type
         :param person_type: str

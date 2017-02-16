@@ -28,7 +28,8 @@ def main():
                 Manager.menu(log, username)
         elif login_type == "Mentor":
             while True:
-                print("Mentor")
+                Mentor.menu()
+
         elif login_type == "Employee":
             while True:
                 print("Employee")
