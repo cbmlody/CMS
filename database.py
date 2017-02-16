@@ -18,7 +18,13 @@ class Database:
 
 
     @classmethod
-    def login(cls, username, password):
+    def get_user(cls, username, password):
+        log = cls.cur.execute("SELECT ID, role_ID FROM `USERS` WHERE login=? AND password=?",
+                              (username, password))
+        return log
+
+    @classmethod
+    def login(cls, log, username):
         """
         Checks if user exists and can log in
 
@@ -26,15 +32,15 @@ class Database:
         :param password: string with password
         :return: message
         """
-        log = cls.cur.execute("SELECT ID, role_ID FROM `USERS` WHERE login=? AND password=?", (username, password))
+        log = log.fetchall()
         if log:
-            role_id = log.fetchall()[0][1]
+            role_id = log[0][1]
             role_name = cls.cur.execute("SELECT name FROM `ROLES` r, `USERS` u  WHERE r.ID = ?", (role_id,))
             print("Welcome {}".format(username))
             return role_name.fetchall()[0][0]
         else:
             print("Incorrect username or password")
-
+            
 
     @classmethod
     def add(cls, login, password, full_name, role_ID):
