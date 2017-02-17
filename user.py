@@ -110,6 +110,13 @@ class Mentor(Employee):
             database.Database.con.commit()
 
     @staticmethod
+    def assign_team(student,team):
+        team_id = database.Database.cur.execute("SELECT ID FROM Teams WHERE name = ?", (team,)).fetchall()[0][0]
+        database.Database.cur.execute("UPDATE `USERS` SET team_id=? WHERE login=?", (team_id, student,))
+        database.Database.con.commit()
+        return "Student assigned"
+
+    @staticmethod
     def view_attendance(student, student_list):
         """
         Shows student attendance list
@@ -151,7 +158,7 @@ class Mentor(Employee):
         while True:
             list_options = ["List students", "Add assignment", "Grade Assignment", "Add student", "Remove student",
                             "Check Attendance", "Change password", "Create teams", "List teams", "Grade checkpoint",
-                            "Students performance"]
+                            "Students performance","Assign to team"]
             ui.print_menu("What would you like to do", list_options, "Exit CcMS")
             user_input = input("-> ")
 
@@ -236,6 +243,26 @@ class Mentor(Employee):
                     print("No checkpoints graded")
                     input("\nPress enter to continue...")
 
+            elif user_input == '12':
+                students = Query.get_full_name_login('3').fetchall()
+                logins = []
+                for row in students:
+                    logins.append(row[1])
+                while True:
+                    student = input('Who would you like to assign? ')
+                    if student not in logins:
+                        input('No such student')
+                    else:
+                        break
+                teams = Mentor.list_teams().fetchall()[0]
+                while True:
+                    team = input('Which team should the student be assigned to? ')
+                    if team not in teams:
+                        input('No such team')
+                        continue
+                    else:
+                        input(Mentor.assign_team(student, team))
+                        break
 
             elif user_input == "0":
                 os.system("clear")
