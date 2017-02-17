@@ -132,6 +132,7 @@ class Mentor(Employee):
     @staticmethod
     def create_teams(name):
         database.Database.cur.execute("INSERT INTO `TEAMS`(name) VALUES (?)", (name,))
+        database.Database.con.commit()
         return "Team added"
 
     @staticmethod
