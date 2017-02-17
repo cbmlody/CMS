@@ -328,10 +328,8 @@ class Student(Person):
                 input("Press enter to go back")
             elif user_input == '3':
                 print("View attendance")
-                print(log)
-                stud = database.Database.cur.execute("SELECT ID, login, password, full_name, role_ID FROM `USERS` WHERE ID=?", log[0][0],).fetchone()[0]
-                student = Student(*stud)
-                ui.print_table(student.view_attendance(), ["Date", "day_of_school"])
+                print(ui.print_table(Student.view_attendance(username), ["Date", "day_of_school"]))
+                print(Student.average_attendance(username))
                 input("Press enter to go back")
             elif user_input == '4':
                 Student.submit_assign_as_team(username)
@@ -383,12 +381,28 @@ class Student(Person):
         else:
             print("Your choice is incorrect!")
 
-    def view_attendance(self):
+    @staticmethod
+    def view_attendance(username):
         """
         Shows attendance
         :return self.attendance: list of Attendance objects
         """
-        student_id = database.Database.cur.execute("SELECT ID FROM `USERS` WHERE login=?", self.name,)
-        attendances = database.Database.cur.execute("SELECT date, day_at_school FROM `ATTENDANCES`"
-                                                    "WHERE user_ID=? AND status=1", student_id,).fetchall()
-        return attendances
+        student_id = database.Database.cur.execute("SELECT ID FROM USERS WHERE login = ?", (username,)).fetchall()[0][0]
+        attendances = database.Database.cur.execute("SELECT date, day_of_school FROM `ATTENDANCES`"
+                                                    "WHERE user_ID=? AND status=1", (student_id,)).fetchall()
+        attendances_list = [[row[0], str(row[1])] for row in attendances]
+        return attendances_list
+
+    @staticmethod
+    def average_attendance(username):
+        """
+        Shows average attendance
+        :param username: current user id
+        :return:
+        """
+        max_day = database.Database.cur.execute("SELECT MAX(day_of_school) FROM `ATTENDANCES`").fetchall()[0][0]
+        student_id = database.Database.cur.execute("SELECT ID FROM USERS WHERE login = ?", (username,)).fetchall()[0][0]
+        days_in_school = database.Database.cur.execute("SELECT COUNT(day_of_school) FROM `ATTENDANCES`"
+                                                    "WHERE user_ID=? AND status=1", (student_id,)).fetchall()[0][0]
+
+        return "Overall attendance: {}%".format(days_in_school/max_day*100)
