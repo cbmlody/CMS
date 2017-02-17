@@ -12,6 +12,7 @@ def main():
         password = input("Please provide a password: ")
         log = db.get_user(username, password)
         login_type = db.login(log, username)
+        time.sleep(2)
         if login_type == "Manager":
             while True:
                 Manager.menu(log, username)
@@ -24,6 +25,7 @@ def main():
         elif login_type == "Student":
             while True:
                 Student.menu(log, username)
+
 
 if __name__ == '__main__':
     main()
