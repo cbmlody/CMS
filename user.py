@@ -3,6 +3,8 @@ import ui
 import roll
 import sys
 import database
+import hashlib
+import getpass
 from roll import *
 from query import *
 import os
@@ -162,25 +164,8 @@ class Mentor(Employee):
                 inputs = ui.get_inputs(["Title: ", "Due date: ", "Max points: ", "As team: "], "Provide info about assignment")
                 Mentor.add_assignment(inputs[0], inputs[1], inputs[2], inputs[3])
             elif user_input == "3":
-                graded = []
-                f = open('submited.ccms', 'r')
-                for line in f:
-                    to_check = line.split(":")
-                    if to_check[0] == "0":
-                        print(to_check[1], "sent", to_check[2], "on", to_check[3], "link: ", to_check[4])
-                        grade = input("Score: ")
-                        to_check[0] = "1"
-                        to_check[4] = to_check[4].rstrip()
-                        to_check.append(grade)
-                        line = ":".join(to_check)
-                        graded.append(line)
-                f.close()
-                with open('submited.ccms', 'w') as f:
-                    for element in graded:
-                        f.write(element)
-                        f.write("\n")
-                input("Ok!")
-
+                print("To unlock this feature you need premium account...")
+                input()
             elif user_input == "4":
                 data = ui.get_inputs(["login: ", "password: ", "full_name: "], "Please insert all data about student")
                 print(database.Database.add(data[0], data[1], data[2], 3))
@@ -196,8 +181,8 @@ class Mentor(Employee):
                 input("Press enter to go back")
 
             elif user_input == '7':
-                input1 = input("Please enter a new password: ")
-                input2 = input("Please repeat your new password: ")
+                input1 = getpass.getpass("Please provide a password: ")
+                input2 = getpass.getpass("Please repeat a password: ")
                 Person.change_password(input1, input2, username)
                 input("Press enter to go back")
 
@@ -301,12 +286,14 @@ class Manager(Employee):
                 Mentor.check_attendance()
                 input("Press enter to go back")
             elif user_input == '6':
-                pass
+                print("To unlock this feature you need premium account...")
+                input()
             elif user_input == '7':
-                pass
+                print("To unlock this feature you need premium account...")
+                input()
             elif user_input == '8':
-                input1 = input("Please enter a new password: ")
-                input2 = input("Please repeat your new password: ")
+                input1 = getpass.getpass("Please provide a password: ")
+                input2 = getpass.getpass("Please repeat a password: ")
                 Person.change_password(input1, input2, username)
                 input("Press enter to go back")
             elif user_input == '0':
@@ -344,8 +331,8 @@ class Student(Person):
                 Student.submit_assign_as_team(username)
                 input("Press enter to go back")
             elif user_input == '5':
-                input1 = input("Please enter a new password: ")
-                input2 = input("Please repeat your new password: ")
+                input1 = getpass.getpass("Please provide a password: ")
+                input2 = getpass.getpass("Please repeat a password: ")
                 Person.change_password(input1, input2, username)
                 input("Press enter to go back")
             elif user_input == '0':

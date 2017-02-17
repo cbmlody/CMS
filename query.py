@@ -1,4 +1,6 @@
 import sqlite3 as sql
+import hashlib
+
 
 class Query:
 
@@ -17,6 +19,8 @@ class Query:
 
     @classmethod
     def insert_user(cls, inp_login, inp_password, inp_full_name, inp_role_ID):
+        inp_password = hashlib.md5(inp_password.encode('utf-8')).hexdigest()
+
         users = cls.con.execute("SELECT * FROM `USERS`")
         if inp_login not in users.fetchall():
             cls.cur.execute("INSERT INTO `USERS`(login, password, full_name, role_ID) VALUES (?, ?, ?, ?)",

@@ -1,5 +1,6 @@
 from database import *
 from user import *
+import getpass
 
 LIST_TABLE_TITLES = ["Fullname", "username", "Status"]
 
@@ -9,7 +10,7 @@ def main():
     db.import_sql()
     while True:
         username = input("Please provide a username: ")
-        password = input("Please provide a password: ")
+        password = getpass.getpass("Please provide a password: ")
         log = db.get_user(username, password)
         login_type = db.login(log, username)
         time.sleep(2)
