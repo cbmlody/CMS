@@ -77,10 +77,10 @@ class Mentor(Employee):
         Employee.__init__(self, *args)
 
     @staticmethod
-    def menu():
-        list_options = ["List mentors", "List students", "Add mentor", "Remove mentor", "Check attendance",
-                        "See student average grade", "See full statistics"]
-        ui.print_menu("What would you like to do", list_options, "Exit CcMS")
+    def see_performance(student):
+        id = database.Database.cur.execute("SELECT ID FROM USERS WHERE login = ?", (student,)).fetchall()[0][0]
+        grade = database.Database.cur.execute("SELECT card FROM Checkpoints WHERE user_ID = ?", (id,))
+        return grade
 
     @staticmethod
     def check_attendance():
@@ -211,6 +211,7 @@ class Mentor(Employee):
                 list_teams = [list(row) for row in teams.fetchall()]
                 print((ui.print_table(list_teams, ['Team name'])))
                 input("Press enter to go back")
+
             elif user_input == '10':
                 students = Query.get_full_name_login('3').fetchall()
                 logins = []
@@ -230,6 +231,7 @@ class Mentor(Employee):
                         input(Mentor.grade_checkpoint(student, grade))
                         break
 
+
             elif user_input == '11':
                 students = Query.get_full_name_login('3').fetchall()
                 logins = []
@@ -241,7 +243,14 @@ class Mentor(Employee):
                         input('No such student')
                     else:
                         break
-                input("Really good performance")
+                grade = Mentor.see_performance(student).fetchall()
+                if grade:
+                    print(grade[0][0])
+                    input("\nPress enter to continue...")
+                else:
+                    print("No checkpoints graded")
+                    input("\nPress enter to continue...")
+
 
             elif user_input == "0":
                 os.system("clear")
