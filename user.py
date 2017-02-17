@@ -348,7 +348,7 @@ class Student(Person):
                 print("View my grades")
                 input("Press enter to go back")
             elif user_input == '2':
-                print("Submit assignment")
+                Student.submit_assignment(username)
                 input("Press enter to go back")
             elif user_input == '3':
                 print("View attendance")
@@ -363,6 +363,24 @@ class Student(Person):
                 input("Press enter to go back")
             elif user_input == '0':
                 sys.exit(0)
+    @staticmethod
+    def submit_assignment(username):
+        student_id = database.Database.cur.execute("SELECT ID FROM USERS WHERE login = ?", (username,)).fetchall()[0][0]
+        assignments_data = database.Database.cur.execute("SELECT * FROM `ASSIGNMENTS`")
+        assignment_ids = []
+        for assignment in assignments_data.fetchall():
+            print("{}) Title:{} | Due Date: {} | Max points: {} ".format(assignment[0], assignment[1], assignment[2],
+                                                                         assignment[3]))
+            assignment_ids.append(assignment[0])
+        choose = input("Please choose assignment from list -> ")
+        if choose.isdigit() in assignment_ids:
+            data = ui.get_inputs(["content: ", "date: "], "")
+            database.Database.cur.execute("INSERT INTO `SUBMISSIONS`(user_ID, content, date, assignment_ID, team_ID) "
+                                          "VALUES(?,?,?,?,?)",(student_id, data[0], data[1], int(choose), None), )
+            database.Database.con.commit()
+            print("Assignment add successfully!")
+        else:
+            print("Your choice is incorrect!")
 
     def view_attendance(self):
         """
