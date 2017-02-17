@@ -31,9 +31,9 @@ class Database:
         :param password: string with password
         :return: message
         """
-        log = log.fetchall()
-        if log:
-            role_id = log[0][1]
+        login = log.fetchall()
+        if login:
+            role_id = login[0][1]
             role_name = cls.cur.execute("SELECT name FROM `ROLES` r, `USERS` u  WHERE r.ID = ?", (role_id,))
             print("Welcome {}".format(username))
             return role_name.fetchall()[0][0]

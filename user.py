@@ -29,24 +29,6 @@ class Person:
         self.status = args[4]  # status = role
 
     @classmethod
-    def get_all(cls):
-        data = Query.get_data_by_table_name("USERS")
-        all_users = []
-        for person in data:
-            all_users.append(Manager(data[0], data[1], data[2], data[3]))
-        return all_users
-
-    @staticmethod
-    def check_password(log, username, user_input_old_password):
-        log_value = log.fetchall()
-        print(log_value)
-        query = database.Database.cur.execute("SELECT password FROM `USERS` WHERE ID = ?", (log_value[0][0]))
-        if user_input_old_password == query.fetchall()[0][0]:
-            return "correct"
-        else:
-            return "incorrect"
-
-    @classmethod
     def change_password(cls, new_pass, new_pass2, username):
         """
         Method return password
@@ -59,12 +41,6 @@ class Person:
             return "Password changed"
         else:
             return "Passwords don't match"
-            # inputs = ui.get_inputs(["password: "], "Type in new password: ")
-            # self.password = inputs[0]
-            # self.password = hashlib.md5(self.password.encode('utf-8')).hexdigest()
-
-    def __str__(self):
-        return self.username
 
 
 class Employee(Person):
@@ -352,6 +328,10 @@ class Student(Person):
                 input("Press enter to go back")
             elif user_input == '3':
                 print("View attendance")
+                print(log)
+                stud = database.Database.cur.execute("SELECT ID, login, password, full_name, role_ID FROM `USERS` WHERE ID=?", log[0][0],).fetchone()[0]
+                student = Student(*stud)
+                ui.print_table(student.view_attendance(), ["Date", "day_of_school"])
                 input("Press enter to go back")
             elif user_input == '4':
                 print("Submit assignment as a team")
@@ -369,4 +349,7 @@ class Student(Person):
         Shows attendance
         :return self.attendance: list of Attendance objects
         """
-        database.Database.cur.execute("SELECT user_ID FROM `ATTENDANCES` WHERE user_ID")
+        student_id = database.Database.cur.execute("SELECT ID FROM `USERS` WHERE login=?", self.name,)
+        attendances = database.Database.cur.execute("SELECT date, day_at_school FROM `ATTENDANCES`"
+                                                    "WHERE user_ID=? AND status=1", student_id,).fetchall()
+        return attendances
