@@ -345,7 +345,7 @@ class Student(Person):
             ui.print_menu("What would you like to do", list_options, "Exit CcMS")
             user_input = input("Input -> ")
             if user_input == '1':
-                print("View my grades")
+                Student.view_grades(username)
                 input("Press enter to go back")
             elif user_input == '2':
                 Student.submit_assignment(username)
@@ -365,6 +365,20 @@ class Student(Person):
                 input("Press enter to go back")
             elif user_input == '0':
                 sys.exit(0)
+
+    @staticmethod
+    def view_grades(username):
+        student_id = database.Database.cur.execute("SELECT ID FROM USERS WHERE login = ?", (username,)).fetchall()[0][0]
+        user_grades = database.Database.cur.execute("SELECT ASSIGNMENTS.title, SUBMISSIONS.grade, "
+                                                    "ASSIGNMENTS.max_points, "
+                                                    "ROUND(CAST(SUBMISSIONS.grade AS FLOAT )"
+                                                    " / ASSIGNMENTS.max_points*100, 0) FROM `SUBMISSIONS` "
+                                                    "INNER JOIN `ASSIGNMENTS` "
+                                                    "ON ASSIGNMENTS.ID = SUBMISSIONS.assignment_ID WHERE "
+                                                    "SUBMISSIONS.user_ID =?",(student_id,)).fetchall()
+
+        user_grades_percentage = [tuple(map(str, grade)) for grade in user_grades]
+        print(ui.print_table(user_grades_percentage, ["Title", "grade", "max points", "percentage"]))
 
     @staticmethod
     def submit_assignment(username):

@@ -43,7 +43,8 @@ INSERT INTO `ROLES`(`ID`, `name`) VALUES (3, 'Student');
 INSERT INTO `ASSIGNMENTS`(`title`,`due_date`,`max_points`,`as_team`) VALUES ('CMS','17-02-2017',72,1);
 INSERT INTO `ASSIGNMENTS`(`title`,`due_date`,`max_points`,`as_team`) VALUES ('SMC','26-02-2017',36,0);
 
-INSERT INTO `SUBMISSIONS`(`user_ID`,`date`,`content`,`grade`,`assignment_ID`,`team_ID`) VALUES (6,'16-02-2017','https://github.com/',NULL,1,1);
+INSERT INTO `SUBMISSIONS`(`user_ID`,`date`,`content`,`grade`,`assignment_ID`,`team_ID`) VALUES (6,'16-02-2017','https://github.com/',36,1,1);
+INSERT INTO `SUBMISSIONS`(`user_ID`,`date`,`content`,`grade`,`assignment_ID`,`team_ID`) VALUES (6,'19-02-2017','https://github.com/dawda',12,2,1);
 
 INSERT INTO `ATTENDANCES` VALUES (6,'15-02-2017',1,1);
 INSERT INTO `ATTENDANCES` VALUES (7,'15-02-2017',0,1);
