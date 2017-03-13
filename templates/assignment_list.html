@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CCMS</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <aside id="sidebar">
+        <header class="user_info">
+            <div id="bar">You're logged in as:
+                <img src="images/default_user_img.png" alt="person">
+            </div>
+            <section>
+                <div>
+                    <p class="fullname">Jerzy</p>
+                    <p><a href="change_password.html">Change password</a></p>
+                    <p><a href="index.html">Logout</a></p>
+                </div>
+            </section>
+        </header>
+        <nav>
+            <h3>Student</h3>
+            <ul>
+                <li><a href="students_view.html">List</a></li>
+                <li><a href="attendance_view.html">Attendance</a></li>
+                <li><a href="teams_view.html">Teams</a></li>
+                <li><a href="checkpoints_view.html">Checkpoints</a></li>
+            </ul>
+            <h3>Mentor</h3>
+            <ul>
+                <li><a href="mentors_view.html">List</a></li>
+            </ul>
+            <h3>Assignment</h3>
+            <ul>
+                <li><a href="assignment_list.html">List</a></li>
+                <li><a href="submissions_list.html">Submissions</a></li>
+            </ul>
+        </nav>
+    </aside>
+    <div class="content">
+        <header>
+            <h3>Assignments</h3>
+            <a href="assignment_add.html"><input type="submit" value="ADD"></a>
+        </header>
+        <div class="data">
+        <div class="data">
+            <div class="rolltable">
+                <table>
+                    <thead>
+                    <th>Title</th>
+                    <th>Due date</th>
+                    <th>Max points</th>
+                    <th>Submit assignment</th>
+                    </thead>
+                    <tr>
+                        <td>CCMS</td>
+                        <td>02-01-2018</td>
+                        <td>72</td>
+                        <td>
+                            <a href="submit_ass.html">Submit</a>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>To Do List</td>
+                        <td>04-03-2017</td>
+                        <td>48</td>
+                        <td>
+                            <a href="submit_ass.html">Submit</a>
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Srassignment</td>
+                        <td>02-03-2016</td>
+                        <td>36</td>
+                        <td>
+                            <a href="submit_ass.html">Submit</a>
+
+                        </td>
+                    </tr>
+                </table>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+</body>
+</html>
