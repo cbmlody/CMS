@@ -34,10 +34,11 @@ def mentor():
 def change_password():
     pass
 
-@app.route('<todo>/delete')
-def delete(todo):
-    pass
-
+@app.route('/mentor/<id>/delete')
+def delete_mentor(id):
+    to_delete = Mentor.get_by_id(id)
+    to_delete.delete()
+    return redirect('/')
 
 
 if __name__ == "__main__":
