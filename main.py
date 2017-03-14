@@ -46,6 +46,17 @@ def delete_student(id):
     to_delete.delete()
     return redirect('/student')
 
+@app.route('/mentor/add')
+def add_mentor():
+    pass
+
+@app.route('/attendance', methods=['GET','POST'])
+def attendance_list():
+    students = Student.get_all(3)
+    if request.method == 'GET':
+        return render_template('attendance_view.html', students = students)
+    if request.method == 'POST':
+        pass
 
 if __name__ == "__main__":
     app.run(debug=True)
