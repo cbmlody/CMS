@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
-from models import Student
+from models import Student, Mentor
 
 
 app = Flask(__name__)
@@ -25,10 +25,20 @@ def student():
 def main():
     return render_template('main.html')
 
+@app.route('/mentor')
+def mentor():
+    mentors = Mentor.get_all(1)
+    return render_template('mentors_view.html', mentors=mentors)
 
 @app.route('/change_password')
 def change_password():
     pass
+
+@app.route('<todo>/delete')
+def delete(todo):
+    pass
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
