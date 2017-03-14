@@ -7,7 +7,6 @@
             <a href="assignment_add.html"><input type="submit" value="ADD"></a>
         </header>
         <div class="data">
-        <div class="data">
             <div class="rolltable">
                 <table>
                     <thead>
@@ -22,7 +21,7 @@
                         <td>{{assignment.due_date}}</td>
                         <td>{{assignment.max_points}}</td>
                         <td>
-                            <a href="submit_ass.html">Submit</a>
+                            <a href="assignment/{{assignment.id_}}/submit">Submit</a>
 
                         </td>
                     </tr>
@@ -30,5 +29,4 @@
                 </table>
         </div>
     </div>
-</div>
 {% endblock %}}
