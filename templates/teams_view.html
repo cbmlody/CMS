@@ -2,9 +2,7 @@
 {% block content %}
         <header>
             <h3>Teams list</h3>
-            <form action="{{ url_for('teams_new') }}" method="GET">
-                <input type="submit" value="ADD">
-            </form>
+            <a href="{{ url_for('teams_new') }}">ADD</a>
         </header>
         <div class="data">
             <div class="team_form">
