@@ -74,12 +74,17 @@ def teams_new():
 @app.route('/teams/add', methods=['POST'])
 def teams_create():
     team_name = request.form['team_name']
-    team = Team(None, team_name)
-    for team_db in Team.get_all():
-        if team_db.name == team.name:
-            error = "Team exists in database!"
-    team.add()
-    return redirect(url_for('teams'))
+    new_team = Team(None, team_name)
+    exists = None
+    for team in Team.get_all():
+        if new_team.name == team.name or len(new_team.name) == 0:
+            exists = True
+    if exists:
+        error = "Team exists or you provide empty team name!"
+        return render_template('team_add_form.html', error=error)
+    else:
+        new_team.add()
+        return redirect(url_for('teams'))
 
 
 @app.route('/mentor/<id>/delete')
