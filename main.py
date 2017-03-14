@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from models.assignment import Assignment
 
 
 app = Flask(__name__)
@@ -12,6 +13,12 @@ def index():
 @app.route('/login')
 def login():
     return render_template('index.html')
+
+@app.route('/assignment')
+def assignment():
+    assignments_list = Assignment.get_all()
+    return render_template(assignments_list.html, assignments = assignments_list)
+
 
 
 @app.route('/student')
