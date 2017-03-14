@@ -12,11 +12,11 @@ class Database:
         Method import sql file
         """
         con, cur = Database.db_connect()
-        with open('database.sql', 'r') as file:
+        with open('static/database.sql', 'r') as file:
             cur.executescript(file.read())
 
     @classmethod
     def db_connect(cls):
-        con = sql.connect('database.db')
+        con = sql.connect('static/database.db')
         cur = con.cursor()
         return con, cur
