@@ -24,5 +24,9 @@ def main():
     return render_template('main.html')
 
 
+@app.route('/change_password')
+def change_password():
+    pass
+
 if __name__ == "__main__":
     app.run(debug=True)
