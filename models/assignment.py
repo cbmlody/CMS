@@ -1,0 +1,34 @@
+from database import Database
+
+
+class Assignment:
+    """Holds assignments, created by mentors"""
+
+    assignment_list = []
+
+    def __init__(self, id_, title, due_date, max_points, as_team='NULL'):
+        self.id_ = id_
+        self.title = title
+        self.due_date = due_date
+        self.max_points = max_points
+        self.as_team = as_team
+
+    @classmethod
+    def get_all(cls):
+        assignments_list = []
+        conn, cur = Database.db_connect()
+        assignments_list = cur.execute("SELECT * FROM `ASSIGNMENTS`")
+        for assign in assignments_list:
+            assignments_list.append(Assignment(*assign))
+        return assignments_list
+
+    def add(self):
+        conn, cur = Database.db_connect()
+        try:
+            cur.execute("INSERT INTO `ASSIGNMENTS` (title, due_date, max_points, as_team) VALUES (?,?,?,?)",
+                        (self.title, self.due_date, self.max_points, self.as_team,))
+            conn.commit()
+        except Exception:
+            return "Record already exists"
+        finally:
+            conn.close()
