@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from models import Student
 
 
 app = Flask(__name__)
@@ -16,7 +17,8 @@ def login():
 
 @app.route('/student')
 def student():
-    return render_template('students_view.html')
+    students = Student.get_all(3)
+    return render_template('students_view.html', students=students)
 
 
 @app.route('/main')

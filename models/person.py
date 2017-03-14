@@ -1,5 +1,5 @@
 import sqlite3
-from database import Database
+from models.database import Database
 
 
 class Person:
