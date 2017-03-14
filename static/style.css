@@ -85,12 +85,12 @@ nav ul {
     bottom: 17px;
 }
 
-nav li { list-style-image: url(../images/cc_list.png); }
+nav li { list-style-image: url(/static/cc_list.png); }
 
 .content {
     display: flex;
     justify-content: flex-end;
-    background-image: url(../images/background.png);
+    background-image: url(/static/background.png);
     margin-left: 220px;
     height: 100%;
 }

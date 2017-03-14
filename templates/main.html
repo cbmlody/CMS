@@ -3,7 +3,7 @@
 <head>
     <title>CCMS</title>
     <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
 </head>
 <body>
@@ -11,7 +11,7 @@
     <aside id="sidebar">
         <header class="user_info">
             <div id="bar">You're logged in as:
-            <img src="images/default_user_img.png" alt="person">
+            <img src="{{ url_for('static', filename='default_user_img.png') }}" alt="person">
             </div>
             <section>
                 <div>
@@ -41,7 +41,9 @@
         </nav>
     </aside>
     <div class="content">
-        <img src="images/logo_welcome.png" alt="welcome_logo">
+        {% block content %}
+        <img src="{{ url_for('static', filename='logo_welcome.png') }}" alt="welcome_logo">
+        {% endblock %}
     </div>
 </div>
 </body>
