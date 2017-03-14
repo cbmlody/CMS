@@ -1,4 +1,4 @@
-from database import Database
+from .database import Database
 
 
 class Assignment:
@@ -15,12 +15,12 @@ class Assignment:
 
     @classmethod
     def get_all(cls):
-        assignments_list = []
+        assignments = []
         conn, cur = Database.db_connect()
-        assignments_list = cur.execute("SELECT * FROM `ASSIGNMENTS`")
+        assignments_list = cur.execute("SELECT * FROM `ASSIGNMENTS`").fetchall()
         for assign in assignments_list:
-            assignments_list.append(Assignment(*assign))
-        return assignments_list
+            assignments.append(Assignment(*assign))
+        return assignments
 
     def add(self):
         conn, cur = Database.db_connect()
@@ -32,3 +32,15 @@ class Assignment:
             return "Record already exists"
         finally:
             conn.close()
+
+    @staticmethod
+    def get_by_id(id):
+        """ Retrieves assignment with given id from database.
+        Args:
+            id(int): item id
+        Returns:
+            Assignment: Assignment object with a given id
+        """
+        con,cur = Database.db_connect()
+        assignment = cur.execute("SELECT * FROM `ASSIGNMENTS`WHERE ID = ?", (id,)).fetchone()
+        return Assignment(*assignment)
