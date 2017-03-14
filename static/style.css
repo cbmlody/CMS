@@ -114,7 +114,10 @@ nav li { list-style-image: url(/static/cc_list.png); }
     line-height: 30px;
 }
 
-.content header input[type=submit] {
+.content header a {
+    text-align: center;
+    text-decoration: none;
+    line-height: 40px;
     color: white;
     background-color: #3498db;
     float: right;
