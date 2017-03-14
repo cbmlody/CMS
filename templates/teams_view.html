@@ -1,49 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>CCMS</title>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-</head>
-<body>
-<div class="container">
-    <aside id="sidebar">
-        <header class="user_info">
-            <div id="bar">You're logged in as:
-                <img src="images/default_user_img.png" alt="person">
-            </div>
-            <section>
-                <div>
-                    <p class="fullname">Jerzy</p>
-                    <p><a href="change_password.html">Change password</a></p>
-                    <p><a href="index.html">Logout</a></p>
-                </div>
-            </section>
-        </header>
-        <nav>
-            <h3>Student</h3>
-            <ul>
-                <li><a href="students_view.html">List</a></li>
-                <li><a href="attendance_view.html">Attendance</a></li>
-                <li><a href="teams_view.html">Teams</a></li>
-                <li><a href="checkpoints_view.html">Checkpoints</a></li>
-            </ul>
-            <h3>Mentor</h3>
-            <ul>
-                <li><a href="mentors_view.html">List</a></li>
-            </ul>
-            <h3>Assignment</h3>
-            <ul>
-                <li><a href="assignment_list.html">List</a></li>
-                <li><a href="submissions_list.html">Submissions</a></li>
-            </ul>
-        </nav>
-    </aside>
-    <div class="content">
+{% extends 'main.html' %}
+{% block content %}
         <header>
             <h3>Teams list</h3>
-            <form action="team_add_form.html">
+            <form action="{{ url_for('teams_new') }}" method="GET">
                 <input type="submit" value="ADD">
             </form>
         </header>
@@ -55,19 +14,12 @@
                         <th>Team name</th>
                     </tr>
                     </thead>
+                    {% for team in teams %}
                     <tr>
-                        <td>Podgrzybek</td>
+                        <td>{{ team.name }}</td>
                     </tr>
-                    <tr>
-                        <td>Kowalscy</td>
-                    </tr>
-                    <tr>
-                        <td>Kodożercy</td>
-                    </tr>
+                    {% endfor %}
                 </table>
         </div>
     </div>
-</div>
-</div>
-</body>
-</html>
+{% endblock %}
