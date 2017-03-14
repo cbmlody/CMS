@@ -1,23 +1,25 @@
 from .database import Database
 from datetime import datetime
+from .assignment import Assignment
 class Submission:
     """Holds assignments submitted by students"""
 
-    def __init__(self, id, user_id, submission_date, title, project, points, assignment_id, team_id):
+    def __init__(self, id, user_id, submission_date, project, points, assignment_id, team_id):
         self.id = id
         self.user_id = user_id
-        self.title = title
         self.submission_date = submission_date
         self.project = project
         self.assignment_id = assignment_id
         self.points = points
         self.team_id = team_id
 
-    def grade(self, points, feedback):
+    def grade(self, points):
         """Allows mentor to grade an assignment """
         self.points = points
-        self.feedback = feedback
-        return [self.title, self.points]
+
+    def get_table_info(self):
+        assignment_title = Assignment.get_by_id(self.assignment_id).title
+
 
     @staticmethod
     def save(user_id, project,points,assignment_id,team_id):
