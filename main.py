@@ -38,7 +38,13 @@ def change_password():
 def delete_mentor(id):
     to_delete = Mentor.get_by_id(id)
     to_delete.delete()
-    return redirect('/')
+    return redirect('/student')
+
+@app.route('/student/<id>/delete')
+def delete_student(id):
+    to_delete = Student.get_by_id(id)
+    to_delete.delete()
+    return redirect('/student')
 
 
 if __name__ == "__main__":
