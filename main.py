@@ -33,6 +33,18 @@ def submit(assignment_id):
         return redirect('/assignment')
     return render_template('submit_ass.html')
 
+@app.route('/assignment/add',methods=['GET', 'POST'])
+def add_assignment():
+    if request.method == "POST":
+        if 'as-team' in request.form:
+            as_team = 1
+        else:
+            as_team = 0
+        Assignment.add(request.form['title'],request.form['due-date'], request.form['max-points'], as_team)
+        return redirect('/assignment')
+    return render_template('assignment_add.html')
+
+
 @app.route('/student')
 def student():
     return render_template('students_view.html')
