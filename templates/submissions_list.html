@@ -1,46 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>CCMS</title>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-</head>
-<body>
-<div class="container">
-    <aside id="sidebar">
-        <header class="user_info">
-            <div id="bar">You're logged in as:
-                <img src="images/default_user_img.png" alt="person">
-            </div>
-            <section>
-                <div>
-                    <p class="fullname">Jerzy</p>
-                    <p><a href="change_password.html">Change password</a></p>
-                    <p><a href="index.html">Logout</a></p>
-                </div>
-            </section>
-        </header>
-        <nav>
-            <h3>Student</h3>
-            <ul>
-                <li><a href="students_view.html">List</a></li>
-                <li><a href="attendance_view.html">Attendance</a></li>
-                <li><a href="teams_view.html">Teams</a></li>
-                <li><a href="checkpoints_view.html">Checkpoints</a></li>
-            </ul>
-            <h3>Mentor</h3>
-            <ul>
-                <li><a href="mentors_view.html">List</a></li>
-            </ul>
-            <h3>Assignment</h3>
-            <ul>
-                <li><a href="assignment_list.html">List</a></li>
-                <li><a href="submissions_list.html">Submissions</a></li>
-            </ul>
-        </nav>
-    </aside>
-    <div class="content">
+{% extends 'main.html' %}
+{% block content %}
         <header>
             <h3>Submissions</h3>
         </header>
@@ -55,34 +14,15 @@
                     <th>Grade</th>
                 </tr>
                 </thead>
+                {% for submission in submissions %}
                 <tr>
                     <td>To Do List</td>
                     <td>Andrzej Nowak</td>
-                    <td>15-01-2017</td>
-                    <td><p>www.dupa.com</p></td>
-                    <td><a href="grade_assignment.html">Grade</a></td>
+                    <td>{{submission.submission_date}}</td>
+                    <td><p>{{submission.project}}</p></td>
+                    <td><a href="/submissions/{{submission.id}}/grade">Grade</a></td>
                 </tr>
-                <tr>
-                    <td>CCMS</td>
-                    <td>Tomasz Kowal</td>
-                    <td>13-02-2017</td>
-                    <td><p>www.dupa.pl</p></td>
-                    <td><a href="grade_assignment.html">Grade</a>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td>Website</td>
-                    <td>Jan Nowak</td>
-                    <td>29-02-2017</td>
-                    <td><p>www.dupa.com</p></td>
-                    <td>
-                        <a href="grade_assignment.html">Grade</a>
-                    </td>
-                </tr>
+                {%endfor%}
             </table>
         </div>
-    </div>
-</div>
-</body>
-</html>
+{% endblock %}}
