@@ -22,11 +22,12 @@ class Assignment:
             assignments.append(Assignment(*assign))
         return assignments
 
-    def add(self):
+    @staticmethod
+    def add(title, due_date, max_points, as_team):
         conn, cur = Database.db_connect()
         try:
             cur.execute("INSERT INTO `ASSIGNMENTS` (title, due_date, max_points, as_team) VALUES (?,?,?,?)",
-                        (self.title, self.due_date, self.max_points, self.as_team,))
+                        (title, due_date, max_points, as_team,))
             conn.commit()
         except Exception:
             return "Record already exists"
