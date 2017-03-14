@@ -44,6 +44,14 @@ def add_assignment():
         return redirect('/assignment')
     return render_template('assignment_add.html')
 
+@app.route('/submissions')
+def submissions():
+    submission_list = Submission.get_all()
+    return render_template('submissions_list.html', submissions = submission_list)
+
+@app.route('/submissions/<submission_id>/grade')
+def grade(submission_id):
+    return render_template('grade_assignment.html')
 
 @app.route('/student')
 def student():
