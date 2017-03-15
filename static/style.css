@@ -410,3 +410,22 @@ tr:nth-child(odd) { background-color: #fff; }
 }
 
 .tooltip:hover .red-card { visibility: visible; }
+
+.tooltip .none-card {
+    visibility: hidden;
+    width: 120px;
+    background-color: lightslategrey;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    bottom: 100%;
+    right: -24px;
+    bottom: 27px;
+}
+
+.tooltip:hover .none-card { visibility: visible; }
+

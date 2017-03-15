@@ -80,7 +80,8 @@ def grade(submission_id):
 @app.route('/student')
 def student():
     students = Student.get_all(Student.role)
-    return render_template('students_view.html', students=students)
+    cards = {student.id_: Checkpoint.get_card(student.id_) for student in students}
+    return render_template('students_view.html', students=students, cards=cards)
 
 
 @app.route('/student/add', methods=['GET'])

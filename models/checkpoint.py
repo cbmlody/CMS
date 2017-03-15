@@ -16,3 +16,14 @@ class Checkpoint:
             conn.commit()
         finally:
             conn.close()
+
+    @staticmethod
+    def get_card(user_id):
+        conn, cur = Database.db_connect()
+        try:
+            card = cur.execute("SELECT card FROM `CHECKPOINTS` WHERE user_ID = (?)", (user_id,)).fetchone()[0]
+        except TypeError:
+            card = 'none'
+        finally:
+            conn.close()
+        return card
