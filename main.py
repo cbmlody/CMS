@@ -114,6 +114,7 @@ def add_to_team(id):
 
 @app.route('/student/<id>/teams', methods=['POST'])
 def assign_to_team(id):
+    student = Student.get_by_id(id)
     team_id = request.form['add-to-team']
     student.assign_team(team_id)
     return redirect('student')
