@@ -4,6 +4,7 @@ from models.submission import Submission
 from models.student import Student
 from models.mentor import Mentor
 from models.teams import Team
+from models.checkpoint import Checkpoint
 
 
 
@@ -175,6 +176,14 @@ def attendance_list():
         return render_template('attendance_view.html', students = students)
     if request.method == 'POST':
         pass
+
+
+@app.route('/checkpoint')
+def checkpoint():
+    checkpoints = Checkpoint.get_all()
+    students = Student.get_all(3)
+    return render_template('checkpoints_view.html', checkpoints=checkpoints, students=students)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
