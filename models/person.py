@@ -1,5 +1,6 @@
 import sqlite3
 from models.database import Database
+from time import strftime as stime
 
 
 class Person:

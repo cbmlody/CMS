@@ -12,7 +12,6 @@ CREATE TABLE `ATTENDANCES` (
 	`user_ID`	INTEGER NOT NULL,
 	`date`	TEXT NOT NULL,
 	`status`	INTEGER NOT NULL,
-	`day_of_school`	INTEGER NOT NULL
 );
 
 CREATE TABLE `SUBMISSIONS` (`ID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`user_ID`	INTEGER NOT NULL,`date`	TEXT NOT NULL,`content`	TEXT NOT NULL,`grade`		INTEGER,`assignment_ID`	INTEGER NOT NULL,`team_ID`	INTEGER);
@@ -46,6 +45,7 @@ INSERT INTO `ASSIGNMENTS`(`title`,`due_date`,`max_points`,`as_team`) VALUES ('SM
 INSERT INTO `SUBMISSIONS`(`user_ID`,`date`,`content`,`grade`,`assignment_ID`,`team_ID`) VALUES (6,'16-02-2017','https://github.com/',36,1,1);
 INSERT INTO `SUBMISSIONS`(`user_ID`,`date`,`content`,`grade`,`assignment_ID`,`team_ID`) VALUES (6,'19-02-2017','https://github.com/dawda',12,2,1);
 
-INSERT INTO `ATTENDANCES` VALUES (6,'15-02-2017',1,1);
-INSERT INTO `ATTENDANCES` VALUES (7,'15-02-2017',0,1);
+INSERT INTO `ATTENDANCES` VALUES (6,'15-02-2017',1,);
+INSERT INTO `ATTENDANCES` VALUES (7,'15-02-2017',0,);
 
+CREATE UNIQUE INDEX `attendance_unique` ON `ATTENDANCES` (`user_ID` ,`date` )

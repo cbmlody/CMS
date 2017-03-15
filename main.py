@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
-from models import Assignment, Submission, Team, Student, Mentor
+from time import strftime as stime
+from models import Assignment, Submission, Team, Student, Mentor, Attendance, Checkpoint
 
 
 app = Flask(__name__)
@@ -27,28 +28,28 @@ def assignment():
     return render_template('assignment_list.html', assignments = assignments_list)
 
 
-@app.route('/assignment/<assignment_id>/submit',methods=['GET','POST'])
+@app.route('/assignment/<assignment_id>/submit', methods=['GET', 'POST'])
 def submit(assignment_id):
     if request.method == "POST":
-        user_id =1
+        user_id = 1
         assignment = Assignment.get_by_id(assignment_id)
         if assignment.as_team:
             team_id = 1
         else:
             team_id = None
-        Submission.save(user_id, request.form['link'],assignment.id_,team_id)
+        Submission.save(user_id, request.form['link'], assignment.id_, team_id)
         return redirect('/assignment')
     return render_template('submit_ass.html')
 
 
-@app.route('/assignment/add',methods=['GET', 'POST'])
+@app.route('/assignment/add', methods=['GET', 'POST'])
 def add_assignment():
     if request.method == "POST":
         if 'as-team' in request.form:
             as_team = 1
         else:
             as_team = 0
-        Assignment.add(request.form['title'],request.form['due-date'], request.form['max-points'], as_team)
+        Assignment.add(request.form['title'], request.form['due-date'], request.form['max-points'], as_team)
         return redirect('/assignment')
     return render_template('assignment_add.html')
 
@@ -56,7 +57,7 @@ def add_assignment():
 @app.route('/submissions')
 def submissions():
     submission_list = Submission.get_all()
-    submissions =[]
+    submissions = []
     for submission in submission_list:
         submissions.append(Submission.get_table_info(submission))
     return render_template('submissions_list.html', submissions=submissions)
@@ -169,7 +170,7 @@ def change_password():
     return render_template('change_password.html')
 
 
-@app.route('/teams/')
+@app.route('/teams')
 def teams():
     teams = Team.get_all()
     return render_template('teams_view.html', teams=teams)
@@ -182,7 +183,7 @@ def teams_new():
 
 @app.route('/teams/add', methods=['POST'])
 def teams_create():
-    team_name = request.form['team_name']
+    team_name = request.form['team-name']
     new_team = Team(None, team_name)
     exists = None
     for team in Team.get_all():
@@ -196,13 +197,40 @@ def teams_create():
         return redirect(url_for('teams'))
 
 
-@app.route('/attendance', methods=['GET', 'POST'])
+@app.route('/attendance')
 def attendance_list():
     students = Student.get_all(Student.role)
     if request.method == 'GET':
-        return render_template('attendance_view.html', students=students)
+        return render_template('attendance_view.html', students = students)
+
+
+@app.route('/attendance', methods=['POST'])
+def attendance_listpost():
+    date_now = stime("%d-%m-%Y")
     if request.method == 'POST':
-        pass
+        to_parse = request.form
+        data = dict(to_parse)
+        print(data)
+        for key, value in data.items():
+            if "present" in value:
+                attendance = Attendance(key,date_now,1)
+            else:
+                attendance = Attendance(key,date_now,0)
+            attendance.add()
+        return redirect(url_for('attendance_list'))
+
+
+@app.route('/checkpoint', methods=['GET'])
+def checkpoint():
+    checkpoints = Checkpoint.get_all()
+    students = Student.get_all(3)
+    return render_template('checkpoints_view.html', checkpoints=checkpoints, students=students)
+
+
+@app.route('/checkpoint/add', methods=['POST'])
+def checkpoint_add():
+    pass
+
 
 if __name__ == "__main__":
     app.run(debug=True)

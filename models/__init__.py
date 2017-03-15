@@ -8,3 +8,4 @@ from models.person import Person
 from models.submission import Submission
 from models.student import Student
 from models.teams import Team
+from models.checkpoint import Checkpoint

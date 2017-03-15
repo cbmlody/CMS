@@ -1,6 +1,5 @@
 {% extends 'main.html' %}
 {% block content %}
-
         <header>
             <h3>Attendance list</h3>
         </header>
@@ -11,22 +10,22 @@
                     <thead>
                     <th>Login</th>
                     <th>Full name</th>
-                    <th>Present</th>
+                    <th>Present / Absent</th>
                     </thead>
-                    <tbody>
                     {% for student in students %}
                     <tr>
                         <td>{{student.login}}</td>
                         <td>{{student.full_name}}</td>
                         <td>
-                            <input class = 'attendance-check' type="checkbox" name = 'Present'>
+                            <input class = 'attendance_check' type="radio" value="present" name = '{{ student.id_}}' >
+                            <input class = 'attendance_check' type="radio" value="absent" name = '{{ student.id_}}' >
                         </td>
                     </tr>
                     {% endfor %}
-                    </tbody>
                 </table>
-                <input class = 'submit-attendance' type="submit" name = 'Submit' value="Submit">
+                <input class = 'submit_attendance' type="submit"  value="Submit">
                 </form>
+            </div>
             </div>
         </div>
 {% endblock %}

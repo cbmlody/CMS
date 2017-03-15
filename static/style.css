@@ -234,7 +234,9 @@ tr:nth-child(odd) { background-color: #fff; }
 .content .attendance-check {
     height: 25px;
     width: 25px;
+    margin-right: 30px;
 }
+.content .attendance_check:hover { box-shadow: 5px 5px 5px darkgrey; }
 
 .content .attendance-check:hover { box-shadow: 5px 5px 5px darkgrey; }
 
