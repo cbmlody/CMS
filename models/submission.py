@@ -1,14 +1,51 @@
+from .database import Database
+from datetime import datetime
+from .assignment import Assignment
+from .person import Person
 class Submission:
     """Holds assignments submitted by students"""
 
-    def __init__(self, title, submission_date, project, max_points):
-        self.max_points = max_points
-        self.title = title
+    def __init__(self, id, user_id, submission_date, project, points, assignment_id, team_id):
+        self.id = id
+        self.user_id = user_id
         self.submission_date = submission_date
         self.project = project
+        self.assignment_id = assignment_id
+        self.points = points
+        self.team_id = team_id
 
-    def grade(self, points, feedback):
+    def grade(self, points):
         """Allows mentor to grade an assignment """
         self.points = points
-        self.feedback = feedback
-        return [self.title, self.points, self.max_points]
+
+    def get_table_info(self):
+        assignment_title = Assignment.get_by_id(self.assignment_id).title
+        full_name = Person.get_by_id(self.user_id).full_name
+        date = self.submission_date
+        project = self.project
+        id = self.id
+        return [assignment_title,full_name,date,project,id]
+
+
+    @staticmethod
+    def save(user_id, project,assignment_id,team_id):
+        """Saves submitted assignment to database"""
+        con, cur = Database.db_connect()
+        submission_date = str(datetime.today())
+        try:
+            con.execute("INSERT INTO `SUBMISSIONS` (user_ID, submission_date, content, grade, assignment_ID,team_ID) VALUES (?,?,?,?,?,?)",
+                    (user_id, submission_date, project, None, assignment_id, team_id,))
+            con.commit()
+        except Exception:
+            return "Record already exists"
+        finally:
+            con.close()
+
+    @classmethod
+    def get_all(cls):
+        submissions = []
+        conn, cur = Database.db_connect()
+        submission_list = cur.execute("SELECT * FROM `SUBMISSIONS`").fetchall()
+        for submit in submission_list:
+            submissions.append(Submission(*submit))
+        return submissions

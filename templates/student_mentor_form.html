@@ -4,12 +4,11 @@
             <h3>Add new user</h3>
         </header>
         <div class="data">
-
         <div class="form_wrapper">
         <form class="form" method="POST" action="{{ form_url }}">
-               <input name="fullname" type="text" placeholder="full name">
-               <input name="username" type="text" placeholder="username">
-               <input name="pass" type="password" placeholder="password">
+               <input name="fullname" type="text" placeholder="full name" required>
+               <input name="username" type="text" placeholder="username" required>
+               <input name="pass" type="password" placeholder="password" required>
                <input name="rpass" type="password" placeholder="repeat password">
                <input class="button" type="submit" value="SUBMIT">
                <input class="button" type="reset" value="RESET">
