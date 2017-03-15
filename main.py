@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for
-from .models.assignment import Assignment
-from .models.submission import Submission
-from .models.student import Student
-from .models.mentor import Mentor
-from .models.teams import Team
+from models.assignment import Assignment
+from models.submission import Submission
+from models.student import Student
+from models.mentor import Mentor
+from models.teams import Team
 
 
 
