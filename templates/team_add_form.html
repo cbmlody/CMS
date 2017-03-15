@@ -4,9 +4,9 @@
             <h3>New team</h3>
         </header>
         <div class="data">
-            <div class="form_wrapper">
+            <div class="form-wrapper">
                 <form class="form" method="POST" action="{{ url_for('teams_create') }}">
-                    <input type="text" name="team_name" placeholder="Insert team name" required>
+                    <input type="text" name="team-name" placeholder="Insert team name" required>
                     <input class='button' type="submit" name="submit" value="Submit">
                     {% if error %}
                         <h3 class="error" style="color: red;">{{ error }}</h3>

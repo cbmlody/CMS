@@ -1,87 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>CCMS</title>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-</head>
-<body>
-<div class="container">
-    <aside id="sidebar">
-        <header class="user_info">
-            <div id="bar">You're logged in as:
-                <img src="images/default_user_img.png" alt="person">
-            </div>
-            <section>
-                <div>
-                    <p class="fullname">Jerzy</p>
-                    <p><a href="change_password.html">Change password</a></p>
-                    <p><a href="index.html">Logout</a></p>
-                </div>
-            </section>
-        </header>
-        <nav>
-            <h3>Student</h3>
-            <ul>
-                <li><a href="students_view.html">List</a></li>
-                <li><a href="attendance_view.html">Attendance</a></li>
-                <li><a href="teams_view.html">Teams</a></li>
-                <li><a href="checkpoints_view.html">Checkpoints</a></li>
-            </ul>
-            <h3>Mentor</h3>
-            <ul>
-                <li><a href="mentors_view.html">List</a></li>
-            </ul>
-            <h3>Assignment</h3>
-            <ul>
-                <li><a href="assignment_list.html">List</a></li>
-                <li><a href="submissions_list.html">Submissions</a></li>
-            </ul>
-        </nav>
-    </aside>
-    <div class="content">
+{% extends 'main.html' %}
+{% block content %}
         <header>
             <h3>Checkpoints list</h3>
         </header>
         <div class="data">
             <div class="checkpoint_form">
-                <form>
-                <table>
-                    <thead>
-                    <th>Full name</th>
-                    <th>Checkpoints card</th>
-                    </thead>
-                    <tr>
-                        <td>Andrzej Nowak</td>
-                        <td>
-                            <input type="radio" name="endriu" value="Green">Green
-                            <input type="radio" name="endriu" value="Yellow">Yellow
-                            <input type="radio" name="endriu" value="Red">Red
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jan Nowak</td>
-                        <td>
-                            <input type="radio" name="jan" value="Green">Green
-                            <input type="radio" name="jan" value="Yellow">Yellow
-                            <input type="radio" name="jan" value="Red">Red
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Tomasz Kowal</td>
-                        <td>
-                            <input type="radio" name="tomi" value="Green">Green
-                            <input type="radio" name="tomi" value="Yellow">Yellow
-                            <input type="radio" name="tomi" value="Red">Red
-                        </td>
-                    </tr>
-                </table>
+                <form action="{{ url_for('checkpoint') }}" method="post">
+                    <table>
+                        <thead>
+                            <th>Full name</th>
+                            <th>Checkpoints card</th>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ student.full_name }}</td>
+                                <td>
+                                    <input type="radio" id='student-id' name="{{ student.id_ }}" value="Green">Green
+                                    <input type="radio" id='student-id' name="{{ student.id_ }}" value="Yellow">Yellow
+                                    <input type="radio" id='student-id' name="{{ student.id_ }}" value="Red">Red
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 <input class = 'submit_checkpoint' type="submit" name = 'Submit' value="Submit">
                 </form>
             </div>
         </div>
-    </div>
-</div>
-</body>
-</html>
+{% endblock %}

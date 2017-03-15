@@ -7,11 +7,11 @@ Technologies Used
 > **Back-end**
 
 > - Python3.5
-> Flask framework
+> - Flask framework
 >
 > **Front-end**
 >> - HTML5
->CSS3
+>> - CSS3
 >
 > **Database Engine**
 > >- SQLite 3

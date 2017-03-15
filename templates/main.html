@@ -9,7 +9,7 @@
 <body>
 <div class="container">
     <aside id="sidebar">
-        <header class="user_info">
+        <header class="user-info">
             <div id="bar">You're logged in as:
             <img src="{{ url_for('static', filename='default_user_img.png') }}" alt="person">
             </div>
@@ -27,7 +27,7 @@
                 <li><a href="{{ url_for('student') }}">List</a></li>
                 <li><a href="attendance_view.html">Attendance</a></li>
                 <li><a href="{{ url_for('teams') }}">Teams</a></li>
-                <li><a href="checkpoints_view.html">Checkpoints</a></li>
+                <li><a href="{{ url_for('checkpoint') }}">Checkpoints</a></li>
             </ul>
             <h3>Mentor</h3>
             <ul>

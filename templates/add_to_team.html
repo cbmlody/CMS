@@ -1,73 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>CCMS</title>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-</head>
-<body>
-<div class="container">
-    <aside id="sidebar">
-        <header class="user_info">
-            <div id="bar">You're logged in as:
-                <img src="images/default_user_img.png" alt="person">
-            </div>
-            <section>
-                <div>
-                    <p class="fullname">Jerzy</p>
-                    <p><a href="change_password.html">Change password</a></p>
-                    <p><a href="index.html">Logout</a></p>
-                </div>
-            </section>
-        </header>
-        <nav>
-            <h3>Student</h3>
-            <ul>
-                <li><a href="students_view.html">List</a></li>
-                <li><a href="attendance_view.html">Attendance</a></li>
-                <li><a href="teams_view.html">Teams</a></li>
-                <li><a href="checkpoints_view.html">Checkpoints</a></li>
-            </ul>
-            <h3>Mentor</h3>
-            <ul>
-                <li><a href="mentors_view.html">List</a></li>
-            </ul>
-            <h3>Assignment</h3>
-            <ul>
-                <li><a href="assignment_list.html">List</a></li>
-                <li><a href="submissions_list.html">Submissions</a></li>
-            </ul>
-        </nav>
-    </aside>
-    <div class="content">
+{% extends 'main.html' %}
+{% block content %}
         <header>
             <h3>Add to team</h3>
         </header>
         <div class="data">
-            <div class="team_form">
-                <form name="add_to_team">
+            <div class="team-form">
+                <form name="add-to-team-form" method="post">
                     <table>
                         <thead>
                             <tr>
                                 <th>Team name</th>
                             </tr>
                         </thead>
+                        <tbody>
+                        {% for team in teams %}
                         <tr>
-                            <td><input type="radio" name="add_to_team" value="podgrzybek"> Podgrzybek</td>
+                            <td>
+                                <label for="{{ team.id_ }}">{{ team.name }}</label>
+                                <input type="radio" name='add-to-team' id="{{ team.id_ }}" value="{{ team.id_ }}"/>
+                            </td>
                         </tr>
-                        <tr>
-                            <td><input type="radio" name="add_to_team" value="kowalscy"> Kowalscy</td>
-                        </tr>
-                        <tr>
-                            <td><input type="radio" name="add_to_team" value="kodożercy"> Kodożercy</td>
-                        </tr>
+                        {% endfor %}
+                        </tbody>
                     </table>
-                    <input class='add_to_team_submit' type="submit" name='Submit' value="Submit">
+                    <input class='add-to-team-submit' type="submit" name='Submit' value="Submit">
                 </form>
             </div>
         </div>
-    </div>
-</div>
-</body>
-</html>
+{% endblock %}
