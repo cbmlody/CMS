@@ -118,7 +118,7 @@ def delete_student(id):
     return redirect('/student')
 
 
-@app.route('/student/<id>/grades')
+@app.route('/student/<id>/grades', methods=['GET'])
 def student_grades(id):
     student = Student.get_by_id(id)
     submissions = Submission.get_by_user_id(id)
