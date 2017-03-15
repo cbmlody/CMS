@@ -23,7 +23,7 @@ def login():
 
 @app.route('/student')
 def student():
-    students = Student.get_all(3)
+    students = Student.get_all(Student.role)
     return render_template('students_view.html', students=students)
 
 
@@ -49,6 +49,21 @@ def student_create():
         return redirect(url_for('student'))
 
 
+@app.route('/student/<id>/teams', methods=['GET'])
+def add_to_team(id):
+    student = Student.get_by_id(id)
+    teams = Team.get_all()
+    return render_template('add_to_team.html', student=student, teams=teams)
+
+
+@app.route('/student/<id>/teams', methods=['POST'])
+def assign_to_team(id):
+    student = Student.get_by_id(id)
+    team_id = request.form['add-to-team']
+    student.assign_team(team_id)
+    return redirect('student')
+
+
 @app.route('/change_password', methods=['GET'])
 def change_password():
     return render_template('change_password.html')
@@ -56,7 +71,7 @@ def change_password():
 
 @app.route('/mentor')
 def mentor():
-    mentors = Mentor.get_all(1)
+    mentors = Mentor.get_all(Mentor.role)
     return render_template('mentors_view.html', mentors=mentors)
 
 
@@ -108,7 +123,7 @@ def add_mentor():
 
 @app.route('/attendance', methods=['GET', 'POST'])
 def attendance_list():
-    students = Student.get_all(3)
+    students = Student.get_all(Student.role)
     if request.method == 'GET':
         return render_template('attendance_view.html', students = students)
     if request.method == 'POST':
