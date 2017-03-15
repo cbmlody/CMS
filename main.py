@@ -195,14 +195,22 @@ def attendance_list():
 
 @app.route('/checkpoint', methods=['GET'])
 def checkpoint():
-    checkpoints = Checkpoint.get_all()
     students = Student.get_all(3)
-    return render_template('checkpoints_view.html', checkpoints=checkpoints, students=students)
+    return render_template('checkpoints_view.html', students=students)
 
 
 @app.route('/checkpoint/add', methods=['POST'])
 def checkpoint_add():
-    pass
+    data = request.form
+    data = dict(data)
+    for key, value in data.items():
+        if 'green' in value:
+            Checkpoint.update_user_card('green', key)
+        elif 'yellow' in value:
+            Checkpoint.update_user_card('yellow', key)
+        else:
+            Checkpoint.update_user_card('red', key)
+    return redirect(url_for('checkpoint'))
 
 
 if __name__ == "__main__":
