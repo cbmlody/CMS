@@ -5,7 +5,7 @@
         </header>
         <div class="data">
             <div class="checkpoint_form">
-                <form action="{{ url_for('checkpoint') }}" method="post">
+                <form action="{{ url_for('checkpoint_add') }}" method="post">
                     <table>
                         <thead>
                             <th>Full name</th>
@@ -16,15 +16,15 @@
                             <tr>
                                 <td>{{ student.full_name }}</td>
                                 <td>
-                                    <input type="radio" id='student-id' name="{{ student.id_ }}" value="Green">Green
-                                    <input type="radio" id='student-id' name="{{ student.id_ }}" value="Yellow">Yellow
-                                    <input type="radio" id='student-id' name="{{ student.id_ }}" value="Red">Red
+                                    <input type="radio" name="{{ student.id_ }}" value="green">Green
+                                    <input type="radio" name="{{ student.id_ }}" value="yellow">Yellow
+                                    <input type="radio" name="{{ student.id_ }}" value="red">Red
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                <input class = 'submit_checkpoint' type="submit" name = 'Submit' value="Submit">
+                <input class = 'submit_checkpoint' type="submit" value="Submit">
                 </form>
             </div>
         </div>
