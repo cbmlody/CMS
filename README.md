@@ -11,7 +11,7 @@ Technologies Used
 >
 > **Front-end**
 >> - HTML5
-> -CSS3
+> - CSS3
 >
 > **Database Engine**
 > >- SQLite 3
