@@ -115,8 +115,11 @@ def add_to_team(id):
 @app.route('/student/<id>/teams', methods=['POST'])
 def assign_to_team(id):
     student = Student.get_by_id(id)
-    team_id = request.form['add-to-team']
-    student.assign_team(team_id)
+    try:
+        team_id = request.form['add-to-team']
+        student.assign_team(team_id)
+    except Exception:
+        pass
     return redirect('student')
 
 
@@ -230,7 +233,7 @@ def attendance_listpost():
             else:
                 attendance = Attendance(key, date_now, 0)
             attendance.add()
-        return redirect(url_for('attendance_list'))
+        return redirect(url_for('student'))
 
 
 @app.route('/checkpoint', methods=['GET'])
@@ -250,7 +253,7 @@ def checkpoint_add():
             Checkpoint.update_user_card('yellow', key)
         else:
             Checkpoint.update_user_card('red', key)
-    return redirect(url_for('checkpoint'))
+    return redirect(url_for('student'))
 
 
 if __name__ == "__main__":
