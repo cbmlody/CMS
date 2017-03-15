@@ -1,6 +1,7 @@
 from .database import Database
 from datetime import datetime
 from .assignment import Assignment
+from .person import Person
 class Submission:
     """Holds assignments submitted by students"""
 
@@ -19,16 +20,21 @@ class Submission:
 
     def get_table_info(self):
         assignment_title = Assignment.get_by_id(self.assignment_id).title
+        full_name = Person.get_by_id(self.user_id).full_name
+        date = self.submission_date
+        project = self.project
+        id = self.id
+        return [assignment_title,full_name,date,project,id]
 
 
     @staticmethod
-    def save(user_id, project,points,assignment_id,team_id):
+    def save(user_id, project,assignment_id,team_id):
         """Saves submitted assignment to database"""
         con, cur = Database.db_connect()
-        submission_date = datetime.today()
+        submission_date = str(datetime.today())
         try:
-            cur.execute("INSERT INTO `SUBMISSIONS` (user_ID, date, content, grade, assignment_ID,team_ID) VALUES (?,?,?,?,?,?)",
-                        (user_id, submission_date, project, points, assignment_id, team_id,))
+            con.execute("INSERT INTO `SUBMISSIONS` (user_ID, submission_date, content, grade, assignment_ID,team_ID) VALUES (?,?,?,?,?,?)",
+                    (user_id, submission_date, project, None, assignment_id, team_id,))
             con.commit()
         except Exception:
             return "Record already exists"

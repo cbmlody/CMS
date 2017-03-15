@@ -36,10 +36,10 @@ def submit(assignment_id):
         user_id =1
         assignment = Assignment.get_by_id(assignment_id)
         if assignment.as_team:
-            team_id =1
+            team_id = 1
         else:
-            team_id = 'NULL'
-        Submission.save(user_id, request.form['link'],'NULL',assignment,team_id)
+            team_id = None
+        Submission.save(user_id, request.form['link'],assignment.id_,team_id)
         return redirect('/assignment')
     return render_template('submit_ass.html')
 
@@ -57,7 +57,10 @@ def add_assignment():
 @app.route('/submissions')
 def submissions():
     submission_list = Submission.get_all()
-    return render_template('submissions_list.html', submissions = submission_list)
+    submissions =[]
+    for submission in submission_list:
+        submissions.append(Submission.get_table_info(submission))
+    return render_template('submissions_list.html', submissions = submissions)
 
 @app.route('/submissions/<submission_id>/grade')
 def grade(submission_id):
