@@ -48,3 +48,4 @@ INSERT INTO `SUBMISSIONS`(`user_ID`,`date`,`content`,`grade`,`assignment_ID`,`te
 INSERT INTO `ATTENDANCES` VALUES (6,'15-02-2017',1,);
 INSERT INTO `ATTENDANCES` VALUES (7,'15-02-2017',0,);
 
+CREATE UNIQUE INDEX `attendance_unique` ON `ATTENDANCES` (`user_ID` ,`date` )

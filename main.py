@@ -170,12 +170,15 @@ def teams_create():
         return redirect(url_for('teams'))
 
 
-@app.route('/attendance', methods=['GET', 'POST'])
+@app.route('/attendance')
 def attendance_list():
-    date_now = stime("%d-%m-%Y")
     students = Student.get_all(3)
     if request.method == 'GET':
         return render_template('attendance_view.html', students = students)
+
+@app.route('/attendance', methods=['POST'])
+def attendance_listpost():
+    date_now = stime("%d-%m-%Y")
     if request.method == 'POST':
         to_parse = request.form
         data = dict(to_parse)
