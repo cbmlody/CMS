@@ -16,11 +16,11 @@
                 </thead>
                 {% for submission in submissions %}
                 <tr>
-                    <td>To Do List</td>
-                    <td>Andrzej Nowak</td>
-                    <td>{{submission.submission_date}}</td>
-                    <td><p>{{submission.project}}</p></td>
-                    <td><a href="/submissions/{{submission.id}}/grade">Grade</a></td>
+                    <td>{{submission[0]}}</td>
+                    <td>{{submission[1]}}</td>
+                    <td>{{submission[2]}}</td>
+                    <td><p>{{submission[3]}}</p></td>
+                    <td><a href="/submissions/{{submission[4]}}/grade">Grade</a></td>
                 </tr>
                 {%endfor%}
             </table>
