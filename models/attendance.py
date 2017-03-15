@@ -33,3 +33,15 @@ class Attendance:
             conn.close()
         return attendance_list
 
+    @staticmethod
+    def get_by_id(student_id):
+        attendance_list = []
+        conn, cur = Database.db_connect()
+        try:
+            attendances = cur.execute("SELECT * FROM `ATTENDANCES` WHERE user_ID=(?)", (student_id,)).fetchall()
+            for attendance in attendances:
+                attendance_list.append(Attendance(*attendance))
+        finally:
+            conn.close()
+        return attendance_list
+

@@ -98,14 +98,12 @@ def student_create():
 
 @app.route('/student/<id>/teams', methods=['GET'])
 def add_to_team(id):
-    student = Student.get_by_id(id)
     teams = Team.get_all()
-    return render_template('add_to_team.html', student=student, teams=teams)
+    return render_template('add_to_team.html', teams=teams)
 
 
 @app.route('/student/<id>/teams', methods=['POST'])
 def assign_to_team(id):
-    student = Student.get_by_id(id)
     team_id = request.form['add-to-team']
     student.assign_team(team_id)
     return redirect('student')
@@ -120,14 +118,19 @@ def delete_student(id):
 
 @app.route('/student/<id>/grades', methods=['GET'])
 def student_grades(id):
-    student = Student.get_by_id(id)
     submissions = Submission.get_by_user_id(id)
     assignment_ids = []
     for submission in submissions:
         assignment_ids.append(str(submission.assignment_id))
     assignments = Assignment.get_by_ids(assignment_ids)
     assignments = {assignment.id_: assignment for assignment in assignments}
-    return render_template('grades.html', submissions=submissions, student=student, assignments=assignments)
+    return render_template('grades.html', submissions=submissions, assignments=assignments)
+
+
+@app.route('/student/<id>/attendance')
+def student_attendance(id):
+    attendances = Attendance.get_by_id(id)
+    return render_template('view_attendance.html')
 
 
 @app.route('/mentor')
