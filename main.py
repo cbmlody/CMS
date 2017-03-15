@@ -49,15 +49,51 @@ def student_create():
         return redirect(url_for('student'))
 
 
-@app.route('/change_password', methods=['GET'])
-def change_password():
-    return render_template('change_password.html')
+@app.route('/student/<id>/delete')
+def delete_student(id):
+    to_delete = Student.get_by_id(id)
+    to_delete.delete()
+    return redirect('/student')
 
 
 @app.route('/mentor')
 def mentor():
     mentors = Mentor.get_all(1)
     return render_template('mentors_view.html', mentors=mentors)
+
+
+@app.route('/mentor/add', methods=['GET'])
+def mentor_new():
+    url = url_for('mentor_new')
+    return render_template('student_mentor_form.html', form_url=url)
+
+
+@app.route('/mentor/add', methods=['POST'])
+def mentor_create():
+    url = url_for('mentor_new')
+    role = 1
+    fullname = request.form['fullname']
+    username = request.form['username']
+    paswd = request.form['pass']
+    rpaswd = request.form['rpass']
+    if paswd != rpaswd:
+        error = "Passwords does not match"
+        return render_template('student_mentor_form.html', form_url=url, error=error)
+    else:
+        Mentor(None, username, paswd, fullname, role, None).add()
+        return redirect(url_for('mentor'))
+
+
+@app.route('/mentor/<id>/delete')
+def delete_mentor(id):
+    to_delete = Mentor.get_by_id(id)
+    to_delete.delete()
+    return redirect('/mentor')
+
+
+@app.route('/change_password', methods=['GET'])
+def change_password():
+    return render_template('change_password.html')
 
 
 @app.route('/teams/')
@@ -85,25 +121,6 @@ def teams_create():
     else:
         new_team.add()
         return redirect(url_for('teams'))
-
-
-@app.route('/mentor/<id>/delete')
-def delete_mentor(id):
-    to_delete = Mentor.get_by_id(id)
-    to_delete.delete()
-    return redirect('/student')
-
-
-@app.route('/student/<id>/delete')
-def delete_student(id):
-    to_delete = Student.get_by_id(id)
-    to_delete.delete()
-    return redirect('/student')
-
-
-@app.route('/mentor/add')
-def add_mentor():
-    pass
 
 
 @app.route('/attendance', methods=['GET', 'POST'])
