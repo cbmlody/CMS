@@ -1,5 +1,15 @@
+import sys
 from flask import Flask, render_template, request, redirect, url_for
-from models import Assignment, Submission, Team, Student, Mentor, Checkpoint
+from time import strftime as stime
+from models import Assignment, Submission, Team, Student, Mentor, Attendance, Checkpoint, Database
+
+
+# GLOBAL SETTINGS
+DEBUG = False
+if "--debug" in sys.argv:
+    DEBUG = True
+elif "--init" in sys.argv:
+    Database.import_sql()
 
 
 app = Flask(__name__)
@@ -24,31 +34,31 @@ def login():
 @app.route('/assignment')
 def assignment():
     assignments_list = Assignment.get_all()
-    return render_template('assignment_list.html', assignments = assignments_list)
+    return render_template('assignment_list.html', assignments=assignments_list)
 
 
-@app.route('/assignment/<assignment_id>/submit',methods=['GET','POST'])
+@app.route('/assignment/<assignment_id>/submit', methods=['GET', 'POST'])
 def submit(assignment_id):
     if request.method == "POST":
-        user_id =1
+        user_id = 1
         assignment = Assignment.get_by_id(assignment_id)
         if assignment.as_team:
             team_id = 1
         else:
             team_id = None
-        Submission.save(user_id, request.form['link'],assignment.id_,team_id)
+        Submission.save(user_id, request.form['link'], assignment.id_, team_id)
         return redirect('/assignment')
     return render_template('submit_ass.html')
 
 
-@app.route('/assignment/add',methods=['GET', 'POST'])
+@app.route('/assignment/add', methods=['GET', 'POST'])
 def add_assignment():
     if request.method == "POST":
         if 'as-team' in request.form:
             as_team = 1
         else:
             as_team = 0
-        Assignment.add(request.form['title'],request.form['due-date'], request.form['max-points'], as_team)
+        Assignment.add(request.form['title'], request.form['due-date'], request.form['max-points'], as_team)
         return redirect('/assignment')
     return render_template('assignment_add.html')
 
@@ -56,10 +66,10 @@ def add_assignment():
 @app.route('/submissions')
 def submissions():
     submission_list = Submission.get_all()
-    submissions =[]
+    submissions = []
     for submission in submission_list:
         submissions.append(Submission.get_table_info(submission))
-    return render_template('submissions_list.html', submissions = submissions)
+    return render_template('submissions_list.html', submissions=submissions)
 
 
 @app.route('/submissions/<submission_id>/grade')
@@ -97,14 +107,12 @@ def student_create():
 
 @app.route('/student/<id>/teams', methods=['GET'])
 def add_to_team(id):
-    student = Student.get_by_id(id)
     teams = Team.get_all()
-    return render_template('add_to_team.html', student=student, teams=teams)
+    return render_template('add_to_team.html', teams=teams)
 
 
 @app.route('/student/<id>/teams', methods=['POST'])
 def assign_to_team(id):
-    student = Student.get_by_id(id)
     team_id = request.form['add-to-team']
     student.assign_team(team_id)
     return redirect('student')
@@ -115,6 +123,23 @@ def delete_student(id):
     to_delete = Student.get_by_id(id)
     to_delete.delete()
     return redirect('/student')
+
+
+@app.route('/student/<id>/grades', methods=['GET'])
+def student_grades(id):
+    submissions = Submission.get_by_user_id(id)
+    assignment_ids = []
+    for submission in submissions:
+        assignment_ids.append(str(submission.assignment_id))
+    assignments = Assignment.get_by_ids(assignment_ids)
+    assignments = {assignment.id_: assignment for assignment in assignments}
+    return render_template('grades.html', submissions=submissions, assignments=assignments)
+
+
+@app.route('/student/<id>/attendance')
+def student_attendance(id):
+    attendances = Attendance.get_by_id(id)
+    return render_template('view_attendance.html', attendances=attendances)
 
 
 @app.route('/mentor')
@@ -184,13 +209,26 @@ def teams_create():
         return redirect(url_for('teams'))
 
 
-@app.route('/attendance', methods=['GET', 'POST'])
+@app.route('/attendance')
 def attendance_list():
     students = Student.get_all(Student.role)
-    if request.method == 'GET':
-        return render_template('attendance_view.html', students = students)
+    return render_template('attendance_view.html', students=students)
+
+
+@app.route('/attendance', methods=['POST'])
+def attendance_listpost():
+    date_now = stime("%d-%m-%Y")
     if request.method == 'POST':
-        pass
+        to_parse = request.form
+        data = dict(to_parse)
+        print(data)
+        for key, value in data.items():
+            if "present" in value:
+                attendance = Attendance(key, date_now, 1)
+            else:
+                attendance = Attendance(key, date_now, 0)
+            attendance.add()
+        return redirect(url_for('attendance_list'))
 
 
 @app.route('/checkpoint', methods=['GET'])
@@ -214,4 +252,4 @@ def checkpoint_add():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=DEBUG)

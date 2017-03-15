@@ -1,7 +1,6 @@
 from .database import Database
 
 
-
 class Assignment:
     """Holds assignments, created by mentors"""
 
@@ -43,6 +42,17 @@ class Assignment:
         Returns:
             Assignment: Assignment object with a given id
         """
-        con,cur = Database.db_connect()
+        con, cur = Database.db_connect()
         assignment = cur.execute("SELECT * FROM `ASSIGNMENTS`WHERE ID = ?", (id,)).fetchone()
         return Assignment(*assignment)
+
+    @staticmethod
+    def get_by_ids(id_list):
+        assignment_list = []
+        con, cur = Database.db_connect()
+        ids = ", ".join(id_list)
+        query = "SELECT * FROM `ASSIGNMENTS` WHERE ID IN ({})".format(ids)
+        assignments = cur.execute(query).fetchall()
+        for assignment in assignments:
+            assignment_list.append(Assignment(*assignment))
+        return assignment_list
