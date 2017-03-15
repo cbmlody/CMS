@@ -4,6 +4,8 @@ from models.submission import Submission
 from models.student import Student
 from models.mentor import Mentor
 from models.teams import Team
+from models.attendance import Attendance
+from time import strftime as stime
 
 
 
@@ -170,11 +172,21 @@ def teams_create():
 
 @app.route('/attendance', methods=['GET', 'POST'])
 def attendance_list():
+    date_now = stime("%d-%m-%Y")
     students = Student.get_all(3)
     if request.method == 'GET':
         return render_template('attendance_view.html', students = students)
     if request.method == 'POST':
-        pass
+        to_parse = request.form
+        data = dict(to_parse)
+        print(data)
+        for key, value in data.items():
+            if "present" in value:
+                attendance = Attendance(key,date_now,1)
+            else:
+                attendance = Attendance(key,date_now,0)
+            attendance.add()
+        return redirect(url_for('attendance_list'))
 
 if __name__ == "__main__":
     app.run(debug=True)
