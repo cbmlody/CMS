@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for
 from time import strftime as stime
-from models import Assignment, Submission, Team, Student, Mentor, Checkpoint, Attendance
+from models import Assignment, Submission, Team, Student, Mentor, Attendance
 
 
 app = Flask(__name__)
