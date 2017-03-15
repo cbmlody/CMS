@@ -1,6 +1,15 @@
+import sys
 from flask import Flask, render_template, request, redirect, url_for
 from time import strftime as stime
-from models import Assignment, Submission, Team, Student, Mentor, Attendance, Checkpoint
+from models import Assignment, Submission, Team, Student, Mentor, Attendance, Checkpoint, Database
+
+
+# GLOBAL SETTINGS
+DEBUG = False
+if "--debug" in sys.argv:
+    DEBUG = True
+elif "--init" in sys.argv:
+    Database.import_sql()
 
 
 app = Flask(__name__)
@@ -25,7 +34,7 @@ def login():
 @app.route('/assignment')
 def assignment():
     assignments_list = Assignment.get_all()
-    return render_template('assignment_list.html', assignments = assignments_list)
+    return render_template('assignment_list.html', assignments=assignments_list)
 
 
 @app.route('/assignment/<assignment_id>/submit', methods=['GET', 'POST'])
@@ -130,7 +139,7 @@ def student_grades(id):
 @app.route('/student/<id>/attendance')
 def student_attendance(id):
     attendances = Attendance.get_by_id(id)
-    return render_template('view_attendance.html')
+    return render_template('view_attendance.html', attendances=attendances)
 
 
 @app.route('/mentor')
@@ -203,8 +212,7 @@ def teams_create():
 @app.route('/attendance')
 def attendance_list():
     students = Student.get_all(Student.role)
-    if request.method == 'GET':
-        return render_template('attendance_view.html', students = students)
+    return render_template('attendance_view.html', students=students)
 
 
 @app.route('/attendance', methods=['POST'])
@@ -216,9 +224,9 @@ def attendance_listpost():
         print(data)
         for key, value in data.items():
             if "present" in value:
-                attendance = Attendance(key,date_now,1)
+                attendance = Attendance(key, date_now, 1)
             else:
-                attendance = Attendance(key,date_now,0)
+                attendance = Attendance(key, date_now, 0)
             attendance.add()
         return redirect(url_for('attendance_list'))
 
@@ -236,4 +244,4 @@ def checkpoint_add():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=DEBUG)
