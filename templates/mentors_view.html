@@ -1,49 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>CCMS</title>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-</head>
-<body>
-<div class="container">
-    <aside id="sidebar">
-        <header class="user_info">
-            <div id="bar">You're logged in as:
-                <img src="images/default_user_img.png" alt="person">
-            </div>
-            <section>
-                <div>
-                    <p class="fullname">Jerzy</p>
-                    <p><a href="change_password.html">Change password</a></p>
-                    <p><a href="index.html">Logout</a></p>
-                </div>
-            </section>
-        </header>
-        <nav>
-            <h3>Student</h3>
-            <ul>
-                <li><a href="students_view.html">List</a></li>
-                <li><a href="attendance_view.html">Attendance</a></li>
-                <li><a href="teams_view.html">Teams</a></li>
-                <li><a href="checkpoints_view.html">Checkpoints</a></li>
-            </ul>
-            <h3>Mentor</h3>
-            <ul>
-                <li><a href="mentors_view.html">List</a></li>
-            </ul>
-            <h3>Assignment</h3>
-            <ul>
-                <li><a href="assignment_list.html">List</a></li>
-                <li><a href="submissions_list.html">Submissions</a></li>
-            </ul>
-        </nav>
-    </aside>
-    <div class="content">
+{% extends 'main.html' %}
+{% block content %}
         <header>
             <h3>Mentors list</h3>
-            <a href="student_mentor_form.html"><input type="submit" value="ADD"></a>
+                <a href="{{ url_for('mentor_new') }}">ADD</a>
         </header>
         <div class="data">
             <table>
@@ -54,24 +13,13 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
+                {% for mentor in mentors %}
                 <tr>
-                    <td>rafal</td>
-                    <td>Rafał Stępień</td>
-                    <td><a href="#">Remove</a></td>
+                    <td>{{mentor.login}}</td>
+                    <td>{{mentor.full_name}}</td>
+                    <td><a href="/mentor/{{ mentor.id_}}/delete">Remove</a></td>
                 </tr>
-                <tr>
-                    <td>mateusz</td>
-                    <td>Mateusz Ostafil</td>
-                    <td><a href="#">Remove</a></td>
-                </tr>
-                <tr>
-                    <td>przemek</td>
-                    <td>Przemysław Ciąćka</td>
-                    <td><a href="#">Remove</a></td>
-                </tr>
+                {% endfor %}
             </table>
         </div>
-    </div>
-</div>
-</body>
-</html>
+{% endblock %}

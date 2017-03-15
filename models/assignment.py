@@ -1,6 +1,7 @@
 from .database import Database
 
 
+
 class Assignment:
     """Holds assignments, created by mentors"""
 

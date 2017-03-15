@@ -1,58 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>CCMS</title>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
-</head>
-<body>
-<div class="container">
-    <aside id="sidebar">
-        <header class="user_info">
-            <div id="bar">You're logged in as:
-                <img src="images/default_user_img.png" alt="person">
-            </div>
-            <section>
-                <div>
-                    <p class="fullname">Jerzy</p>
-                    <p><a href="change_password.html">Change password</a></p>
-                    <p><a href="index.html">Logout</a></p>
-                </div>
-            </section>
-        </header>
-        <nav>
-            <h3>Student</h3>
-            <ul>
-                <li><a href="students_view.html">List</a></li>
-                <li><a href="attendance_view.html">Attendance</a></li>
-                <li><a href="teams_view.html">Teams</a></li>
-                <li><a href="checkpoints_view.html">Checkpoints</a></li>
-            </ul>
-            <h3>Mentor</h3>
-            <ul>
-                <li><a href="mentors_view.html">List</a></li>
-            </ul>
-            <h3>Assignment</h3>
-            <ul>
-                <li><a href="assignment_list.html">List</a></li>
-                <li><a href="submissions_list.html">Submissions</a></li>
-            </ul>
-        </nav>
-    </aside>
-    <div class="content">
+{% extends 'main.html' %}
+{% block content %}
         <header>
             <h3>New team</h3>
         </header>
         <div class="data">
             <div class="form_wrapper">
-                <form class="form">
+                <form class="form" method="POST" action="{{ url_for('teams_create') }}">
                     <input type="text" name="team_name" placeholder="Insert team name">
                     <input class='button' type="submit" name="submit" value="Submit">
+                    {% if error %}
+                        <h3 class="error" style="color: red;">{{ error }}</h3>
+                    {% endif %}
                 </form>
             </div>
         </div>
-    </div>
-</div>
-</body>
-</html>
+{% endblock %}

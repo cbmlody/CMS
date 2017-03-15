@@ -1,1 +1,1 @@
-# python-ccms-kodozercy
+# Python CCmS - using Flask

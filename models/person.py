@@ -1,5 +1,5 @@
 import sqlite3
-from database import Database
+from models.database import Database
 
 
 class Person:
@@ -62,3 +62,13 @@ class Person:
             conn.commit()
         finally:
             conn.close()
+
+
+    @classmethod
+    def get_by_id(cls, id):
+        conn, cur = Database.db_connect()
+        user = cur.execute("SELECT * FROM `USERS` WHERE ID = ?", (id,)).fetchone()
+        return cls(*user)
+
+
+
