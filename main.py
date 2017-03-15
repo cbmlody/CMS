@@ -59,7 +59,7 @@ def submissions():
     submissions =[]
     for submission in submission_list:
         submissions.append(Submission.get_table_info(submission))
-    return render_template('submissions_list.html', submissions = submissions)
+    return render_template('submissions_list.html', submissions=submissions)
 
 
 @app.route('/submissions/<submission_id>/grade')
@@ -115,6 +115,18 @@ def delete_student(id):
     to_delete = Student.get_by_id(id)
     to_delete.delete()
     return redirect('/student')
+
+
+@app.route('/student/<id>/grades')
+def student_grades(id):
+    student = Student.get_by_id(id)
+    submissions = Submission.get_by_user_id(id)
+    assignment_ids = []
+    for submission in submissions:
+        assignment_ids.append(str(submission.assignment_id))
+    assignments = Assignment.get_by_ids(assignment_ids)
+    assignments = {assignment.id_: assignment for assignment in assignments}
+    return render_template('grades.html', submissions=submissions, student=student, assignments=assignments)
 
 
 @app.route('/mentor')
@@ -188,7 +200,7 @@ def teams_create():
 def attendance_list():
     students = Student.get_all(Student.role)
     if request.method == 'GET':
-        return render_template('attendance_view.html', students = students)
+        return render_template('attendance_view.html', students=students)
     if request.method == 'POST':
         pass
 
