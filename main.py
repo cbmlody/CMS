@@ -17,6 +17,8 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 
+
+
 # ------------------------------------------LOGIN PAGE SIDE----------------------------------------------------#
 
 def security(f):
@@ -357,6 +359,11 @@ def checkpoint_add():
         else:
             Checkpoint.update_user_card('red', key)
     return redirect(url_for('student'))
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 
 if __name__ == "__main__":
