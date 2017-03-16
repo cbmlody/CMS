@@ -267,10 +267,20 @@ def delete_mentor(id):
     return redirect('/mentor')
 
 
-@app.route('/change_password', methods=['GET'])
+@app.route('/change_password', methods=['GET', 'POST'])
 @security
 def change_password():
-    return render_template('change_password.html')
+    if request.method == 'GET':
+        return render_template('change_password.html')
+    else:
+        password = request.form['password']
+        repeat_pass = request.form['rpassword']
+        user = inject_user()
+        user_obj = None
+        for key, value in user.items():
+            user_obj = value
+        change_pass = user_obj.change_password(password, repeat_pass)
+        return render_template('change_password.html', change_pass=change_pass)
 
 
 @app.route('/teams')
