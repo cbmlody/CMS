@@ -46,7 +46,12 @@ class Submission:
         con, cur = Database.db_connect()
         submission_date = str(datetime.today())
         try:
-            con.execute("INSERT INTO `SUBMISSIONS` (user_ID, submission_date, content, grade, assignment_ID,team_ID) VALUES (?,?,?,?,?,?)", (user_id, submission_date, project, None, assignment_id, team_id,))
+            cur.execute(
+                "INSERT OR IGNORE INTO `SUBMISSIONS` (user_ID, submission_date, content, grade, assignment_ID,team_ID) VALUES (?,?,?,?,?,?)",
+                (user_id, submission_date, project, None, assignment_id, team_id,))
+            cur.execute(
+                "UPDATE `SUBMISSIONS` SET user_ID =? , submission_date = ?, content =?, grade =?, assignment_ID =?, team_ID =? WHERE user_ID = ? AND assignment_id =?",
+                (user_id, submission_date, project, None, assignment_id, team_id, user_id, assignment_id))
             con.commit()
         except Exception:
             return "Record already exists"
