@@ -4,7 +4,9 @@
 
         <header>
             <h3>Assignments</h3>
+            {% if user.role_id == 1 %}
             <a href="{{ url_for('add_assignment') }}">ADD</a>
+            {% endif %}
         </header>
         <div class="data">
             <div class="rolltable">
@@ -13,17 +15,20 @@
                     <th>Title</th>
                     <th>Due date</th>
                     <th>Max points</th>
+                    {% if user.role_id == 3 %}
                     <th>Submit assignment</th>
+                    {% endif %}
                     </thead>
                     {%for assignment in assignments%}
                     <tr>
                         <td>{{assignment.title}}</td>
                         <td>{{assignment.due_date}}</td>
                         <td>{{assignment.max_points}}</td>
+                        {% if user.role_id == 3 %}
                         <td>
                             <a href="assignment/{{assignment.id_}}/submit">Submit</a>
-
                         </td>
+                        {% endif %}
                     </tr>
                     {%endfor%}
                 </table>
