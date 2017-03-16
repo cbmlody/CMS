@@ -59,7 +59,7 @@ class Person:
         conn, cur = Database.db_connect()
         error = None
         try:
-            if password == repeat_password:
+            if password == repeat_password and len(password) != 0 and len(repeat_password) != 0:
                 cur.execute("UPDATE `USERS` SET password=? WHERE login=?", (password, self.login))
                 error = "Password successfully changed!"
                 conn.commit()
