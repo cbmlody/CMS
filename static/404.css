@@ -16,7 +16,7 @@ body {
     margin: 2em auto;
     background-image: url('404.jpg');
     background-position: center;
-    background-size: 1920px 1080px;
+    background-size: cover;
     background-repeat: no-repeat;
 }
 h1 {
