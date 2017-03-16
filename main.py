@@ -8,7 +8,7 @@ from models import Assignment, Submission, Team, Student, Mentor, Attendance, Ch
 DEBUG = False
 if "--debug" in sys.argv:
     DEBUG = True
-elif "--init" in sys.argv:
+if "--init" in sys.argv:
     Database.import_sql()
 
 
