@@ -40,5 +40,5 @@ Run with debug mode:
 ```
 python3 main.py --debug
 ```
-In all modes the next step is:
+In all modes the next step is:    
 Open web-browser and navigate to [http://localhost:5000](http://localhost:5000)
