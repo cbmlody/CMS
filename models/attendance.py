@@ -14,7 +14,7 @@ class Attendance:
         conn, cur = Database.db_connect()
         try:
             cur.execute("INSERT OR IGNORE INTO `ATTENDANCES` VALUES (?,?,?)", (self.id_, self.date, self.status))
-            cur.execute("UPDATE `ATTENDANCES` SET status=(?) WHERE user_ID = (?)",(self.status, self.id_))
+            cur.execute("UPDATE `ATTENDANCES` SET status=(?) WHERE user_ID = (?)", (self.status, self.id_))
             conn.commit()
         except Exception:
             return "Record already exists"

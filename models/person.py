@@ -1,6 +1,5 @@
 import sqlite3
 from models.database import Database
-from time import strftime as stime
 
 
 class Person:
@@ -64,12 +63,15 @@ class Person:
         finally:
             conn.close()
 
-
     @classmethod
     def get_by_id(cls, id):
         conn, cur = Database.db_connect()
         user = cur.execute("SELECT * FROM `USERS` WHERE ID = ?", (id,)).fetchone()
         return cls(*user)
 
-
+    @classmethod
+    def get_by_login(cls, login):
+        conn, cur = Database.db_connect()
+        user = cur.execute("SELECT * FROM `USERS` WHERE login=(?)", (login,)).fetchone()
+        return cls(*user)
 
