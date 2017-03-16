@@ -47,7 +47,11 @@ def index():
                 return redirect(url_for('protected'))
         error = "Wrong username or password!"
         return render_template('index.html', error=error)
-    return render_template('index.html')
+    if request.method == 'GET':
+        if not g.user:
+            return render_template('index.html')
+        else:
+            return redirect('/main')
 
 
 @app.route('/protected')
