@@ -2,7 +2,9 @@
 {% block content %}
         <header>
             <h3>Students list</h3>
-            <a href="{{ url_for('student_new') }}">ADD</a>
+            {% if user.role_id < 2 %}
+                <a href="{{ url_for('student_new') }}">ADD</a>
+            {% endif %}
         </header>
         <div class="data">
             <table>
