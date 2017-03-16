@@ -25,10 +25,14 @@
             <h3>Student</h3>
             <ul>
                 <li><a href="{{ url_for('student') }}">List</a></li>
-                {% if user.role_id < 3 %}
-                <li><a href="{{ url_for('attendance_list')}}">Attendance</a></li>
+                {% if user.role_id < 4 %}
+                    {% if user.role_id < 3 %}
+                        <li><a href="{{ url_for('attendance_list')}}">Attendance</a></li>
+                    {% endif %}
                 <li><a href="{{ url_for('teams') }}">Teams</a></li>
-                <li><a href="{{ url_for('checkpoint') }}">Checkpoints</a></li>
+                    {% if user.role_id < 3 %}
+                        <li><a href="{{ url_for('checkpoint') }}">Checkpoints</a></li>
+                    {% endif %}
                 {% endif %}
             </ul>
             <h3>Mentor</h3>
