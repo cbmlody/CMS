@@ -24,9 +24,8 @@
         <nav>
             <h3>Student</h3>
             <ul>
-                {% if user.role_id == 3 %}
                 <li><a href="{{ url_for('student') }}">List</a></li>
-                    {% elif user.role_id < 3 %}
+                {% if user.role_id < 3 %}
                 <li><a href="{{ url_for('attendance_list')}}">Attendance</a></li>
                 <li><a href="{{ url_for('teams') }}">Teams</a></li>
                 <li><a href="{{ url_for('checkpoint') }}">Checkpoints</a></li>

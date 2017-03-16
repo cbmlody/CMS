@@ -18,7 +18,7 @@
                 </thead>
                 {% for student in students %}
                 <tr>
-                    {% if user.login == student.login %}
+                    {% if user.role_id < 3 or user.login == student.login %}
                         <td>{{ student.login }}</td>
                         <td>{{ student.full_name }}</td>
                         <td>{{ student.get_team_name() }}</td>
