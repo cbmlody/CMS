@@ -1,6 +1,5 @@
 import sqlite3
 from models.database import Database
-from time import strftime as stime
 
 
 class Person:
@@ -56,14 +55,19 @@ class Person:
         finally:
             conn.close()
 
-    def change_password(self, new_pass):
+    def change_password(self, password, repeat_password):
         conn, cur = Database.db_connect()
+        error = None
         try:
-            cur.execute("UPDATE `USERS` SET password=? WHERE login=?", (new_pass, self.login))
-            conn.commit()
+            if password == repeat_password and len(password) != 0 and len(repeat_password) != 0:
+                cur.execute("UPDATE `USERS` SET password=? WHERE login=?", (password, self.login))
+                error = "Password successfully changed!"
+                conn.commit()
+            else:
+                error = "Passwords don't match!"
         finally:
             conn.close()
-
+        return error
 
     @classmethod
     def get_by_id(cls, id):
@@ -71,5 +75,9 @@ class Person:
         user = cur.execute("SELECT * FROM `USERS` WHERE ID = ?", (id,)).fetchone()
         return cls(*user)
 
-
+    @classmethod
+    def get_by_login(cls, login):
+        conn, cur = Database.db_connect()
+        user = cur.execute("SELECT * FROM `USERS` WHERE login=(?)", (login,)).fetchone()
+        return cls(*user)
 
