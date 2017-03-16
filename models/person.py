@@ -55,13 +55,19 @@ class Person:
         finally:
             conn.close()
 
-    def change_password(self, new_pass):
+    def change_password(self, password, repeat_password):
         conn, cur = Database.db_connect()
+        error = None
         try:
-            cur.execute("UPDATE `USERS` SET password=? WHERE login=?", (new_pass, self.login))
-            conn.commit()
+            if password == repeat_password:
+                cur.execute("UPDATE `USERS` SET password=? WHERE login=?", (password, self.login))
+                error = "Password successfully changed!"
+                conn.commit()
+            else:
+                error = "Passwords don't match!"
         finally:
             conn.close()
+        return error
 
     @classmethod
     def get_by_id(cls, id):
