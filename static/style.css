@@ -328,6 +328,10 @@ tr:nth-child(odd) { background-color: #fff; }
     box-shadow: 2px 2px 6px darkgrey, 2px 2px 8px grey;
 }
 
+.form-wrapper h3 {
+    color: red;
+}
+
 /* team form */
 
 .team-form {
