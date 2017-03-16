@@ -220,6 +220,8 @@ def student_grades(id):
         assignment_ids.append(str(submission.assignment_id))
     assignments = Assignment.get_by_ids(assignment_ids)
     assignments = {assignment.id_: assignment for assignment in assignments}
+    if (g.user.role_id == 3 and g.user.id_ != int(id)):
+        return redirect('/main')
     return render_template('grades.html', submissions=submissions, assignments=assignments)
 
 
@@ -227,6 +229,8 @@ def student_grades(id):
 @security
 def student_attendance(id):
     attendances = Attendance.get_by_id(id)
+    if (g.user.role_id == 3 and g.user.id_ != int(id)):
+        return redirect('/main')
     return render_template('view_attendance.html', attendances=attendances)
 
 
