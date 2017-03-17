@@ -42,6 +42,9 @@ class Person:
         conn, cur = Database.db_connect()
         try:
             cur.execute("DELETE FROM `USERS` WHERE login=?", (self.login,))
+            cur.execute("DELETE FROM `ATTENDANCES` WHERE user_ID=?",(self.id_,))
+            cur.execute("DELETE FROM `CHECKPOINTS` WHERE user_ID=?",(self.id_,))
+            cur.execute("DELETE FROM `SUBMISSIONS` WHERE user_ID=?",(self.id_,))
             conn.commit()
         finally:
             conn.close()
