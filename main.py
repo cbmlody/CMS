@@ -47,7 +47,11 @@ def index():
                 return redirect(url_for('protected'))
         error = "Wrong username or password!"
         return render_template('index.html', error=error)
-    return render_template('index.html')
+    if request.method == 'GET':
+        if not g.user:
+            return render_template('index.html')
+        else:
+            return redirect('/main')
 
 
 @app.route('/protected')
@@ -208,9 +212,12 @@ def assign_to_team(id):
 @app.route('/student/<id>/delete')
 @security
 def delete_student(id):
-    to_delete = Student.get_by_id(id)
-    to_delete.delete()
-    return redirect('/student')
+    if g.user.role_id == 3:
+        return redirect('/main')
+    else:
+        to_delete = Student.get_by_id(id)
+        to_delete.delete()
+        return redirect('/student')
 
 
 @app.route('/student/<id>/grades', methods=['GET'])
@@ -222,6 +229,8 @@ def student_grades(id):
         assignment_ids.append(str(submission.assignment_id))
     assignments = Assignment.get_by_ids(assignment_ids)
     assignments = {assignment.id_: assignment for assignment in assignments}
+    if (g.user.role_id == 3 and g.user.id_ != int(id)):
+        return redirect('/main')
     return render_template('grades.html', submissions=submissions, assignments=assignments)
 
 
@@ -229,6 +238,8 @@ def student_grades(id):
 @security
 def student_attendance(id):
     attendances = Attendance.get_by_id(id)
+    if (g.user.role_id == 3 and g.user.id_ != int(id)):
+        return redirect('/main')
     return render_template('view_attendance.html', attendances=attendances)
 
 
@@ -243,7 +254,10 @@ def mentor():
 @security
 def mentor_new():
     url = url_for('mentor_new')
-    return render_template('student_mentor_form.html', form_url=url)
+    if g.user.role_id == 0:
+        return render_template('student_mentor_form.html', form_url=url)
+    else:
+        return redirect('/main')
 
 
 @app.route('/mentor/add', methods=['POST'])
@@ -266,9 +280,12 @@ def mentor_create():
 @app.route('/mentor/<id>/delete')
 @security
 def delete_mentor(id):
-    to_delete = Mentor.get_by_id(id)
-    to_delete.delete()
-    return redirect('/mentor')
+    if g.user.role_id == 0:
+        to_delete = Mentor.get_by_id(id)
+        to_delete.delete()
+        return redirect('/mentor')
+    else:
+        redirect('/main')
 
 
 @app.route('/change_password', methods=['GET', 'POST'])
@@ -297,7 +314,11 @@ def teams():
 @app.route('/teams/add', methods=['GET'])
 @security
 def teams_new():
-    return render_template('team_add_form.html')
+    if g.user.role_id == 3:
+        return redirect('/main')
+    else:
+
+        return render_template('team_add_form.html')
 
 
 @app.route('/teams/add', methods=['POST'])
@@ -320,8 +341,11 @@ def teams_create():
 @app.route('/attendance')
 @security
 def attendance_list():
-    students = Student.get_all(Student.role)
-    return render_template('attendance_view.html', students=students)
+    if g.user.role_id == 3:
+        return redirect('/main')
+    else:
+        students = Student.get_all(Student.role)
+        return render_template('attendance_view.html', students=students)
 
 
 @app.route('/attendance', methods=['POST'])
@@ -344,8 +368,11 @@ def attendance_listpost():
 @app.route('/checkpoint', methods=['GET'])
 @security
 def checkpoint():
-    students = Student.get_all(3)
-    return render_template('checkpoints_view.html', students=students)
+    if not g.user.role_id == 3:
+        students = Student.get_all(3)
+        return render_template('checkpoints_view.html', students=students)
+    else:
+        return redirect('/main')
 
 
 @app.route('/checkpoint/add', methods=['POST'])
