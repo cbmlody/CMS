@@ -112,15 +112,14 @@ def assignment():
 @security
 def submit(assignment_id):
     if request.method == "POST":
-        user_id = 1
         assignment = Assignment.get_by_id(assignment_id)
         if assignment.as_team:
-            team_id = 1
+            team_id = g.user.team_id
         else:
             team_id = None
-        Submission.save(user_id, request.form['link'], assignment.id_, team_id)
+        Submission.save(g.user.id_, request.form['link'], assignment.id_, team_id)
         return redirect('/assignment')
-    return render_template('submit_ass.html')
+    return render_template('submit_ass.html', assignment_id=assignment_id)
 
 
 @app.route('/assignment/add', methods=['GET', 'POST'])
@@ -139,7 +138,10 @@ def add_assignment():
 @app.route('/submissions')
 @security
 def submissions():
-    submission_list = Submission.get_all()
+    if g.user.role_id < 3:
+        submission_list = Submission.get_all()
+    else:
+        submission_list = Submission.get_by_user_id(g.user.id_)
     submissions = []
     for submission in submission_list:
         submissions.append(Submission.get_table_info(submission))
