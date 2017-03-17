@@ -249,7 +249,7 @@ def student_grades(id):
     assignments = Assignment.get_by_ids(assignment_ids)
     assignments = {assignment.id_: assignment for assignment in assignments}
     if (g.user.role_id == 3 and g.user.id_ != int(id)):
-        return redirect('/main')
+        return redirect(page_not_found)
     return render_template('grades.html', submissions=submissions, assignments=assignments)
 
 
@@ -259,7 +259,7 @@ def student_attendance(id):
     """Returns a page with a certain student's attendance history"""
     attendances = Attendance.get_by_id(id)
     if (g.user.role_id == 3 and g.user.id_ != int(id)):
-        return redirect('/main')
+        return redirect(page_not_found)
     return render_template('view_attendance.html', attendances=attendances)
 
 
