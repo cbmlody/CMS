@@ -24,6 +24,7 @@ Check that you have installed following:
 
 * Python >= 3.5
 * [PIP](https://pypi.python.org/pypi)
+* Flask
 
 
 ----------------------------------------------------
