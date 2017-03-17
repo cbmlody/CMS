@@ -320,7 +320,6 @@ def teams_new():
     if g.user.role_id == 3:
         return redirect('/main')
     else:
-
         return render_template('team_add_form.html')
 
 
