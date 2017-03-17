@@ -31,6 +31,8 @@ INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VAL
 INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (5,'mateusz','1234','Mateusz Ostafil',1,NULL);
 INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (6,'endriu','1234','Andrzej Abdcd',3,1);
 INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (7,'tomi','1234','Tomasz Kowal',3,NULL);
+INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (8,'przemek','1234','Przemek Ciąćka',1,NULL);
+INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (9,'rafalopial','1234','Rafał Opiał',1,NULL);
 
 INSERT INTO `TEAMS`(`ID`,`name`) VALUES (1,'Podgrzybek');
 
