@@ -11,6 +11,7 @@ class Attendance:
         self.status = status
 
     def add(self):
+        """Adds roll to database"""
         conn, cur = Database.db_connect()
         try:
             cur.execute("INSERT OR IGNORE INTO `ATTENDANCES` VALUES (?,?,?)", (self.id_, self.date, self.status))
@@ -23,6 +24,7 @@ class Attendance:
 
     @staticmethod
     def get_all():
+        """Gets list of attendance"""
         attendance_list = []
         conn, cur = Database.db_connect()
         try:
@@ -35,6 +37,7 @@ class Attendance:
 
     @staticmethod
     def get_by_id(student_id):
+        """Gets certain student's attendance"""
         attendance_list = []
         conn, cur = Database.db_connect()
         try:

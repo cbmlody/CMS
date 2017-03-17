@@ -15,6 +15,7 @@ class Assignment:
 
     @classmethod
     def get_all(cls):
+        """Returns list of assignments"""
         assignments = []
         conn, cur = Database.db_connect()
         assignments_list = cur.execute("SELECT * FROM `ASSIGNMENTS`").fetchall()
@@ -24,6 +25,7 @@ class Assignment:
 
     @staticmethod
     def add(title, due_date, max_points, as_team):
+        """Adds assignment to database"""
         conn, cur = Database.db_connect()
         try:
             cur.execute("INSERT INTO `ASSIGNMENTS` (title, due_date, max_points, as_team) VALUES (?,?,?,?)",
@@ -48,6 +50,7 @@ class Assignment:
 
     @staticmethod
     def get_by_ids(id_list):
+        """Gets list of assignments with certain ids"""
         assignment_list = []
         con, cur = Database.db_connect()
         ids = ", ".join(id_list)

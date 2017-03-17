@@ -17,6 +17,7 @@ class Database:
 
     @classmethod
     def db_connect(cls):
+        """Connects to database"""
         con = sql.connect('static/database.db')
         cur = con.cursor()
         return con, cur

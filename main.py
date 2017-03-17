@@ -12,27 +12,28 @@ if "--debug" in sys.argv:
 if "--init" in sys.argv:
     Database.import_sql()
 
-
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-
-
 
 
 # ------------------------------------------LOGIN PAGE SIDE----------------------------------------------------#
 
 def security(f):
+    """Creates a security decorator checking session"""
+
     @wraps(f)
     def decorated(*args, **kwargs):
         if session.get('username'):
             return f(*args, **kwargs)
         else:
             return redirect(url_for('index'))
+
     return decorated
 
 
 @app.context_processor
 def inject_user():
+    """Returns object of current user"""
     return dict(user=g.user)
 
 
@@ -90,11 +91,13 @@ def logout():
     """Method is used to logout user, it uses /dropsession method"""
     return redirect(url_for('dropsession'))
 
+
 # --------------------------------------------- CONTENT --------------------
 
 
 @app.route('/main', methods=['GET', 'POST'])
 def main():
+    """For logged user returns main page, otherwise redirects to login"""
     if g.user:
         return render_template('main.html')
     return render_template('index.html')
@@ -102,12 +105,14 @@ def main():
 
 @app.route('/login')
 def login():
+    """Allows user to log in"""
     return render_template('index.html')
 
 
 @app.route('/assignment')
 @security
 def assignment():
+    """Returns a page with list of assignments"""
     assignments_list = Assignment.get_all()
     return render_template('assignment_list.html', assignments=assignments_list)
 
@@ -115,6 +120,7 @@ def assignment():
 @app.route('/assignment/<assignment_id>/submit', methods=['GET', 'POST'])
 @security
 def submit(assignment_id):
+    """Allows a student to submit an assignment"""
     if request.method == "POST":
         assignment = Assignment.get_by_id(assignment_id)
         if assignment.as_team:
@@ -129,6 +135,7 @@ def submit(assignment_id):
 @app.route('/assignment/add', methods=['GET', 'POST'])
 @security
 def add_assignment():
+    """Allows mentor to add an assignment"""
     if request.method == "POST":
         if 'as-team' in request.form:
             as_team = 1
@@ -142,6 +149,7 @@ def add_assignment():
 @app.route('/submissions')
 @security
 def submissions():
+    """Returns a page with list of submissions"""
     if g.user.role_id < 3:
         submission_list = Submission.get_all()
     else:
@@ -155,12 +163,14 @@ def submissions():
 @app.route('/submissions/<submission_id>/grade')
 @security
 def grade(submission_id):
+    """Shows a commercial of our premium DLC"""
     return render_template('grade_assignment.html')
 
 
 @app.route('/student')
 @security
 def student():
+    """Returns a page with list of students"""
     students = Student.get_all(Student.role)
     cards = {student.id_: Checkpoint.get_card(student.id_) for student in students}
     return render_template('students_view.html', students=students, cards=cards, user=g.user)
@@ -169,6 +179,7 @@ def student():
 @app.route('/student/add', methods=['GET'])
 @security
 def student_new():
+    """Allows mentor or manager to add new student"""
     url = url_for('student_new')
     if g.user.role_id == 3:
         return redirect('/main')
@@ -179,6 +190,7 @@ def student_new():
 @app.route('/student/add', methods=['POST'])
 @security
 def student_create():
+    """Gets new student's data from add form"""
     url = url_for('student_new')
     role = 3
     fullname = request.form['fullname']
@@ -196,6 +208,7 @@ def student_create():
 @app.route('/student/<id>/teams', methods=['GET'])
 @security
 def add_to_team(id):
+    """Allows mentor to assign student to a certain team"""
     teams = Team.get_all()
     return render_template('add_to_team.html', teams=teams)
 
@@ -203,6 +216,7 @@ def add_to_team(id):
 @app.route('/student/<id>/teams', methods=['POST'])
 @security
 def assign_to_team(id):
+    """Assigns student to a certain team"""
     student = Student.get_by_id(id)
     try:
         team_id = request.form['add-to-team']
@@ -215,6 +229,7 @@ def assign_to_team(id):
 @app.route('/student/<id>/delete')
 @security
 def delete_student(id):
+    """Allows mentor to remove certain student"""
     if g.user.role_id == 3:
         return redirect('/main')
     else:
@@ -226,6 +241,7 @@ def delete_student(id):
 @app.route('/student/<id>/grades', methods=['GET'])
 @security
 def student_grades(id):
+    """Returns a page with certains student's grades"""
     submissions = Submission.get_by_user_id(id)
     assignment_ids = []
     for submission in submissions:
@@ -240,6 +256,7 @@ def student_grades(id):
 @app.route('/student/<id>/attendance')
 @security
 def student_attendance(id):
+    """Returns a page with a certain student's attendance history"""
     attendances = Attendance.get_by_id(id)
     if (g.user.role_id == 3 and g.user.id_ != int(id)):
         return redirect('/main')
@@ -249,6 +266,7 @@ def student_attendance(id):
 @app.route('/mentor')
 @security
 def mentor():
+    """Returns a page with the list of all mentors"""
     mentors = Mentor.get_all(Mentor.role)
     return render_template('mentors_view.html', mentors=mentors)
 
@@ -256,6 +274,7 @@ def mentor():
 @app.route('/mentor/add', methods=['GET'])
 @security
 def mentor_new():
+    """Allows manager to add new mentor"""
     url = url_for('mentor_new')
     if g.user.role_id == 0:
         return render_template('student_mentor_form.html', form_url=url)
@@ -266,6 +285,7 @@ def mentor_new():
 @app.route('/mentor/add', methods=['POST'])
 @security
 def mentor_create():
+    """Gets new mentor's data from a form"""
     url = url_for('mentor_new')
     role = 1
     fullname = request.form['fullname']
@@ -283,6 +303,7 @@ def mentor_create():
 @app.route('/mentor/<id>/delete')
 @security
 def delete_mentor(id):
+    """Allows manager to remove a mentor"""
     if g.user.role_id == 0:
         to_delete = Mentor.get_by_id(id)
         to_delete.delete()
@@ -294,6 +315,7 @@ def delete_mentor(id):
 @app.route('/change_password', methods=['GET', 'POST'])
 @security
 def change_password():
+    """Allows user to change his password"""
     if request.method == 'GET':
         return render_template('change_password.html')
     else:
@@ -310,6 +332,7 @@ def change_password():
 @app.route('/teams')
 @security
 def teams():
+    """Returns a page with list of all teams"""
     teams = Team.get_all()
     return render_template('teams_view.html', teams=teams)
 
@@ -317,6 +340,7 @@ def teams():
 @app.route('/teams/add', methods=['GET'])
 @security
 def teams_new():
+    """Allows mentor to create new team"""
     if g.user.role_id == 3:
         return redirect('/main')
     else:
@@ -326,6 +350,7 @@ def teams_new():
 @app.route('/teams/add', methods=['POST'])
 @security
 def teams_create():
+    """Gets new team data from a form"""
     team_name = request.form['team-name']
     new_team = Team(None, team_name)
     exists = None
@@ -343,6 +368,7 @@ def teams_create():
 @app.route('/attendance')
 @security
 def attendance_list():
+    """Allows mentor to check attendance"""
     if g.user.role_id == 3:
         return redirect('/main')
     else:
@@ -353,6 +379,7 @@ def attendance_list():
 @app.route('/attendance', methods=['POST'])
 @security
 def attendance_listpost():
+    """Gets attendance check data"""
     date_now = stime("%d-%m-%Y")
     if request.method == 'POST':
         to_parse = request.form
@@ -370,6 +397,7 @@ def attendance_listpost():
 @app.route('/checkpoint', methods=['GET'])
 @security
 def checkpoint():
+    """Returns a webpage with list of students, allowing mentor or manager to grade their checkpoints"""
     if not g.user.role_id == 3:
         students = Student.get_all(3)
         return render_template('checkpoints_view.html', students=students)
@@ -380,6 +408,7 @@ def checkpoint():
 @app.route('/checkpoint/add', methods=['POST'])
 @security
 def checkpoint_add():
+    """Gets checkpoints data from form to update students grades"""
     data = request.form
     data = dict(data)
     for key, value in data.items():
@@ -394,6 +423,7 @@ def checkpoint_add():
 
 @app.errorhandler(404)
 def page_not_found(e):
+    """Returns our own not existing page template"""
     return render_template('404.html'), 404
 
 

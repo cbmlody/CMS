@@ -21,6 +21,7 @@ class Submission:
         self.points = points
 
     def get_table_info(self):
+        """Gets data to to display it in table"""
         assignment_title = Assignment.get_by_id(self.assignment_id).title
         full_name = Person.get_by_id(self.user_id).full_name
         date = self.submission_date
@@ -30,6 +31,7 @@ class Submission:
 
     @staticmethod
     def get_by_user_id(user_id):
+        """Returns user submitting an assignment"""
         con, cur = Database.db_connect()
         submissions_list = []
         try:
@@ -60,6 +62,7 @@ class Submission:
 
     @staticmethod
     def get_all():
+        """Returns list of submissions"""
         submissions = []
         conn, cur = Database.db_connect()
         submission_list = cur.execute("SELECT * FROM `SUBMISSIONS`")

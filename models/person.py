@@ -3,6 +3,7 @@ from models.database import Database
 
 
 class Person:
+    """Abstract class holding all users"""
 
     def __init__(self, id_, login, password, full_name, role_id, team_id):
 
@@ -15,6 +16,7 @@ class Person:
 
     @classmethod
     def get_all(cls, role=None):
+        """Gets list of all users"""
         conn, cur = Database.db_connect()
         query = "SELECT * FROM `USERS`"
         values = ()
@@ -28,6 +30,7 @@ class Person:
         return user_list
 
     def add(self):
+        """Adds new user to database"""
         conn, cur = Database.db_connect()
         try:
             cur.execute("INSERT INTO `USERS`(login,password,full_name,role_id,team_id) VALUES(?,?,?,?,?)",
@@ -39,17 +42,19 @@ class Person:
             conn.close()
 
     def delete(self):
+        """Removes certain user from database"""
         conn, cur = Database.db_connect()
         try:
             cur.execute("DELETE FROM `USERS` WHERE login=?", (self.login,))
-            cur.execute("DELETE FROM `ATTENDANCES` WHERE user_ID=?",(self.id_,))
-            cur.execute("DELETE FROM `CHECKPOINTS` WHERE user_ID=?",(self.id_,))
-            cur.execute("DELETE FROM `SUBMISSIONS` WHERE user_ID=?",(self.id_,))
+            cur.execute("DELETE FROM `ATTENDANCES` WHERE user_ID=?", (self.id_,))
+            cur.execute("DELETE FROM `CHECKPOINTS` WHERE user_ID=?", (self.id_,))
+            cur.execute("DELETE FROM `SUBMISSIONS` WHERE user_ID=?", (self.id_,))
             conn.commit()
         finally:
             conn.close()
 
     def update(self):
+        """Updates user data"""
         conn, cur = Database.db_connect()
         try:
             cur.execute("UPDATE `USERS` SET password=?, full_name=?, role_id=?, team_id=? WHERE login=?",
@@ -59,6 +64,7 @@ class Person:
             conn.close()
 
     def change_password(self, password, repeat_password):
+        """Changes users password"""
         conn, cur = Database.db_connect()
         error = None
         try:
@@ -74,13 +80,14 @@ class Person:
 
     @classmethod
     def get_by_id(cls, id):
+        """Gets user object by id"""
         conn, cur = Database.db_connect()
         user = cur.execute("SELECT * FROM `USERS` WHERE ID = ?", (id,)).fetchone()
         return cls(*user)
 
     @classmethod
     def get_by_login(cls, login):
+        """Gets user object by login"""
         conn, cur = Database.db_connect()
         user = cur.execute("SELECT * FROM `USERS` WHERE login=(?)", (login,)).fetchone()
         return cls(*user)
-
