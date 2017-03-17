@@ -170,7 +170,10 @@ def student():
 @security
 def student_new():
     url = url_for('student_new')
-    return render_template('student_mentor_form.html', form_url=url)
+    if g.user.role_id == 3:
+        return redirect('/main')
+    else:
+        return render_template('student_mentor_form.html', form_url=url)
 
 
 @app.route('/student/add', methods=['POST'])
