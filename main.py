@@ -182,7 +182,7 @@ def student_new():
     """Allows mentor or manager to add new student"""
     url = url_for('student_new')
     if g.user.role_id == 3:
-        return redirect('/main')
+        return redirect('error_404')
     else:
         return render_template('student_mentor_form.html', form_url=url)
 
@@ -231,7 +231,7 @@ def assign_to_team(id):
 def delete_student(id):
     """Allows mentor to remove certain student"""
     if g.user.role_id == 3:
-        return redirect('/main')
+        return redirect('error_404')
     else:
         to_delete = Student.get_by_id(id)
         to_delete.delete()
@@ -248,8 +248,8 @@ def student_grades(id):
         assignment_ids.append(str(submission.assignment_id))
     assignments = Assignment.get_by_ids(assignment_ids)
     assignments = {assignment.id_: assignment for assignment in assignments}
-    if (g.user.role_id == 3 and g.user.id_ != int(id)):
-        return redirect(page_not_found)
+    if g.user.role_id == 3 and g.user.id_ != int(id):
+        return redirect('error_404')
     return render_template('grades.html', submissions=submissions, assignments=assignments)
 
 
@@ -259,7 +259,7 @@ def student_attendance(id):
     """Returns a page with a certain student's attendance history"""
     attendances = Attendance.get_by_id(id)
     if (g.user.role_id == 3 and g.user.id_ != int(id)):
-        return redirect(page_not_found)
+        return redirect('error_404')
     return render_template('view_attendance.html', attendances=attendances)
 
 
@@ -279,7 +279,7 @@ def mentor_new():
     if g.user.role_id == 0:
         return render_template('student_mentor_form.html', form_url=url)
     else:
-        return redirect('/main')
+        return redirect('error_404')
 
 
 @app.route('/mentor/add', methods=['POST'])
@@ -309,7 +309,7 @@ def delete_mentor(id):
         to_delete.delete()
         return redirect('/mentor')
     else:
-        redirect('/main')
+        redirect('error_404')
 
 
 @app.route('/change_password', methods=['GET', 'POST'])
@@ -342,7 +342,7 @@ def teams():
 def teams_new():
     """Allows mentor to create new team"""
     if g.user.role_id == 3:
-        return redirect('/main')
+        return redirect('error_404')
     else:
         return render_template('team_add_form.html')
 
@@ -370,7 +370,7 @@ def teams_create():
 def attendance_list():
     """Allows mentor to check attendance"""
     if g.user.role_id == 3:
-        return redirect('/main')
+        return redirect('error_404')
     else:
         students = Student.get_all(Student.role)
         return render_template('attendance_view.html', students=students)
@@ -384,7 +384,6 @@ def attendance_listpost():
     if request.method == 'POST':
         to_parse = request.form
         data = dict(to_parse)
-        print(data)
         for key, value in data.items():
             if "present" in value:
                 attendance = Attendance(key, date_now, 1)
@@ -402,7 +401,7 @@ def checkpoint():
         students = Student.get_all(3)
         return render_template('checkpoints_view.html', students=students)
     else:
-        return redirect('/main')
+        return redirect('error_404')
 
 
 @app.route('/checkpoint/add', methods=['POST'])
@@ -419,6 +418,11 @@ def checkpoint_add():
         else:
             Checkpoint.update_user_card('red', key)
     return redirect(url_for('student'))
+
+
+@app.route('/404')
+def error_404():
+    return render_template('404.html')
 
 
 @app.errorhandler(404)
