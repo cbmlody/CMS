@@ -5,11 +5,11 @@
         </header>
         <div class="form-wrapper">
             <div class="data">
-                    <form method="post" class="form">
+                    <form method="POST" action="/assignment/{{ assignment_id }}/submit" class="form">
                         <input type="text" name="link" placeholder="Provide link to github repo" required>
-                        <input type="submit"  class='button' onclick="play_sound()"  value="Submit">
+                        <input type="submit" class='button' onclick="play_sound()"  value="Submit">
                     </form>
                 </div>
         </div>
-    <script src="js/main.js"></script>
+    <script src="static/main.js"></script>
 {%endblock%}
