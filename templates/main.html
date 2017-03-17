@@ -39,16 +39,18 @@
             <ul>
                 <li><a href="{{ url_for('mentor') }}">List</a></li>
             </ul>
+        {% if user.role_id != 2 %}
             <h3>Assignment</h3>
             <ul>
                 <li><a href="{{ url_for('assignment') }}">List</a></li>
                 <li><a href="{{url_for('submissions')}}">Submissions</a></li>
             </ul>
+        {% endif %}
         </nav>
     </aside>
     <div class="content">
         {% block content %}
-        <img src="{{ url_for('static', filename='logo_welcome.png') }}" alt="welcome_logo">
+            <img src="{{ url_for('static', filename='logo_welcome.png') }}" alt="welcome_logo">
         {% endblock %}
     </div>
 </div>
