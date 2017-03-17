@@ -1,5 +1,5 @@
 from .database import Database
-from datetime import datetime
+from time import strftime as stime
 from .assignment import Assignment
 from .person import Person
 
@@ -26,7 +26,7 @@ class Submission:
         date = self.submission_date
         project = self.project
         id_ = self.id_
-        return [assignment_title, full_name, date, project, id]
+        return [assignment_title, full_name, date, project, id_]
 
     @staticmethod
     def get_by_user_id(user_id):
@@ -44,7 +44,7 @@ class Submission:
     def save(user_id, project, assignment_id, team_id):
         """Saves submitted assignment to database"""
         con, cur = Database.db_connect()
-        submission_date = str(datetime.today())
+        submission_date = stime("%d-%m-%Y")
         try:
             cur.execute(
                 "INSERT OR IGNORE INTO `SUBMISSIONS` (user_ID, submission_date, content, grade, assignment_ID,team_ID) VALUES (?,?,?,?,?,?)",
@@ -58,11 +58,11 @@ class Submission:
         finally:
             con.close()
 
-    @classmethod
-    def get_all(cls):
+    @staticmethod
+    def get_all():
         submissions = []
         conn, cur = Database.db_connect()
-        submission_list = cur.execute("SELECT * FROM `SUBMISSIONS`").fetchall()
+        submission_list = cur.execute("SELECT * FROM `SUBMISSIONS`")
         for submit in submission_list:
             submissions.append(Submission(*submit))
         return submissions
