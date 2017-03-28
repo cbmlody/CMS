@@ -1,50 +1,36 @@
-from models.database import Database
+from models.database import Base , db_session
+from sqlalchemy import Column, Integer, String, Boolean
 
 
-class Attendance:
+class Attendance(Base):
+    """Holds attendance data"""
+    __tablename__ = 'attendance'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, nullable=False)
+    date = Column(String(10), nullable=False)
+    status = Column(Boolean, nullable=False)
+
     """
     Attendance which contains information of date and status of attendance
     """
-    def __init__(self, id_, date, status):
-        self.id_ = id_
+    def __init__(self, user_id, date, status):
+        self.user_id = user_id
         self.date = date
         self.status = status
 
     def add(self):
-        """Adds roll to database"""
-        conn, cur = Database.db_connect()
-        try:
-            cur.execute("INSERT OR IGNORE INTO `ATTENDANCES` VALUES (?,?,?)", (self.id_, self.date, self.status))
-            cur.execute("UPDATE `ATTENDANCES` SET status=(?) WHERE user_ID = (?)", (self.status, self.id_))
-            conn.commit()
-        except Exception:
-            return "Record already exists"
-        finally:
-            conn.close()
+        """Adds attendance to database"""
+        db_session.add(self)
+        db_session.commit()
 
-    @staticmethod
-    def get_all():
-        """Gets list of attendance"""
-        attendance_list = []
-        conn, cur = Database.db_connect()
-        try:
-            attendances = cur.execute("SELECT * FROM `ATTENDANCES`")
-            for attendance in attendances:
-                attendance_list.append(Attendance(*attendance))
-        finally:
-            conn.close()
-        return attendance_list
+    @classmethod
+    def get_all(cls):
+        """Get all attendances from db"""
+        attendances = cls.query.all()
+        return attendances
 
-    @staticmethod
-    def get_by_id(student_id):
-        """Gets certain student's attendance"""
-        attendance_list = []
-        conn, cur = Database.db_connect()
-        try:
-            attendances = cur.execute("SELECT * FROM `ATTENDANCES` WHERE user_ID=(?)", (student_id,)).fetchall()
-            for attendance in attendances:
-                attendance_list.append(Attendance(*attendance))
-        finally:
-            conn.close()
-        return attendance_list
-
+    @classmethod
+    """Get all attendances from specified user"""
+    def get_by_id(cls,student_id):
+        selected = cls.query(cls).filter_by(user_id=student_id).all()
+        return selected
