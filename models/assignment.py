@@ -1,13 +1,18 @@
-from .database import Database
+from .database import Base, db_session
+from sqlalchemy import Column, Integer, String, Boolean
 
 
-class Assignment:
+class Assignment(Base):
     """Holds assignments, created by mentors"""
 
-    assignment_list = []
+    __tablename__ = "assignments"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    title = Column(String, nullable=False)
+    due_date = Column(String(10), nullable=True)
+    max_points = Column(Integer, nullable=False)
+    as_team = Column(Boolean(), nullable=False)
 
-    def __init__(self, id_, title, due_date, max_points, as_team='NULL'):
-        self.id_ = id_
+    def __init__(self, title, due_date, max_points, as_team=0):
         self.title = title
         self.due_date = due_date
         self.max_points = max_points
@@ -16,46 +21,29 @@ class Assignment:
     @classmethod
     def get_all(cls):
         """Returns list of assignments"""
-        assignments = []
-        conn, cur = Database.db_connect()
-        assignments_list = cur.execute("SELECT * FROM `ASSIGNMENTS`").fetchall()
-        for assign in assignments_list:
-            assignments.append(Assignment(*assign))
+        assignments = db_session.query(cls).all()
         return assignments
 
     @staticmethod
     def add(title, due_date, max_points, as_team):
         """Adds assignment to database"""
-        conn, cur = Database.db_connect()
-        try:
-            cur.execute("INSERT INTO `ASSIGNMENTS` (title, due_date, max_points, as_team) VALUES (?,?,?,?)",
-                        (title, due_date, max_points, as_team,))
-            conn.commit()
-        except Exception:
-            return "Record already exists"
-        finally:
-            conn.close()
+        assignment = Assignment(title, due_date, max_points, as_team)
+        db_session.add(assignment)
+        db_session.commit()
 
-    @staticmethod
-    def get_by_id(id):
+    @classmethod
+    def get_by_id(cls, id):
         """ Retrieves assignment with given id from database.
         Args:
             id(int): item id
         Returns:
             Assignment: Assignment object with a given id
         """
-        con, cur = Database.db_connect()
-        assignment = cur.execute("SELECT * FROM `ASSIGNMENTS`WHERE ID = ?", (id,)).fetchone()
-        return Assignment(*assignment)
+        assignment = db_session.query(cls).filter(id=id).one()
+        return assignment
 
-    @staticmethod
-    def get_by_ids(id_list):
+    @classmethod
+    def get_by_ids(cls, id_list):
         """Gets list of assignments with certain ids"""
-        assignment_list = []
-        con, cur = Database.db_connect()
-        ids = ", ".join(id_list)
-        query = "SELECT * FROM `ASSIGNMENTS` WHERE ID IN ({})".format(ids)
-        assignments = cur.execute(query).fetchall()
-        for assignment in assignments:
-            assignment_list.append(Assignment(*assignment))
+        assignment_list = cls.query.filter(cls.id.in_(id_list)).all()
         return assignment_list
