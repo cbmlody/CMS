@@ -15,3 +15,7 @@ class Checkpoint(Base):
     def __init__(self, description, date):
         self.description = description
         self.date = date
+
+    def add(self):
+        db_session.add(self)
+        db_session.commit()
