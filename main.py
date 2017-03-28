@@ -1,7 +1,8 @@
 import sys
 from flask import Flask, render_template, request, redirect, url_for, session, g
 from time import strftime as stime
-from models import Assignment, Submission, Team, Student, Mentor, Attendance, Checkpoint, Database, Person
+from models import Assignment, Team, Attendance, Checkpoint, User, Submission, CheckpointGrades
+from models.database import init_db
 import os
 from functools import wraps
 
