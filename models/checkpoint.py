@@ -1,32 +1,17 @@
-from models.database import Database
+from models.database import db_session
+from models.database import Base
+from sqlalchemy import Column, Integer, String, Boolean
+import datetime
 
 
-class Checkpoint:
+class Checkpoint(Base):
     """Holds checkpoints data"""
+    __tablename__ = 'checkpoint'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    description = Column(String(120), nullable=False)
+    date = Column(String(50), nullable=False)
 
-    def __init__(self, user_id, card):
-        self.user_id = user_id
-        self.card = card
 
-    @classmethod
-    def update_user_card(cls, card, user_id):
-        """Updates checkpoint grade"""
-        conn, cur = Database.db_connect()
-        try:
-            cur.execute("INSERT OR IGNORE INTO `CHECKPOINTS` VALUES (?,?)", (user_id, card))
-            cur.execute("UPDATE `CHECKPOINTS` SET card=(?) WHERE user_id = (?)", (card, user_id))
-            conn.commit()
-        finally:
-            conn.close()
-
-    @staticmethod
-    def get_card(user_id):
-        """Checks current checkpoint grade"""
-        conn, cur = Database.db_connect()
-        try:
-            card = cur.execute("SELECT card FROM `CHECKPOINTS` WHERE user_ID = (?)", (user_id,)).fetchone()[0]
-        except TypeError:
-            card = 'none'
-        finally:
-            conn.close()
-        return card
+    def __init__(self, description, date):
+        self.description = description
+        self.date = date
