@@ -45,11 +45,11 @@ class Submission(Base):
         submissions_list = cls.query.filter_by(user_id=user_id).all()
         return submissions_list
 
-    @staticmethod
-    def save(user_id, project, assignment_id, team_id):
+    @classmethod
+    def save(cls, user_id, project, assignment_id, team_id):
         """Saves submitted assignment to database"""
         submission_date = stime("%d-%m-%Y")
-        submission = Submission(user_id, submission_date, project, None, assignment_id, team_id)
+        submission = cls(user_id, submission_date, project, None, assignment_id, team_id)
         db_session.merge(submission)
         db_session.commit()
 
