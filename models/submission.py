@@ -8,7 +8,8 @@ from models.user import User
 class Submission(Base):
     """Holds assignments submitted by students"""
 
-    __tablename__ = "assignments"
+    __tablename__ = "submissions"
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_ID = Column(Integer, nullable=False)
     submission_date = Column(String(10), nullable=True)
