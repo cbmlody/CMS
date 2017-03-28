@@ -19,3 +19,8 @@ class Checkpoint(Base):
     def add(self):
         db_session.add(self)
         db_session.commit()
+
+    @classmethod
+    def list_checkpoints(cls):
+        list_checkpoints = cls.query.all()
+        return list_checkpoints
