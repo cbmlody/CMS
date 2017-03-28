@@ -21,7 +21,6 @@ class User(Base):
     EMPLOYEE_ROLE = 2
     STUDENT_ROLE = 3
 
-
     def __init__(self, login, password, full_name, role_id, team_id, status=True):
         self.login = login
         self.password = password
@@ -30,18 +29,15 @@ class User(Base):
         self.team_id = team_id
         self.status = status
 
-
     def add(self):
         """Adds new user to database"""
         db_session.merge(self)
         db_session.commit()
 
-
     def delete(self):
         """Removes certain user from database"""
         self.status = False
         db_session.commit()
-
 
     def change_password(self, password, repeat_password):
         """Changes users password"""
@@ -54,13 +50,10 @@ class User(Base):
             error = "Passwords don't match!"
         return error
 
-
     def assign_team(self, team_id_to_assign):
         """ Assign user to team """
         self.team_id = team_id_to_assign
         db_session.commit()
-
-
 
     def get_team_name(self):
         """ get team name """
@@ -78,13 +71,11 @@ class User(Base):
         user_list = User.query.fiter_by(role_id=role, status=True).all()
         return user_list
 
-
     @classmethod
     def get_by_id(cls, id):
         """Gets user object by id"""
         user = cls.query.filter_by(id=id).one()
         return user
-
 
     @classmethod
     def get_by_login(cls, login):
