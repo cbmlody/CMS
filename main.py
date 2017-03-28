@@ -151,11 +151,8 @@ def submissions():
     if g.user.role_id < 3:
         submission_list = Submission.get_all()
     else:
-    submissions = []
-    for submission in submission_list:
-        submissions.append(Submission.get_table_info(submission))
-    return render_template('submissions_list.html', submissions=submissions)
         submission_list = Submission.get_by_user_id(g.user.id)
+    return render_template('submissions_list.html', submissions=submission_list)
 
 
 @app.route('/submissions/<submission_id>/grade')
