@@ -5,11 +5,12 @@ from sqlalchemy import Column, Integer, String
 
 class Checkpoint(Base):
     """Holds checkpoints data"""
+
     __tablename__ = 'checkpoint'
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     description = Column(String(120), nullable=False)
     date = Column(String(50), nullable=False)
-
 
     def __init__(self, description, date):
         self.description = description
