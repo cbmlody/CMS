@@ -48,17 +48,12 @@ class Submission:
     def save(user_id, project, assignment_id, team_id):
         """Saves submitted assignment to database"""
         submission_date = stime("%d-%m-%Y")
-        submission = Submission(user_id,submission_date,project,None,assignment_id,team_id)
+        submission = Submission(user_id, submission_date, project, None, assignment_id, team_id)
         db_session.merge(submission)
         db_session.commit()
 
-        
     @staticmethod
     def get_all():
         """Returns list of submissions"""
-        submissions = []
-        conn, cur = Database.db_connect()
-        submission_list = cur.execute("SELECT * FROM `SUBMISSIONS`")
-        for submit in submission_list:
-            submissions.append(Submission(*submit))
+        submissions = db_session.query(Submission).all()
         return submissions
