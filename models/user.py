@@ -57,13 +57,11 @@ class User(Base):
 
     def get_team_name(self):
         """ get team name """
-        team = Team.query.filter_by(id=self.team_id).one()
-        if team.name:
+        if self.team_id:
+            team = Team.query.filter_by(id=self.team_id).one()
             return team.name
         else:
-            team.name = None
-        return team.name
-
+            return "None"
 
     @classmethod
     def get_all(cls, role=None):
