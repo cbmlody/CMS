@@ -15,3 +15,8 @@ class Team(Base):
     def add(self):
         """Adds new team to database"""
         db_session.add(self)
+
+    @classmethod
+    def get_all(cls):
+        all_teams = cls.query.all()
+        return all_teams
