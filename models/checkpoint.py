@@ -1,7 +1,6 @@
 from models.database import db_session
 from models.database import Base
-from sqlalchemy import Column, Integer, String, Boolean
-import datetime
+from sqlalchemy import Column, Integer, String
 
 
 class Checkpoint(Base):

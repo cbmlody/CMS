@@ -1,31 +1,22 @@
-from models.database import Database
-import sqlite3
+from models.database import db_session
+from models.database import Base
+from sqlalchemy import Column, Integer, String
 
 
-class Team:
+class Team(Base):
     """Holds team objects"""
+    __tablename__ = 'team'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String(120), nullable=False)
 
-    def __init__(self, id_, name):
-        self.id_ = id_
+    def __init__(self, name):
         self.name = name
 
     def add(self):
         """Adds new team to database"""
-        conn, cur = Database.db_connect()
-        try:
-            cur.execute("INSERT INTO `TEAMS`(name) VALUES(?)", (self.name,))
-            conn.commit()
-        except sqlite3.IntegrityError:
-            return "Team exists!"
-        finally:
-            conn.close()
+        db_session.add(self)
 
     @classmethod
     def get_all(cls):
-        """Gets list of teams"""
-        teams_list = []
-        conn, cur = Database.db_connect()
-        all_teams = cur.execute("SELECT * FROM `TEAMS`")
-        for team in all_teams:
-            teams_list.append(Team(*team))
-        return teams_list
+        all_teams = cls.query.all()
+        return all_teams
