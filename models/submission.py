@@ -8,8 +8,16 @@ from user import User
 class Submission:
     """Holds assignments submitted by students"""
 
-    def __init__(self, id_, user_id, submission_date, project, points, assignment_id, team_id):
-        self.id_ = id_
+    __tablename__ = "assignments"
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_ID = Column(Integer, nullable=False)
+    submission_date = Column(String(10), nullable=True)
+    project = Column(String, nullable=False)
+    grade = Column(Integer, nullable=True)
+    assignment_ID = Column(Integer, nullable=False)
+    team_ID = Column(Integer, nullable=True)
+
+    def __init__(self, user_id, submission_date, project, points, assignment_id, team_id):
         self.user_id = user_id
         self.submission_date = submission_date
         self.project = project
@@ -17,50 +25,34 @@ class Submission:
         self.points = points
         self.team_id = team_id
 
-    def grade(self, points):
+    def grading(self, points):
         """Allows mentor to grade an assignment """
         self.points = points
 
     def get_table_info(self):
         """Gets data to to display it in table"""
         assignment_title = Assignment.get_by_id(self.assignment_id).title
-        full_name = Person.get_by_id(self.user_id).full_name
+        full_name = User.get_by_id(self.user_id).full_name
         date = self.submission_date
         project = self.project
-        id_ = self.id_
+        id_ = self.id
         return [assignment_title, full_name, date, project, id_]
 
     @staticmethod
     def get_by_user_id(user_id):
         """Returns user submitting an assignment"""
-        con, cur = Database.db_connect()
-        submissions_list = []
-        try:
-            submissions = cur.execute("SELECT * FROM `SUBMISSIONS` WHERE user_ID=(?)", (user_id,)).fetchall()
-            for submission in submissions:
-                submissions_list.append(Submission(*submission))
-        finally:
-            con.close()
+        submissions_list = db_session.query(Submission).filter(user_ID=user_id).all()
         return submissions_list
 
     @staticmethod
     def save(user_id, project, assignment_id, team_id):
         """Saves submitted assignment to database"""
-        con, cur = Database.db_connect()
         submission_date = stime("%d-%m-%Y")
-        try:
-            cur.execute(
-                "INSERT OR IGNORE INTO `SUBMISSIONS` (user_ID, submission_date, content, grade, assignment_ID,team_ID) VALUES (?,?,?,?,?,?)",
-                (user_id, submission_date, project, None, assignment_id, team_id,))
-            cur.execute(
-                "UPDATE `SUBMISSIONS` SET user_ID =? , submission_date = ?, content =?, grade =?, assignment_ID =?, team_ID =? WHERE user_ID = ? AND assignment_id =?",
-                (user_id, submission_date, project, None, assignment_id, team_id, user_id, assignment_id))
-            con.commit()
-        except Exception:
-            return "Record already exists"
-        finally:
-            con.close()
+        submission = Submission(user_id,submission_date,project,None,assignment_id,team_id)
+        db_session.merge(submission)
+        db_session.commit()
 
+        
     @staticmethod
     def get_all():
         """Returns list of submissions"""
