@@ -1,6 +1,6 @@
 from models.database import db_session
 from models.database import Base
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String
 
 
 class CheckpointGrades(Base):
