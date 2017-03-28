@@ -53,8 +53,8 @@ class Submission(Base):
         db_session.merge(submission)
         db_session.commit()
 
-    @staticmethod
-    def get_all():
+    @classmethod
+    def get_all(cls):
         """Returns list of submissions"""
-        submissions = db_session.query(Submission).all()
+        submissions = cls.query.all()
         return submissions
