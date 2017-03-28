@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="/static/login.css">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+</head>
+<body>
+<div class="login">
+    <img src="../static/logo.png" alt="background"><h2>Login to your account </h2>
+    <form method="POST">
+        <input type="text" name="username" placeholder="Login"><br />
+        <input type="password" name="password" placeholder="Password"><br />
+        <input type="submit" value="SEND">
+    </form>
+    {% if error %}
+    <h2 id="error">Wrong username or password!</h2>
+    {% endif %}
+</div>
+</body>
+</html>

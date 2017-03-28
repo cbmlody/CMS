@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+{% block content %}
+        <header>
+            <h3>Submissions</h3>
+        </header>
+        <div class="data">
+            <table>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Content</th>
+                    {% if user.role_id == 1 %}
+                    <th>Grade</th>
+                    {% endif %}
+                </tr>
+                </thead>
+                {% for submission in submissions %}
+                <tr>
+                    <td>{{submission[0]}}</td>
+                    <td>{{submission[1]}}</td>
+                    <td>{{submission[2]}}</td>
+                    <td><p>{{submission[3]}}</p></td>
+                    {% if user.role_id == 1 %}
+                    <td><a href="/submissions/{{submission[4]}}/grade">Grade</a></td>
+                {% endif %}
+                </tr>
+                {%endfor%}
+            </table>
+        </div>
+{% endblock %}}

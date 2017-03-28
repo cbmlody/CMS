@@ -1,0 +1,22 @@
+{% extends 'main.html' %}
+{% block content %}
+        <header>
+            <h3>Grades</h3>
+        </header>
+        <div class="data">
+            <div class="rolltable">
+                <table>
+                    <thead>
+                    <th>Assignment</th>
+                    <th>Points</th>
+                    </thead>
+                    {% for submission in submissions %}
+                    <tr>
+                        <td>{{ assignments[submission.assignment_id].title }}</td>
+                        <td>{{ submission.points }}/{{ assignments[submission.assignment_id].max_points }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+{% endblock %}

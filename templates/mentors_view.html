@@ -1,0 +1,32 @@
+{% extends 'main.html' %}
+{% block content %}
+        <header>
+            <h3>Mentors list</h3>
+            {% if user.role_id == 0 %}
+                <a href="{{ url_for('mentor_new') }}">ADD</a>
+            {% endif %}
+        </header>
+        <div class="data">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Login</th>
+                        <th>Full name</th>
+                        {% if user.role_id == 0 %}
+                        <th>Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                {% for mentor in mentors %}
+                <tr>
+                    <td>{{mentor.login}}</td>
+                    <td>{{mentor.full_name}}</td>
+                    {% if user.role_id == 0 %}
+                    <td>
+                        <a href="/mentor/{{ mentor.id_}}/delete">Remove</a></td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+{% endblock %}

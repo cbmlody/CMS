@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CCMS</title>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <aside id="sidebar">
+        <header class="user-info">
+            <div id="bar">You're logged in as:
+            <img src="{{ url_for('static', filename='default_user_img.png') }}" alt="person">
+            </div>
+            <section>
+                <div>
+                <p class="fullname">{{ user.full_name }}</p>
+                <p><a href="{{ url_for('change_password') }}">Change password</a></p>
+                <p><a href="{{ url_for('dropsession') }}">Logout</a></p>
+                </div>
+            </section>
+        </header>
+        <nav>
+            <h3>Student</h3>
+            <ul>
+                <li><a href="{{ url_for('student') }}">List</a></li>
+                {% if user.role_id < 4 %}
+                    {% if user.role_id < 2 %}
+                        <li><a href="{{ url_for('attendance_list')}}">Attendance</a></li>
+                    {% endif %}
+                <li><a href="{{ url_for('teams') }}">Teams</a></li>
+                    {% if user.role_id < 2 %}
+                        <li><a href="{{ url_for('checkpoint') }}">Checkpoints</a></li>
+                    {% endif %}
+                {% endif %}
+            </ul>
+            <h3>Mentor</h3>
+            <ul>
+                <li><a href="{{ url_for('mentor') }}">List</a></li>
+            </ul>
+        {% if user.role_id != 2 %}
+            <h3>Assignment</h3>
+            <ul>
+                <li><a href="{{ url_for('assignment') }}">List</a></li>
+                <li><a href="{{url_for('submissions')}}">Submissions</a></li>
+            </ul>
+        {% endif %}
+        </nav>
+    </aside>
+    <div class="content">
+        {% block content %}
+            <img src="{{ url_for('static', filename='logo_welcome.png') }}" alt="welcome_logo">
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>

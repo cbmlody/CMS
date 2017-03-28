@@ -11,13 +11,12 @@ CREATE TABLE `USERS` (`ID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`lo
 CREATE TABLE `ATTENDANCES` (
 	`user_ID`	INTEGER NOT NULL,
 	`date`	TEXT NOT NULL,
-	`status`	INTEGER NOT NULL,
-	`day_of_school`	INTEGER NOT NULL
+	`status`	INTEGER NOT NULL
 );
 
-CREATE TABLE `SUBMISSIONS` (`ID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`user_ID`	INTEGER NOT NULL,`date`	TEXT NOT NULL,`content`	TEXT NOT NULL,`grade`		INTEGER,`assignment_ID`	INTEGER NOT NULL,`team_ID`	INTEGER);
+CREATE TABLE `SUBMISSIONS` (`ID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`user_ID`	INTEGER NOT NULL,`submission_date`	TEXT NOT NULL,`content`	TEXT NOT NULL,`grade`		INTEGER,`assignment_ID`	INTEGER NOT NULL,`team_ID`	INTEGER);
 
-CREATE TABLE `CHECKPOINTS` (`ID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,`user_ID`	INTEGER NOT NULL,`card`	TEXT NOT NULL);
+CREATE TABLE `CHECKPOINTS` (`user_ID`	INTEGER NOT NULL UNIQUE,`card`	TEXT NOT NULL);
 
 CREATE TABLE `ROLES` (`ID`	INTEGER NOT NULL UNIQUE,`name`	TEXT NOT NULL);
 
@@ -32,6 +31,8 @@ INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VAL
 INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (5,'mateusz','1234','Mateusz Ostafil',1,NULL);
 INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (6,'endriu','1234','Andrzej Abdcd',3,1);
 INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (7,'tomi','1234','Tomasz Kowal',3,NULL);
+INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (8,'przemek','1234','Przemek Ciąćka',1,NULL);
+INSERT INTO `USERS`(`ID`,`login`,`password`,`full_name`,`role_ID`,`team_ID`) VALUES (9,'rafalopial','1234','Rafał Opiał',1,NULL);
 
 INSERT INTO `TEAMS`(`ID`,`name`) VALUES (1,'Podgrzybek');
 
@@ -43,9 +44,11 @@ INSERT INTO `ROLES`(`ID`, `name`) VALUES (3, 'Student');
 INSERT INTO `ASSIGNMENTS`(`title`,`due_date`,`max_points`,`as_team`) VALUES ('CMS','17-02-2017',72,1);
 INSERT INTO `ASSIGNMENTS`(`title`,`due_date`,`max_points`,`as_team`) VALUES ('SMC','26-02-2017',36,0);
 
-INSERT INTO `SUBMISSIONS`(`user_ID`,`date`,`content`,`grade`,`assignment_ID`,`team_ID`) VALUES (6,'16-02-2017','https://github.com/',36,1,1);
-INSERT INTO `SUBMISSIONS`(`user_ID`,`date`,`content`,`grade`,`assignment_ID`,`team_ID`) VALUES (6,'19-02-2017','https://github.com/dawda',12,2,1);
+INSERT INTO `SUBMISSIONS`(`user_ID`,`submission_date`,`content`,`grade`,`assignment_ID`,`team_ID`) VALUES (6,'16-02-2017','https://github.com/',36,1,1);
+INSERT INTO `SUBMISSIONS`(`user_ID`,`submission_date`,`content`,`grade`,`assignment_ID`,`team_ID`) VALUES (6,'19-02-2017','https://github.com/dawda',12,2,1);
 
-INSERT INTO `ATTENDANCES` VALUES (6,'15-02-2017',1,1);
-INSERT INTO `ATTENDANCES` VALUES (7,'15-02-2017',0,1);
+INSERT INTO `ATTENDANCES` VALUES (6,'15-02-2017',1);
+INSERT INTO `ATTENDANCES` VALUES (7,'15-02-2017',0);
 
+CREATE UNIQUE INDEX `attendance_unique` ON `ATTENDANCES` (`user_ID` ,`date` );
+CREATE UNIQUE INDEX `submission_unique` ON `SUBMISSIONS` (`user_ID` ,`assignment_ID` );

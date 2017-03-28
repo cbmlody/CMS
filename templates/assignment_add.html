@@ -1,0 +1,19 @@
+{% extends 'main.html' %}
+{% block content %}
+        <header>
+            <h3>Add new assignment</h3>
+        </header>
+        <div class="data">
+        <div class="form-wrapper">
+            <form method="post" class="form">
+                <input type="text" placeholder="title" name="title" required/>
+                <input type="date" name="due-date" required/>
+                <input type="number" placeholder="max points" name="max-points" required/>
+                <input type="checkbox" name="as-team"/>
+                <label for="TEAM">TEAM</label>
+                <input class="button" type="submit" value="SUBMIT"/>
+                <input class="button" type="reset" value="RESET"/>
+            </form>
+        </div>
+        </div>
+{%endblock%}

@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+{% block content %}
+        <header>
+            <h3>Checkpoints list</h3>
+        </header>
+        <div class="data">
+            <div class="checkpoint_form">
+                <form action="{{ url_for('checkpoint_add') }}" method="post">
+                    <table>
+                        <thead>
+                            <th>Full name</th>
+                            <th>Checkpoints card</th>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>{{ student.full_name }}</td>
+                                <td>
+                                    <input type="radio" name="{{ student.id_ }}" value="green">Green
+                                    <input type="radio" name="{{ student.id_ }}" value="yellow">Yellow
+                                    <input type="radio" name="{{ student.id_ }}" value="red">Red
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                <input class = 'submit-checkpoint' type="submit" value="Submit">
+                </form>
+            </div>
+        </div>
+{% endblock %}

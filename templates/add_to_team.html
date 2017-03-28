@@ -1,0 +1,30 @@
+{% extends 'main.html' %}
+{% block content %}
+        <header>
+            <h3>Add to team</h3>
+        </header>
+        <div class="data">
+            <div class="team-form">
+                <form name="add-to-team-form" method="post">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Team name</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for team in teams %}
+                        <tr>
+                            <td>
+                                <label for="{{ team.id_ }}">{{ team.name }}</label>
+                                <input type="radio" name='add-to-team' id="{{ team.id_ }}" value="{{ team.id_ }}"/>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <input class='add-to-team-submit' type="submit" name='Submit' value="Submit">
+                </form>
+            </div>
+        </div>
+{% endblock %}

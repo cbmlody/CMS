@@ -1,0 +1,25 @@
+{% extends 'main.html' %}
+{% block content %}
+        <header>
+            <h3>Teams list</h3>
+            {% if user.role_id == 1 %}
+                <a href="{{ url_for('teams_new') }}">ADD</a>
+            {% endif %}
+        </header>
+        <div class="data">
+            <div class="team-form">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Team name</th>
+                    </tr>
+                    </thead>
+                    {% for team in teams %}
+                    <tr>
+                        <td>{{ team.name }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+        </div>
+    </div>
+{% endblock %}

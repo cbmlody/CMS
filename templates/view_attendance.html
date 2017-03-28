@@ -1,0 +1,23 @@
+{% extends 'main.html' %}
+{% block content %}
+        <div class="data">
+            <div class="rolltable">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Roll</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for attendance in attendances %}
+                    <tr>
+                        <td>{{ attendance.date }}</td>
+                        <td>{{ attendance.status }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+{% endblock %}

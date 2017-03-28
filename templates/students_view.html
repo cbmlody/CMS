@@ -1,0 +1,39 @@
+{% extends 'main.html' %}
+{% block content %}
+        <header>
+            <h3>Students list</h3>
+            {% if user.role_id < 2 %}
+                <a href="{{ url_for('student_new') }}">ADD</a>
+            {% endif %}
+        </header>
+        <div class="data">
+            <table>
+                <thead>
+                <tr>
+                    <th>Login</th>
+                    <th>Full name</th>
+                    <th>Team</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                {% for student in students %}
+                <tr>
+                    {% if user.role_id < 3 or user.login == student.login %}
+                        <td>{{ student.login }}</td>
+                        <td>{{ student.full_name }}</td>
+                        <td>{{ student.get_team_name() }}</td>
+                        <td>
+                            {% if user.role_id == 1 %}
+                                <a href="/student/{{ student.id_ }}/delete">Remove</a>
+                                <a href="/student/{{ student.id_ }}/teams">Add to team</a>
+                            {% endif %}
+                            <a href="/student/{{ student.id_ }}/grades"> View grades</a>
+                            <a href="/student/{{ student.id_ }}/attendance"> View attendance</a>
+                            <a href="#" class="tooltip" id="{{ cards[student.id_] }}">Performance<span class="{{ cards[student.id_] }}-card">{{ cards[student.id_] }}</span></a>
+                    {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+{% endblock %}
