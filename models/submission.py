@@ -39,10 +39,10 @@ class Submission(Base):
         id_ = self.id
         return [assignment_title, full_name, date, project, id_]
 
-    @staticmethod
-    def get_by_user_id(user_id):
+    @classmethod
+    def get_by_user_id(cls, user_id):
         """Returns user submitting an assignment"""
-        submissions_list = db_session.query(Submission).filter(user_ID=user_id).all()
+        submissions_list = cls.query.filter_by(user_id=user_id).all()
         return submissions_list
 
     @staticmethod
