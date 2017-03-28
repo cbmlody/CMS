@@ -16,6 +16,11 @@ class User(Base):
     team_id = Column(Integer, nullable=True)
     status = Column(Boolean, nullable=False)
 
+    MANAGER_ROLE = 0
+    MENTOR_ROLE = 1
+    EMPLOYEE_ROLE = 2
+    STUDENT_ROLE = 3
+
 
     def __init__(self, login, password, full_name, role_id, team_id, status=True):
         self.login = login
