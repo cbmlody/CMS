@@ -18,18 +18,16 @@ class Assignment(Base):
         self.max_points = max_points
         self.as_team = as_team
 
+    def add(self):
+        """Adds assignment to database"""
+        db_session.add(self)
+        db_session.commit()
+
     @classmethod
     def get_all(cls):
         """Returns list of assignments"""
         assignments = db_session.query(cls).all()
         return assignments
-
-    @staticmethod
-    def add(title, due_date, max_points, as_team):
-        """Adds assignment to database"""
-        assignment = Assignment(title, due_date, max_points, as_team)
-        db_session.add(assignment)
-        db_session.commit()
 
     @classmethod
     def get_by_id(cls, id):
