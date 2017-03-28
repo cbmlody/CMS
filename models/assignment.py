@@ -10,7 +10,7 @@ class Assignment(Base):
     title = Column(String, nullable=False)
     due_date = Column(String(10), nullable=True)
     max_points = Column(Integer, nullable=False)
-    as_team = Column(Boolean(), nullable=False)
+    as_team = Column(Boolean, nullable=False)
 
     def __init__(self, title, due_date, max_points, as_team=0):
         self.title = title
