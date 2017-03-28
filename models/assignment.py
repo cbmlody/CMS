@@ -26,7 +26,7 @@ class Assignment(Base):
     @classmethod
     def get_all(cls):
         """Returns list of assignments"""
-        assignments = db_session.query(cls).all()
+        assignments = cls.query.all()
         return assignments
 
     @classmethod
@@ -37,7 +37,7 @@ class Assignment(Base):
         Returns:
             Assignment: Assignment object with a given id
         """
-        assignment = db_session.query(cls).filter(id=id).one()
+        assignment = cls.query.filter_by(id=id).one()
         return assignment
 
     @classmethod
