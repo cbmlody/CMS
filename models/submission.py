@@ -1,8 +1,8 @@
 from .database import Base, db_session
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String
 from time import strftime as stime
-from assignment import Assignment
-from user import User
+from models.assignment import Assignment
+from models.user import User
 
 
 class Submission(Base):
