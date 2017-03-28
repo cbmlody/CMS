@@ -27,9 +27,15 @@
                                 <a href="/student/{{ student.id }}/delete">Remove</a>
                                 <a href="/student/{{ student.id }}/teams">Add to team</a>
                             {% endif %}
-                            <a href="#" class="tooltip" id="{{ cards[student.id_] }}">Performance<span class="{{ cards[student.id_] }}-card">{{ cards[student.id_] }}</span></a>
                             <a href="/student/{{ student.id }}/grades"> View grades</a>
                             <a href="/student/{{ student.id }}/attendance"> View attendance</a>
+                            <select>
+                                {% for card in cards %}
+                                    <option value="{{ card.card }}">
+                                        <a href="#" class="tooltip" id="{{ card.card }}">Performance<span class="{{ cards[student.id] }}-card">{{ cards[student.id] }}</span></a>
+                                    </option>
+                                {% endfor %}
+                            </select>
                     {% endif %}
                     </td>
                 </tr>
