@@ -15,3 +15,7 @@ class CheckpointGrades(Base):
         self.user_id = user_id
         self.checkpoint_id = checkpoint_id
         self.card = card
+
+    def grade(self):
+        db_session.add(self)
+        db_session.commit()
