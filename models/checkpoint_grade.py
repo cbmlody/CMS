@@ -19,3 +19,8 @@ class CheckpointGrades(Base):
     def grade(self):
         db_session.add(self)
         db_session.commit()
+
+    @classmethod
+    def get_user_checkpoints(cls, user_id):
+        user_grades = cls.query.filter_by(user_id = user_id)
+        return user_grades
