@@ -18,4 +18,7 @@ class Attendance(Base):
         self.date = date
         self.status = status
 
-
+    def add(self):
+        """Adds attendance to database"""
+        db_session.add(self)
+        db_session.commit()
