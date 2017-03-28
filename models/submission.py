@@ -11,12 +11,12 @@ class Submission(Base):
     __tablename__ = "submissions"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_ID = Column(Integer, nullable=False)
+    user_id = Column(Integer, nullable=False)
     submission_date = Column(String(10), nullable=True)
     project = Column(String, nullable=False)
     grade = Column(Integer, nullable=True)
-    assignment_ID = Column(Integer, nullable=False)
-    team_ID = Column(Integer, nullable=True)
+    assignment_id = Column(Integer, nullable=False)
+    team_id = Column(Integer, nullable=True)
 
     def __init__(self, user_id, submission_date, project, points, assignment_id, team_id):
         self.user_id = user_id
