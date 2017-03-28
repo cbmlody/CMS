@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer, Boolean
-from models.database import db_session
+from models.database import db_session, Base
 from models.teams import Team
 
 
