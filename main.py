@@ -136,8 +136,7 @@ def add_assignment():
             as_team = 1
         else:
             as_team = 0
-        assignment = Assignment(request.form['title'], request.form['due-date'], request.form['max-points'], as_team)
-        assignment.add()
+        Assignment(request.form['title'], request.form['due-date'], request.form['max-points'], as_team).add()
 
         return redirect('/assignment')
     return render_template('assignment_add.html')
@@ -381,10 +380,9 @@ def attendance_listpost():
         data = dict(to_parse)
         for key, value in data.items():
             if "present" in value:
-                attendance = Attendance(key, date_now, 1)
+                Attendance(key, date_now, 1).add()
             else:
-                attendance = Attendance(key, date_now, 0)
-            attendance.add()
+                Attendance(key, date_now, 0).add()
         return redirect(url_for('student'))
 
 
