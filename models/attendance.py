@@ -28,3 +28,9 @@ class Attendance(Base):
         """Get all attendances from db"""
         attendances = cls.query.all()
         return attendances
+
+    @classmethod
+    """Get all attendances from specified user"""
+    def get_by_id(cls,student_id):
+        selected = cls.query(cls).filter_by(user_id=student_id).all()
+        return selected
