@@ -66,7 +66,10 @@ class User(Base):
     @classmethod
     def get_all(cls, role=None):
         """Gets list of all users"""
-        user_list = User.query.fiter_by(role_id=role, status=True).all()
+        if role:
+            user_list = cls.query.filter_by(status=True, role_id=role).all()
+        else:
+            user_list = cls.query.filter_by(status=True).all()
         return user_list
 
     @classmethod
