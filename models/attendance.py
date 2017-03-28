@@ -22,3 +22,9 @@ class Attendance(Base):
         """Adds attendance to database"""
         db_session.add(self)
         db_session.commit()
+
+    @classmethod
+    def get_all(cls):
+        """Get all attendances from db"""
+        attendances = cls.query.all()
+        return attendances
