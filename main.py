@@ -136,7 +136,9 @@ def add_assignment():
             as_team = 1
         else:
             as_team = 0
-        Assignment.add(request.form['title'], request.form['due-date'], request.form['max-points'], as_team)
+        assignment = Assignment(request.form['title'], request.form['due-date'], request.form['max-points'], as_team)
+        assignment.add()
+
         return redirect('/assignment')
     return render_template('assignment_add.html')
 
