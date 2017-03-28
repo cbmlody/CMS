@@ -1,4 +1,4 @@
-from .database import Base, db_session
+from models.database import Base, db_session
 from sqlalchemy import Column, Integer, String, Boolean
 
 
