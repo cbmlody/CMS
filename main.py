@@ -5,12 +5,6 @@ from models import Assignment, Submission, Team, Student, Mentor, Attendance, Ch
 import os
 from functools import wraps
 
-# GLOBAL SETTINGS
-DEBUG = False
-if "--debug" in sys.argv:
-    DEBUG = True
-if "--init" in sys.argv:
-    Database.import_sql()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
@@ -432,4 +426,10 @@ def page_not_found(e):
 
 
 if __name__ == "__main__":
+    # GLOBAL SETTINGS
+    DEBUG = False
+    if "--debug" in sys.argv:
+        DEBUG = True
+    if "--init" in sys.argv:
+        init_db()
     app.run(debug=DEBUG)
