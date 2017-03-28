@@ -13,7 +13,7 @@ class User(Base):
     password = Column(String, nullable=False)
     full_name = Column(String, nullable=False)
     role_id = Column(Integer, nullable=False)
-    team_id = Column(Integer)
+    team_id = Column(Integer, nullable=True)
     status = Column(Boolean, nullable=False)
 
 
