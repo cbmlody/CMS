@@ -11,3 +11,7 @@ class Team(Base):
 
     def __init__(self, name):
         self.name = name
+
+    def add(self):
+        """Adds new team to database"""
+        db_session.add(self)
