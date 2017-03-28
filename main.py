@@ -40,6 +40,8 @@ def index():
             if request.form['username'] == user.login and request.form['password'] == user.password:
                 session['username'] = request.form['username']
                 session['password'] = request.form['password']
+                session['id'] = user.id
+                session['role'] = user.role_id
                 return redirect(url_for('protected'))
         error = "Wrong username or password!"
         return render_template('index.html', error=error)
@@ -70,7 +72,7 @@ def before_request():
 def getsession():
     """Method returns username of current logged user"""
     if 'username' in session:
-        return session['username']
+        return '{}: {} level of access'.format(session['username'], session['role'])
     return 'Not logged in'
 
 
