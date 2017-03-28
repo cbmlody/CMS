@@ -31,5 +31,5 @@ class Attendance(Base):
     @classmethod
     def get_by_id(cls,student_id):
         """Get all attendances from specified user"""
-        selected = cls.query(cls).filter_by(user_id=student_id).all()
+        selected = cls.query.filter_by(user_id=student_id).all()
         return selected
