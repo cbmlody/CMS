@@ -24,12 +24,12 @@
                         <td>{{ student.get_team_name() }}</td>
                         <td>
                             {% if user.role_id == 1 %}
-                                <a href="/student/{{ student.id_ }}/delete">Remove</a>
-                                <a href="/student/{{ student.id_ }}/teams">Add to team</a>
+                                <a href="/student/{{ student.id }}/delete">Remove</a>
+                                <a href="/student/{{ student.id }}/teams">Add to team</a>
                             {% endif %}
-                            <a href="/student/{{ student.id_ }}/grades"> View grades</a>
-                            <a href="/student/{{ student.id_ }}/attendance"> View attendance</a>
                             <a href="#" class="tooltip" id="{{ cards[student.id_] }}">Performance<span class="{{ cards[student.id_] }}-card">{{ cards[student.id_] }}</span></a>
+                            <a href="/student/{{ student.id }}/grades"> View grades</a>
+                            <a href="/student/{{ student.id }}/attendance"> View attendance</a>
                     {% endif %}
                     </td>
                 </tr>
