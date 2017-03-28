@@ -36,7 +36,7 @@ def inject_user():
 def index():
     """Main login page, checks if login and username are correct(whether it exists in database)"""
     if request.method == 'POST':
-        for user in Person.get_all():
+        for user in User.get_all():
             if request.form['username'] == user.login and request.form['password'] == user.password:
                 session['username'] = request.form['username']
                 session['password'] = request.form['password']
@@ -63,7 +63,7 @@ def before_request():
     """Method nothing return it's used to register username before user request"""
     g.user = None
     if 'username' in session:
-        g.user = Person.get_by_login(session['username'])
+        g.user = User.get_by_login(session['username'])
 
 
 @app.route('/getsession')
@@ -122,7 +122,7 @@ def submit(assignment_id):
             team_id = g.user.team_id
         else:
             team_id = None
-        Submission.save(g.user.id_, request.form['link'], assignment.id_, team_id)
+        Submission.save(g.user.id, request.form['link'], assignment.id, team_id)
         return redirect('/assignment')
     return render_template('submit_ass.html', assignment_id=assignment_id)
 
@@ -148,11 +148,11 @@ def submissions():
     if g.user.role_id < 3:
         submission_list = Submission.get_all()
     else:
-        submission_list = Submission.get_by_user_id(g.user.id_)
     submissions = []
     for submission in submission_list:
         submissions.append(Submission.get_table_info(submission))
     return render_template('submissions_list.html', submissions=submissions)
+        submission_list = Submission.get_by_user_id(g.user.id)
 
 
 @app.route('/submissions/<submission_id>/grade')
@@ -166,8 +166,8 @@ def grade(submission_id):
 @security
 def student():
     """Returns a page with list of students"""
-    students = Student.get_all(Student.role)
-    cards = {student.id_: Checkpoint.get_card(student.id_) for student in students}
+    students = User.get_all(User.STUDENT_ROLE)
+    cards = {student.id: CheckpointGrades.get_user_checkpoints(student.id) for student in students}
     return render_template('students_view.html', students=students, cards=cards, user=g.user)
 
 
@@ -187,7 +187,6 @@ def student_new():
 def student_create():
     """Gets new student's data from add form"""
     url = url_for('student_new')
-    role = 3
     fullname = request.form['fullname']
     username = request.form['username']
     paswd = request.form['pass']
@@ -212,7 +211,7 @@ def add_to_team(id):
 @security
 def assign_to_team(id):
     """Assigns student to a certain team"""
-    student = Student.get_by_id(id)
+    student = User.get_by_id(id)
     try:
         team_id = request.form['add-to-team']
         student.assign_team(team_id)
@@ -228,7 +227,7 @@ def delete_student(id):
     if g.user.role_id == 3:
         return redirect('error_404')
     else:
-        to_delete = Student.get_by_id(id)
+        to_delete = User.get_by_id(id)
         to_delete.delete()
         return redirect('/student')
 
@@ -242,8 +241,8 @@ def student_grades(id):
     for submission in submissions:
         assignment_ids.append(str(submission.assignment_id))
     assignments = Assignment.get_by_ids(assignment_ids)
-    assignments = {assignment.id_: assignment for assignment in assignments}
-    if g.user.role_id == 3 and g.user.id_ != int(id):
+    assignments = {assignment.id: assignment for assignment in assignments}
+    if g.user.role_id == 3 and g.user.id != int(id):
         return redirect('error_404')
     return render_template('grades.html', submissions=submissions, assignments=assignments)
 
@@ -253,7 +252,7 @@ def student_grades(id):
 def student_attendance(id):
     """Returns a page with a certain student's attendance history"""
     attendances = Attendance.get_by_id(id)
-    if (g.user.role_id == 3 and g.user.id_ != int(id)):
+    if (g.user.role_id == 3 and g.user.id != int(id)):
         return redirect('error_404')
     return render_template('view_attendance.html', attendances=attendances)
 
@@ -262,7 +261,7 @@ def student_attendance(id):
 @security
 def mentor():
     """Returns a page with the list of all mentors"""
-    mentors = Mentor.get_all(Mentor.role)
+    mentors = User.get_all(User.MENTOR_ROLE)
     return render_template('mentors_view.html', mentors=mentors)
 
 
@@ -282,7 +281,6 @@ def mentor_new():
 def mentor_create():
     """Gets new mentor's data from a form"""
     url = url_for('mentor_new')
-    role = 1
     fullname = request.form['fullname']
     username = request.form['username']
     paswd = request.form['pass']
@@ -291,7 +289,6 @@ def mentor_create():
         error = "Passwords does not match"
         return render_template('student_mentor_form.html', form_url=url, error=error)
     else:
-        Mentor(None, username, paswd, fullname, role, None).add()
         return redirect(url_for('mentor'))
 
 
@@ -300,7 +297,7 @@ def mentor_create():
 def delete_mentor(id):
     """Allows manager to remove a mentor"""
     if g.user.role_id == 0:
-        to_delete = Mentor.get_by_id(id)
+        to_delete = User.get_by_id(id)
         to_delete.delete()
         return redirect('/mentor')
     else:
@@ -347,7 +344,7 @@ def teams_new():
 def teams_create():
     """Gets new team data from a form"""
     team_name = request.form['team-name']
-    new_team = Team(None, team_name)
+    new_team = Team(team_name)
     exists = None
     for team in Team.get_all():
         if new_team.name == team.name or len(new_team.name) == 0:
@@ -367,7 +364,7 @@ def attendance_list():
     if g.user.role_id == 3:
         return redirect(page_not_found)
     else:
-        students = Student.get_all(Student.role)
+        students = User.get_all(User.STUDENT_ROLE)
         return render_template('attendance_view.html', students=students)
 
 
@@ -393,7 +390,7 @@ def attendance_listpost():
 def checkpoint():
     """Returns a webpage with list of students, allowing mentor or manager to grade their checkpoints"""
     if not g.user.role_id == 3:
-        students = Student.get_all(3)
+        students = User.get_all(User.STUDENT_ROLE)
         return render_template('checkpoints_view.html', students=students)
     else:
         return redirect('error_404')
