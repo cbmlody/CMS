@@ -5,7 +5,7 @@ from assignment import Assignment
 from user import User
 
 
-class Submission:
+class Submission(Base):
     """Holds assignments submitted by students"""
 
     __tablename__ = "assignments"
