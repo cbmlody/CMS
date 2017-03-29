@@ -388,8 +388,8 @@ def attendance_listpost():
 @app.route('/checkpoint', methods=['GET'])
 @security
 def checkpoint():
-    """Returns a webpage with list of students, allowing mentor or manager to grade their checkpoints"""
     if not g.user.role_id == 3:
+    """Returns a webpage with list of checkpoints, allowing mentor or manager to grade"""
         students = User.get_all(User.STUDENT_ROLE)
         return render_template('checkpoints_view.html', students=students)
     else:
