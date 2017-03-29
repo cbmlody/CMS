@@ -35,6 +35,12 @@ class Submission(Base):
         db_session.commit()
 
     @classmethod
+    def get_by_team_id(cls,team_id):
+        """Returns submissions from teams"""
+        submissions_list = cls.query.filter_by(team_id=team_id).all()
+        return submissions_list
+
+    @classmethod
     def get_by_user_id(cls, user_id):
         """Returns user submitting an assignment"""
         submissions_list = cls.query.filter_by(user_id=user_id).all()
