@@ -1,6 +1,15 @@
 {% extends 'main.html' %}
 {% block content %}
         <header>
-            <h3>Premium feature, yet to unlock</h3>
+            <h3>Grade the submission</h3>
         </header>
+        <div class="form-wrapper">
+            <div class="data">
+                    <form method="post" class="form">
+                        <input type = 'number' name = 'grade' min="0" max="{{submission.assignment.max_points}}">
+                        <input type="submit" class='button' value="Submit">
+                    </form>
+                </div>
+        </div>
  {% endblock %}
+<!--action="/submission/{{ submission_id }}/submit"-->
