@@ -5,7 +5,9 @@ from sqlalchemy import Column, Integer, String
 
 class CheckpointGrades(Base):
     """Holds checkpoints user grades"""
+
     __tablename__ = 'checkpoint_grade'
+
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, nullable=False)
     checkpoint_id = Column(Integer, nullable=False)
@@ -22,5 +24,5 @@ class CheckpointGrades(Base):
 
     @classmethod
     def get_user_checkpoints(cls, user_id):
-        user_grades = cls.query.filter_by(user_id = user_id)
+        user_grades = cls.query.filter_by(user_id=user_id).all()
         return user_grades

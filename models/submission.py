@@ -1,21 +1,22 @@
 from .database import Base, db_session
-from sqlalchemy import Column, Integer, String, Boolean
+from sqlalchemy import Column, Integer, String
 from time import strftime as stime
-from assignment import Assignment
-from user import User
+from models.assignment import Assignment
+from models.user import User
 
 
-class Submission:
+class Submission(Base):
     """Holds assignments submitted by students"""
 
-    __tablename__ = "assignments"
+    __tablename__ = "submissions"
+
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_ID = Column(Integer, nullable=False)
+    user_id = Column(Integer, nullable=False)
     submission_date = Column(String(10), nullable=True)
     project = Column(String, nullable=False)
     grade = Column(Integer, nullable=True)
-    assignment_ID = Column(Integer, nullable=False)
-    team_ID = Column(Integer, nullable=True)
+    assignment_id = Column(Integer, nullable=False)
+    team_id = Column(Integer, nullable=True)
 
     def __init__(self, user_id, submission_date, project, points, assignment_id, team_id):
         self.user_id = user_id
@@ -38,22 +39,22 @@ class Submission:
         id_ = self.id
         return [assignment_title, full_name, date, project, id_]
 
-    @staticmethod
-    def get_by_user_id(user_id):
+    @classmethod
+    def get_by_user_id(cls, user_id):
         """Returns user submitting an assignment"""
-        submissions_list = db_session.query(Submission).filter(user_ID=user_id).all()
+        submissions_list = cls.query.filter_by(user_id=user_id).all()
         return submissions_list
 
-    @staticmethod
-    def save(user_id, project, assignment_id, team_id):
+    @classmethod
+    def save(cls, user_id, project, assignment_id, team_id):
         """Saves submitted assignment to database"""
         submission_date = stime("%d-%m-%Y")
-        submission = Submission(user_id, submission_date, project, None, assignment_id, team_id)
+        submission = cls(user_id, submission_date, project, None, assignment_id, team_id)
         db_session.merge(submission)
         db_session.commit()
 
-    @staticmethod
-    def get_all():
+    @classmethod
+    def get_all(cls):
         """Returns list of submissions"""
-        submissions = db_session.query(Submission).all()
+        submissions = cls.query.all()
         return submissions

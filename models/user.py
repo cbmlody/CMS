@@ -1,5 +1,5 @@
 from sqlalchemy import Column, String, Integer, Boolean
-from models.database import db_session
+from models.database import db_session, Base
 from models.teams import Team
 
 
@@ -13,9 +13,13 @@ class User(Base):
     password = Column(String, nullable=False)
     full_name = Column(String, nullable=False)
     role_id = Column(Integer, nullable=False)
-    team_id = Column(Integer)
+    team_id = Column(Integer, nullable=True)
     status = Column(Boolean, nullable=False)
 
+    MANAGER_ROLE = 0
+    MENTOR_ROLE = 1
+    EMPLOYEE_ROLE = 2
+    STUDENT_ROLE = 3
 
     def __init__(self, login, password, full_name, role_id, team_id, status=True):
         self.login = login
@@ -25,18 +29,15 @@ class User(Base):
         self.team_id = team_id
         self.status = status
 
-
     def add(self):
         """Adds new user to database"""
         db_session.merge(self)
         db_session.commit()
 
-
     def delete(self):
         """Removes certain user from database"""
         self.status = False
         db_session.commit()
-
 
     def change_password(self, password, repeat_password):
         """Changes users password"""
@@ -49,37 +50,33 @@ class User(Base):
             error = "Passwords don't match!"
         return error
 
-
     def assign_team(self, team_id_to_assign):
         """ Assign user to team """
         self.team_id = team_id_to_assign
         db_session.commit()
 
-
-
     def get_team_name(self):
         """ get team name """
-        team = Team.query.filter_by(id=self.team_id).one()
-        if team.name:
+        if self.team_id:
+            team = Team.query.filter_by(id=self.team_id).one()
             return team.name
         else:
-            team.name = None
-        return team.name
-
+            return "None"
 
     @classmethod
     def get_all(cls, role=None):
         """Gets list of all users"""
-        user_list = User.query.fiter_by(role_id=role, status=True).all()
+        if role:
+            user_list = cls.query.filter_by(status=True, role_id=role).all()
+        else:
+            user_list = cls.query.filter_by(status=True).all()
         return user_list
-
 
     @classmethod
     def get_by_id(cls, id):
         """Gets user object by id"""
         user = cls.query.filter_by(id=id).one()
         return user
-
 
     @classmethod
     def get_by_login(cls, login):

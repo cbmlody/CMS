@@ -1,4 +1,4 @@
-from .database import Base, db_session
+from models.database import Base, db_session
 from sqlalchemy import Column, Integer, String, Boolean
 
 
@@ -10,7 +10,7 @@ class Assignment(Base):
     title = Column(String, nullable=False)
     due_date = Column(String(10), nullable=True)
     max_points = Column(Integer, nullable=False)
-    as_team = Column(Boolean(), nullable=False)
+    as_team = Column(Boolean, nullable=False)
 
     def __init__(self, title, due_date, max_points, as_team=0):
         self.title = title
@@ -18,18 +18,16 @@ class Assignment(Base):
         self.max_points = max_points
         self.as_team = as_team
 
+    def add(self):
+        """Adds assignment to database"""
+        db_session.add(self)
+        db_session.commit()
+
     @classmethod
     def get_all(cls):
         """Returns list of assignments"""
-        assignments = db_session.query(cls).all()
+        assignments = cls.query.all()
         return assignments
-
-    @staticmethod
-    def add(title, due_date, max_points, as_team):
-        """Adds assignment to database"""
-        assignment = Assignment(title, due_date, max_points, as_team)
-        db_session.add(assignment)
-        db_session.commit()
 
     @classmethod
     def get_by_id(cls, id):
@@ -39,7 +37,7 @@ class Assignment(Base):
         Returns:
             Assignment: Assignment object with a given id
         """
-        assignment = db_session.query(cls).filter(id=id).one()
+        assignment = cls.query.filter_by(id=id).one()
         return assignment
 
     @classmethod
