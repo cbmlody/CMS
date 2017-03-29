@@ -1,11 +1,11 @@
 {% extends 'main.html' %}
 {% block content %}
         <header>
-            <h3>Checkpoints list</h3>
+            <h3>Checkpoint grade</h3>
         </header>
         <div class="data">
             <div class="checkpoint_form">
-                <form action="{{ url_for('checkpoint_add') }}" method="post">
+                <form action="{{ url_for('checkpoint_grade_post') }}" method="post">
                     <table>
                         <thead>
                             <th>Full name</th>
