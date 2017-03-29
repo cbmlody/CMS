@@ -18,12 +18,12 @@
                 </thead>
                 {% for submission in submissions %}
                 <tr>
-                    <td>{{submission[0]}}</td>
-                    <td>{{submission[1]}}</td>
-                    <td>{{submission[2]}}</td>
-                    <td><p>{{submission[3]}}</p></td>
+                    <td>{{submission.assignment.title}}</td>
+                    <td>{{submission.user.full_name}}</td>
+                    <td>{{submission.submission_date}}</td>
+                    <td><a href="{{submission.project}}">{{submission.project}}</a></td>
                     {% if user.role_id == 1 %}
-                    <td><a href="/submissions/{{submission[4]}}/grade">Grade</a></td>
+                    <td><a href="/submissions/{{submission.id}}/grade">Grade</a></td>
                 {% endif %}
                 </tr>
                 {%endfor%}
