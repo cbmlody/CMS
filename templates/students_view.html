@@ -1,50 +1,43 @@
 {% extends 'main.html' %}
 {% block content %}
-        <header>
-            <h3>Students list</h3>
-            {% if user.role_id < 2 %}
-                <a href="{{ url_for('student_new') }}">ADD</a>
-            {% endif %}
-        </header>
-        <div class="data">
-            <table>
-                <thead>
-                <tr>
-                    <th>Login</th>
-                    <th>Full name</th>
-                    <th>Team</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                {% for student in students %}
-                <tr>
-                    {% if user.role_id < 3 or user.login == student.login %}
-                        <td>{{ student.login }}</td>
-                        <td>{{ student.full_name }}</td>
-                        <td>{{ student.get_team_name() }}</td>
-                        <td>
-                            {% if user.role_id == 1 %}
-                                <a href="/student/{{ student.id }}/delete">Remove</a>
-                                <a href="/student/{{ student.id }}/teams">Add to team</a>
-                            {% endif %}
-                            <a href="/student/{{ student.id }}/grades"> View grades</a>
-                            <a href="/student/{{ student.id }}/attendance"> View attendance</a>
+    <header>
+        <h3>Students list</h3>
+        {% if user.role_id < 2 %}
+            <a href="{{ url_for('student_new') }}">ADD</a>
+        {% endif %}
+    </header>
+    <div class="data">
+        <table>
+            <thead>
+            <tr>
+                <th>Login</th>
+                <th>Full name</th>
+                <th>Team</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            {% for student in students %}
+            <tr>
+                {% if user.role_id < 3 or user.login == student.login %}
+                    <td>{{ student.login }}</td>
+                    <td>{{ student.full_name }}</td>
+                    <td>{{ student.get_team_name() }}</td>
+                    <td>
+                        {% if user.role_id == 1 %}
+                            <a href="/student/{{ student.id }}/delete">Remove</a>
+                            <a href="/student/{{ student.id }}/teams">Add to team</a>
+                        {% endif %}
+                        <a href="/student/{{ student.id }}/grades"> View grades</a>
+                        <a href="/student/{{ student.id }}/attendance"> View attendance</a>
+                        <div class="checkpoints">
                         {% for card in cards[student.id] %}
-                            <select id="checkpoint_card" class="{{ card.card }}">
-                                    <option class="{{ card.card }}">Checkpoint {{ card.checkpoint_id }}</option>
-                            </select>
+                            <div class="{{ card.card }}-card">#{{ card.checkpoint_id }}</div>
                         {% endfor %}
-                    {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    <script src="/static/jquery.js"></script>
-    <script>
-        $("#checkpoint_card").change(function(){
-    var color = $("option:selected", this).attr("class");
-    $("#checkpoint_card").attr("class", color);
-    });
-    </script>
+                        </div>
+                {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}
