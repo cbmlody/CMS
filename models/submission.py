@@ -1,8 +1,7 @@
 from .database import Base, db_session
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship
 from time import strftime as stime
-from models.assignment import Assignment
-from models.user import User
 
 
 class Submission(Base):
@@ -11,12 +10,16 @@ class Submission(Base):
     __tablename__ = "submissions"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, nullable=False)
+    user_id = Column(Integer, ForeignKey('users.id'))
     submission_date = Column(String(10), nullable=True)
     project = Column(String, nullable=False)
     grade = Column(Integer, nullable=True)
-    assignment_id = Column(Integer, nullable=False)
-    team_id = Column(Integer, nullable=True)
+    assignment_id = Column(Integer, ForeignKey('assignments.id'))
+    team_id = Column(Integer, ForeignKey('team.id'))
+
+    assignment = relationship('Assignment', backref='submissions')
+    user = relationship('User', backref = 'submissions')
+    team = relationship('Team', backref = 'submissions')
 
     def __init__(self, user_id, submission_date, project, points, assignment_id, team_id):
         self.user_id = user_id
@@ -29,15 +32,6 @@ class Submission(Base):
     def grading(self, points):
         """Allows mentor to grade an assignment """
         self.points = points
-
-    def get_table_info(self):
-        """Gets data to to display it in table"""
-        assignment_title = Assignment.get_by_id(self.assignment_id).title
-        full_name = User.get_by_id(self.user_id).full_name
-        date = self.submission_date
-        project = self.project
-        id_ = self.id
-        return [assignment_title, full_name, date, project, id_]
 
     @classmethod
     def get_by_user_id(cls, user_id):
