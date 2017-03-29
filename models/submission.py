@@ -18,8 +18,8 @@ class Submission(Base):
     team_id = Column(Integer, ForeignKey('team.id'))
 
     assignment = relationship('Assignment', backref='submissions')
-    user = relationship('User', backref = 'submissions')
-    team = relationship('Team', backref = 'submissions')
+    user = relationship('User', backref='submissions')
+    team = relationship('Team', backref='submissions')
 
     def __init__(self, user_id, submission_date, project, assignment_id, team_id):
         self.user_id = user_id
@@ -35,7 +35,7 @@ class Submission(Base):
         db_session.commit()
 
     @classmethod
-    def get_by_team_id(cls,team_id):
+    def get_by_team_id(cls, team_id):
         """Returns submissions from teams"""
         submissions_list = cls.query.filter_by(team_id=team_id).all()
         return submissions_list
@@ -56,7 +56,16 @@ class Submission(Base):
     def save(cls, user_id, project, assignment_id, team_id):
         """Saves submitted assignment to database"""
         submission_date = stime("%d-%m-%Y")
-        submission = cls(user_id, submission_date, project, assignment_id, team_id)
+        if team_id:
+            submission = cls.query.filter_by(team_id=team_id, assignment_id=assignment_id).first()
+        else:
+            submission = cls.query.filter_by(user_id=user_id, assignment_id=assignment_id).first()
+        if submission:
+            submission.project = project
+            submission.submission_date = submission_date
+            # submission.grade = None
+        else:
+            submission = cls(user_id, submission_date, project, assignment_id, team_id)
         db_session.merge(submission)
         db_session.commit()
 
