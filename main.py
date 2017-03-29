@@ -139,7 +139,6 @@ def add_assignment():
         else:
             as_team = 0
         Assignment(request.form['title'], request.form['due-date'], request.form['max-points'], as_team).add()
-
         return redirect('/assignment')
     return render_template('assignment_add.html')
 
@@ -152,6 +151,9 @@ def submissions():
         submission_list = Submission.get_all()
     else:
         submission_list = Submission.get_by_user_id(g.user.id)
+        if g.user.team_id:
+            team_submissions = Submission.get_by_team_id(g.user.team_id)
+            submission_list = submission_list + list(set(team_submissions) - set(submission_list))
     return render_template('submissions_list.html', submissions=submission_list)
 
 
