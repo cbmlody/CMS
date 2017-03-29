@@ -29,15 +29,22 @@
                             {% endif %}
                             <a href="/student/{{ student.id }}/grades"> View grades</a>
                             <a href="/student/{{ student.id }}/attendance"> View attendance</a>
-                            <select name="checkpoints" id="checkpoints">
-                                {% for card in cards[student.id] %}
-                                    <option value="{{ card.card }}">Checkpoint {{ card.checkpoint_id }}</option>
-                                {% endfor %}
+                        {% for card in cards[student.id] %}
+                            <select id="checkpoint_card" class="{{ card.card }}">
+                                    <option class="{{ card.card }}">Checkpoint {{ card.checkpoint_id }}</option>
                             </select>
+                        {% endfor %}
                     {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
             </table>
         </div>
+    <script src="/static/jquery.js"></script>
+    <script>
+        $("#checkpoint_card").change(function(){
+    var color = $("option:selected", this).attr("class");
+    $("#checkpoint_card").attr("class", color);
+    });
+    </script>
 {% endblock %}
