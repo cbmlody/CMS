@@ -361,7 +361,7 @@ tr:nth-child(odd) { background-color: #fff; }
     border-bottom: 1px dotted black;
 }
 
-.tooltip .green-card {
+select .green-card {
     visibility: hidden;
     width: 120px;
     background-color: green;
@@ -369,17 +369,9 @@ tr:nth-child(odd) { background-color: #fff; }
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    bottom: 100%;
-    right: -24px;
-    bottom: 27px;
 }
 
-.tooltip:hover .green-card { visibility: visible; }
-
-.tooltip .yellow-card {
+select .yellow-card {
     visibility: hidden;
     width: 120px;
     background-color: #ffda0a;
@@ -387,17 +379,9 @@ tr:nth-child(odd) { background-color: #fff; }
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    bottom: 100%;
-    right: -24px;
-    bottom: 27px;
 }
 
-.tooltip:hover .yellow-card { visibility: visible; }
-
-.tooltip .red-card {
+select .red-card {
     visibility: hidden;
     width: 120px;
     background-color: red;
@@ -405,17 +389,9 @@ tr:nth-child(odd) { background-color: #fff; }
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    bottom: 100%;
-    right: -24px;
-    bottom: 27px;
 }
 
-.tooltip:hover .red-card { visibility: visible; }
-
-.tooltip .none-card {
+select .none-card {
     visibility: hidden;
     width: 120px;
     background-color: lightslategrey;
@@ -423,13 +399,4 @@ tr:nth-child(odd) { background-color: #fff; }
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    bottom: 100%;
-    right: -24px;
-    bottom: 27px;
 }
-
-.tooltip:hover .none-card { visibility: visible; }
-

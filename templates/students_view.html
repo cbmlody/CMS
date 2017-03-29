@@ -29,11 +29,9 @@
                             {% endif %}
                             <a href="/student/{{ student.id }}/grades"> View grades</a>
                             <a href="/student/{{ student.id }}/attendance"> View attendance</a>
-                            <select>
-                                {% for card in cards %}
-                                    <option value="{{ card.card }}">
-                                        <a href="#" class="tooltip" id="{{ card.card }}">Performance<span class="{{ cards[student.id] }}-card">{{ cards[student.id] }}</span></a>
-                                    </option>
+                            <select name="checkpoints" id="checkpoints">
+                                {% for card in cards[student.id] %}
+                                    <option value="{{ card.card }}">Checkpoint {{ card.checkpoint_id }}</option>
                                 {% endfor %}
                             </select>
                     {% endif %}
