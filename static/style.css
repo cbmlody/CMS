@@ -361,7 +361,7 @@ tr:nth-child(odd) { background-color: #fff; }
     border-bottom: 1px dotted black;
 }
 
-select .green-card {
+.green-card {
     visibility: hidden;
     width: 120px;
     background-color: green;
@@ -371,7 +371,7 @@ select .green-card {
     padding: 5px 0;
 }
 
-select .yellow-card {
+.yellow-card {
     visibility: hidden;
     width: 120px;
     background-color: #ffda0a;
@@ -381,7 +381,7 @@ select .yellow-card {
     padding: 5px 0;
 }
 
-select .red-card {
+.red-card {
     visibility: hidden;
     width: 120px;
     background-color: red;
@@ -391,7 +391,7 @@ select .red-card {
     padding: 5px 0;
 }
 
-select .none-card {
+.none-card {
     visibility: hidden;
     width: 120px;
     background-color: lightslategrey;
@@ -399,4 +399,14 @@ select .none-card {
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
+}
+
+.green {
+    background-color: green;
+}
+.yellow {
+    background-color: yellow;
+}
+.red {
+    background-color: red;
 }
