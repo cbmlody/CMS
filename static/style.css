@@ -361,52 +361,57 @@ tr:nth-child(odd) { background-color: #fff; }
     border-bottom: 1px dotted black;
 }
 
-.green-card {
-    visibility: hidden;
-    width: 120px;
-    background-color: green;
+div.checkpoints {
+    display: inline-flex;
+    width: auto;
+    margin: 0 0 0 10px;
+    justify-content: space-around;
+}
+
+.checkpoints .green-card {
+    margin: 0 5px 0 5px;
+    width: 30px;
+    background-color: #00b634;
     color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
 }
 
-.yellow-card {
-    visibility: hidden;
-    width: 120px;
+.checkpoints .green-card:hover { box-shadow: 2px 2px 6px #464646; }
+
+.checkpoints .yellow-card {
+    margin: 0 5px 0 5px;
+    width: 30px;
     background-color: #ffda0a;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+}
+
+.checkpoints .yellow-card:hover { box-shadow: 2px 2px 6px #464646; }
+
+.checkpoints .red-card {
+    margin: 0 5px 0 5px;
+    width: 30px;
+    background-color: #c50000;
     color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
 }
 
-.red-card {
-    visibility: hidden;
-    width: 120px;
-    background-color: red;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-}
+.checkpoints .red-card:hover { box-shadow: 2px 2px 6px #464646; }
 
 .none-card {
-    visibility: hidden;
-    width: 120px;
-    background-color: lightslategrey;
-    color: #fff;
+    margin: 0 5px 0 5px;
+    width: 30px;
+    background-color: #aac2d6;
+    color: #000;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
 }
 
-.green {
-    background-color: green;
-}
-.yellow {
-    background-color: yellow;
-}
-.red {
-    background-color: red;
-}
+.checkpoints .none-card:hover { box-shadow: 2px 2px 6px #464646; }
