@@ -25,3 +25,7 @@ class Checkpoint(Base):
         list_checkpoints = cls.query.all()
         return list_checkpoints
 
+    @classmethod
+    def get_by_id(cls, id):
+        checkpoint = cls.query.filter_by(id=id).all()
+        return checkpoint
