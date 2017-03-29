@@ -21,17 +21,18 @@ class Submission(Base):
     user = relationship('User', backref = 'submissions')
     team = relationship('Team', backref = 'submissions')
 
-    def __init__(self, user_id, submission_date, project, points, assignment_id, team_id):
+    def __init__(self, user_id, submission_date, project, assignment_id, team_id):
         self.user_id = user_id
         self.submission_date = submission_date
         self.project = project
         self.assignment_id = assignment_id
-        self.points = points
         self.team_id = team_id
 
     def grading(self, points):
         """Allows mentor to grade an assignment """
-        self.points = points
+        self.grade = points
+        db_session.merge(self)
+        db_session.commit()
 
     @classmethod
     def get_by_user_id(cls, user_id):
@@ -40,10 +41,16 @@ class Submission(Base):
         return submissions_list
 
     @classmethod
+    def get_by_id(cls, id):
+        """Returns user submitting an assignment"""
+        submission = cls.query.filter_by(id=id).one()
+        return submission
+
+    @classmethod
     def save(cls, user_id, project, assignment_id, team_id):
         """Saves submitted assignment to database"""
         submission_date = stime("%d-%m-%Y")
-        submission = cls(user_id, submission_date, project, None, assignment_id, team_id)
+        submission = cls(user_id, submission_date, project, assignment_id, team_id)
         db_session.merge(submission)
         db_session.commit()
 
