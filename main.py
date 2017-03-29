@@ -394,8 +394,15 @@ def checkpoint():
         return render_template('checkpoints_list.html', checkpoints=checkpoints)
     else:
         return redirect('error_404')
+
+
+@app.route('/checkpoint/grade/<checkpoint_id>', methods=['GET'])
+@security
+def checkpoint_grade(checkpoint_id):
+    """Returns a webpage with list of checkpoints, allowing mentor or manager to grade"""
+    if g.user.role_id < 2:
         students = User.get_all(User.STUDENT_ROLE)
-        return render_template('checkpoints_view.html', students=students)
+        return render_template('checkpoints_grade.html', students=students)
     else:
         return redirect('error_404')
 
