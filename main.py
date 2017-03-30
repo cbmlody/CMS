@@ -248,11 +248,12 @@ def delete_student(id):
 @security
 def edit_user(id):
     """Allows mentor to edit student"""
-    if g.user.role_id == 3:
-        return redirect('error_404')
-    else:
+    student_ids = [str(student.id) for student in User.get_all(3)]
+    if g.user.role_id < 2 and id in student_ids and type(id) != int:
         edit = User.get_by_id(id)
         return render_template('edit_user.html', edit=edit)
+    else:
+        return redirect(url_for('error_404'))
 
 
 @app.route('/student/<id>/edit', methods=['POST'])
