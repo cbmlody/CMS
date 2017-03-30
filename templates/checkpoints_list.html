@@ -3,7 +3,7 @@
     <header>
         <h3>Checkpoints list</h3>
         {% if user.role_id < 2 %}
-            <a href="{{ url_for('main') }}">ADD</a>
+            <a href="{{ url_for('checkpoint_add') }}">ADD</a>
         {% endif %}
     </header>
     <div class="data">
