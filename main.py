@@ -319,7 +319,7 @@ def mentor_create():
         error = "Passwords does not match"
         return render_template('student_mentor_form.html', form_url=url, error=error)
     else:
-        User(username, paswd, fullname, User.MENTOR_ROLE, None).add()
+        User(username, hashlib.md5(paswd.encode()).hexdigest(), fullname, User.MENTOR_ROLE, None).add()
         return redirect(url_for('mentor'))
 
 
