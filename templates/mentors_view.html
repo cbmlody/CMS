@@ -10,7 +10,6 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Login</th>
                         <th>Full name</th>
                         {% if user.role_id == 0 %}
                         <th>Actions</th>
@@ -19,7 +18,6 @@
                 </thead>
                 {% for mentor in mentors %}
                 <tr>
-                    <td>{{mentor.login}}</td>
                     <td>{{mentor.full_name}}</td>
                     {% if user.role_id == 0 %}
                     <td>
