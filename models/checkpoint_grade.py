@@ -13,7 +13,7 @@ class CheckpointGrades(Base):
     checkpoint_id = Column(Integer, nullable=False)
     card = Column(String(50), nullable=False)
 
-    def __int__(self, user_id, checkpoint_id, card):
+    def __init__(self, user_id, checkpoint_id, card):
         self.user_id = user_id
         self.checkpoint_id = checkpoint_id
         self.card = card
