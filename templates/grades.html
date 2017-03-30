@@ -1,22 +1,33 @@
 {% extends 'main.html' %}
 {% block content %}
-        <header>
-            <h3>Grades</h3>
-        </header>
-        <div class="data">
-            <div class="rolltable">
-                <table>
-                    <thead>
-                    <th>Assignment</th>
-                    <th>Points</th>
-                    </thead>
-                    {% for submission in submissions %}
-                    <tr>
-                        <td>{{ assignments[submission.assignment_id].title }}</td>
-                        <td>{{ submission.points }}/{{ assignments[submission.assignment_id].max_points }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-        </div>
+<header>
+    <h3>Grades</h3>
+</header>
+<div class="data">
+    <div class="rolltable">
+        <table>
+            <thead>
+                <th>Assignment</th>
+                <th>Points</th>
+            </thead>
+            {% for submission in submissions %}
+            <tr>
+                <td>{{ submission.assignment.title }}</td>
+                <td>
+                    {%if submission.grade %}
+                    {{ submission.grade}}
+                    {%else%}
+                    --
+                    {%endif%}
+                    /{{ submission.assignment.max_points }}
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <th>Overall performance</th>
+                <td>{{performance}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
 {% endblock %}

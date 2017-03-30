@@ -6,7 +6,6 @@ from models.database import init_db
 import os
 from functools import wraps
 
-
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
@@ -157,7 +156,7 @@ def submissions():
     return render_template('submissions_list.html', submissions=submission_list)
 
 
-@app.route('/submissions/<submission_id>/grade',methods=['GET', 'POST'])
+@app.route('/submissions/<submission_id>/grade', methods=['GET', 'POST'])
 @security
 def grade(submission_id):
     """Shows a commercial of our premium DLC"""
@@ -167,7 +166,7 @@ def grade(submission_id):
         print(points)
         submission.grading(points)
         return redirect('/submissions')
-    return render_template('grade_assignment.html',submission = submission)
+    return render_template('grade_assignment.html', submission=submission)
 
 
 @app.route('/student')
@@ -244,15 +243,15 @@ def delete_student(id):
 @security
 def student_grades(id):
     """Returns a page with certains student's grades"""
+    user = User.get_by_id(id)
     submissions = Submission.get_by_user_id(id)
-    assignment_ids = []
-    for submission in submissions:
-        assignment_ids.append(str(submission.assignment_id))
-    assignments = Assignment.get_by_ids(assignment_ids)
-    assignments = {assignment.id: assignment for assignment in assignments}
+    if user.team_id:
+        team_submissions = Submission.get_by_team_id(user.team_id)
+        submissions = submissions + list(set(team_submissions) - set(submissions))
+    performance = Submission.count_overall(submissions)
     if g.user.role_id == 3 and g.user.id != int(id):
         return redirect('error_404')
-    return render_template('grades.html', submissions=submissions, assignments=assignments)
+    return render_template('grades.html', submissions=submissions, performance=performance)
 
 
 @app.route('/student/<id>/attendance')
