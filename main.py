@@ -243,9 +243,10 @@ def delete_student(id):
 @security
 def student_grades(id):
     """Returns a page with certains student's grades"""
+    user = User.get_by_id(id)
     submissions = Submission.get_by_user_id(id)
-    if g.user.team_id:
-        team_submissions = Submission.get_by_team_id(g.user.team_id)
+    if user.team_id:
+        team_submissions = Submission.get_by_team_id(user.team_id)
         submissions = submissions + list(set(team_submissions) - set(submissions))
     performance = Submission.count_overall(submissions)
     if g.user.role_id == 3 and g.user.id != int(id):
