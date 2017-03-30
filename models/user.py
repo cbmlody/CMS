@@ -31,7 +31,7 @@ class User(Base):
 
     def add(self):
         """Adds new user to database"""
-        db_session.merge(self)
+        db_session.add(self)
         db_session.commit()
 
     def delete(self):
@@ -73,6 +73,11 @@ class User(Base):
         return user_list
 
     @classmethod
+    def get_active_unactive_users(cls):
+        user_list = cls.query.all()
+        return user_list
+
+    @classmethod
     def get_by_id(cls, id):
         """Gets user object by id"""
         user = cls.query.filter_by(id=id).one()
@@ -81,5 +86,5 @@ class User(Base):
     @classmethod
     def get_by_login(cls, login):
         """Gets user object by login"""
-        user = cls.query.filter_by(login=login).one()
+        user = cls.query.filter_by(status=True, login=login).one()
         return user
