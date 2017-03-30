@@ -203,7 +203,7 @@ def student_create():
         error = "Passwords does not match"
         return render_template('student_mentor_form.html', form_url=url, error=error)
     else:
-        for user in User.get_all(3):
+        for user in User.get_all():
             if user.login == username:
                 error = "User exists!"
                 return render_template('student_mentor_form.html', form_url=url, error=error)
@@ -330,7 +330,7 @@ def mentor_create():
         error = "Passwords does not match"
         return render_template('student_mentor_form.html', form_url=url, error=error)
     else:
-        for user in User.get_all(1):
+        for user in User.get_all():
             if user.login == username:
                 error = "User exists!"
                 return render_template('student_mentor_form.html', form_url=url, error=error)
