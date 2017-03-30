@@ -74,3 +74,18 @@ class Submission(Base):
         """Returns list of submissions"""
         submissions = cls.query.all()
         return submissions
+
+    @staticmethod
+    def count_overall(submissions):
+        """Counts student's overall perfomance"""
+        points = 0
+        max_points = 0
+        for submission in submissions:
+            if submission.grade and submission.assignment.max_points:
+                points += submission.grade
+                max_points += submission.assignment.max_points
+        if max_points:
+            percent = str(round((points / max_points * 100), 2)) + " %"
+        else:
+            percent = "No points yet"
+        return percent
