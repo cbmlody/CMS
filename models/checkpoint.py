@@ -21,6 +21,11 @@ class Checkpoint(Base):
         db_session.commit()
 
     @classmethod
-    def list_checkpoints(cls):
+    def get_all(cls):
         list_checkpoints = cls.query.all()
         return list_checkpoints
+
+    @classmethod
+    def get_by_id(cls, id):
+        checkpoint = cls.query.filter_by(id=id).all()
+        return checkpoint

@@ -1,0 +1,16 @@
+{% extends 'main.html' %}
+{% block content %}
+    <header>
+        <h3>Add new checkpoint</h3>
+    </header>
+    <div class="data">
+        <div class="form-wrapper">
+            <form method="post" class="form">
+                <input type="text" placeholder="description" name="description" required/>
+                <input type="date" name="date" required/>
+                <input class="button" type="submit" value="SUBMIT"/>
+                <input class="button" type="reset" value="RESET"/>
+            </form>
+        </div>
+    </div>
+{%endblock%}

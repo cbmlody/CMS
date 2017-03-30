@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+{% block content %}
+    <header>
+        <h3>Checkpoints list</h3>
+        {% if user.role_id < 2 %}
+            <a href="{{ url_for('checkpoint_add') }}">ADD</a>
+        {% endif %}
+    </header>
+    <div class="data">
+        <div class="checkpoint_form">
+            <table>
+                <thead>
+                    <th>&#8470;</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                    <th>Option</th>
+                </thead>
+                <tbody>
+                    {% for checkpoint in checkpoints %}
+                    <tr>
+                        <td>#{{ checkpoint.id }}</td>
+                        <td>{{ checkpoint.description }}</td>
+                        <td>{{ checkpoint.date }}</td>
+                        <td><a href="{{ url_for('checkpoint_grade', checkpoint_id=checkpoint.id) }}">Grade</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

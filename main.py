@@ -418,28 +418,58 @@ def attendance_listpost():
 @app.route('/checkpoint', methods=['GET'])
 @security
 def checkpoint():
-    """Returns a webpage with list of students, allowing mentor or manager to grade their checkpoints"""
-    if not g.user.role_id == 3:
-        students = User.get_all(User.STUDENT_ROLE)
-        return render_template('checkpoints_view.html', students=students)
+    """Returns a webpage with list of checkpoints, allowing mentor or manager to grade"""
+    if g.user.role_id < 2:
+        checkpoints = Checkpoint.get_all()
+        return render_template('checkpoints_list.html', checkpoints=checkpoints)
     else:
         return redirect('error_404')
 
 
-@app.route('/checkpoint/add', methods=['POST'])
+@app.route('/checkpoint/grade/<checkpoint_id>', methods=['GET'])
 @security
-def checkpoint_add():
+def checkpoint_grade(checkpoint_id):
+    """Returns a webpage with list of checkpoints, allowing mentor or manager to grade"""
+    if g.user.role_id < 2:
+        students = User.get_all(User.STUDENT_ROLE)
+        return render_template('checkpoints_grade.html', students=students, checkpoint_id=checkpoint_id)
+    else:
+        return redirect('error_404')
+
+
+@app.route('/checkpoint/grade/<checkpoint_id>', methods=['POST'])
+@security
+def checkpoint_grade_post(checkpoint_id):
     """Gets checkpoints data from form to update students grades"""
     data = request.form
     data = dict(data)
     for key, value in data.items():
-        if 'green' in value:
-            Checkpoint.update_user_card('green', key)
-        elif 'yellow' in value:
-            Checkpoint.update_user_card('yellow', key)
-        else:
-            Checkpoint.update_user_card('red', key)
-    return redirect(url_for('student'))
+        CheckpointGrades(key, checkpoint_id, value[0]).grade()
+
+    return redirect(url_for('checkpoint'))
+
+
+@app.route('/checkpoint/add', methods=['GET'])
+@security
+def checkpoint_add():
+    if g.user.role_id < 2:
+        return render_template('checkpoint_add.html')
+    else:
+        return redirect(url_for('error_404'))
+
+
+@app.route('/checkpoint/add', methods=['POST'])
+@security
+def checkpoint_add_post():
+    description = request.form['description']
+    date = request.form['date']
+    error = None
+    if description == "" or date=="":
+        error = "Fields cannot be empty"
+        return render_template('checkpoints_list.html', error=error)
+    else:
+        Checkpoint(description, date).add()
+        return redirect(url_for('checkpoint'))
 
 
 @app.route('/404')
