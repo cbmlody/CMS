@@ -263,7 +263,7 @@ def edit_student(id):
         return redirect('error_404')
     else:
         edit = User.get_by_id(id)
-        for user in User.get_all():
+        for user in User.get_active_unactive_users():
             if user.login == request.form['username']:
                 error = "Username is already taken, please fill another!"
                 return render_template('edit_user.html', error=error, edit=edit)
