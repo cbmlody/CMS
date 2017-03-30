@@ -407,19 +407,15 @@ def checkpoint_grade(checkpoint_id):
         return redirect('error_404')
 
 
-@app.route('/checkpoint/grade', methods=['POST'])
+@app.route('/checkpoint/grade/<checkpoint_id>', methods=['POST'])
 @security
-def checkpoint_grade_post():
+def checkpoint_grade_post(checkpoint_id):
     """Gets checkpoints data from form to update students grades"""
     data = request.form
     data = dict(data)
     for key, value in data.items():
-        if 'green' in value:
-            Checkpoint.update_user_card('green', key)
-        elif 'yellow' in value:
-            Checkpoint.update_user_card('yellow', key)
-        else:
-            Checkpoint.update_user_card('red', key)
+        CheckpointGrades(key, checkpoint_id, value[0]).grade()
+
     return redirect(url_for('checkpoint'))
 
 
