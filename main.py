@@ -402,7 +402,7 @@ def checkpoint_grade(checkpoint_id):
     """Returns a webpage with list of checkpoints, allowing mentor or manager to grade"""
     if g.user.role_id < 2:
         students = User.get_all(User.STUDENT_ROLE)
-        return render_template('checkpoints_grade.html', students=students)
+        return render_template('checkpoints_grade.html', students=students, checkpoint_id=checkpoint_id)
     else:
         return redirect('error_404')
 
