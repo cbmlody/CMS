@@ -5,7 +5,7 @@
         </header>
         <div class="data">
             <div class="checkpoint_form">
-                <form action="{{ url_for('checkpoint_grade_post') }}" method="post">
+                <form action="{{ url_for('checkpoint_grade_post', checkpoint_id=checkpoint_id) }}" method="post">
                     <table>
                         <thead>
                             <th>Full name</th>
