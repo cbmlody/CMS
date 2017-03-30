@@ -423,6 +423,29 @@ def checkpoint_grade_post():
     return redirect(url_for('checkpoint'))
 
 
+@app.route('/checkpoint/add', methods=['GET'])
+@security
+def checkpoint_add():
+    if g.user.role_id < 2:
+        return render_template('checkpoint_add.html')
+    else:
+        return redirect(url_for('error_404'))
+
+
+@app.route('/checkpoint/add', methods=['POST'])
+@security
+def checkpoint_add_post():
+    description = request.form['description']
+    date = request.form['date']
+    error = None
+    if description == "" or date=="":
+        error = "Fields cannot be empty"
+        return render_template('checkpoints_list.html', error=error)
+    else:
+        Checkpoint(description, date).add()
+        return redirect(url_for('checkpoint'))
+
+
 @app.route('/404')
 def error_404():
     return render_template('404.html')
