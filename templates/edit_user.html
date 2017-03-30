@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+{% block content %}
+        <header>
+            <h3>Edit user</h3>
+        </header>
+        <div class="data">
+        <div class="form-wrapper">
+        <form class="form" method="POST" action="/student/{{ edit.id }}/edit">
+                <label for="fullname">Full name: </label>
+                <input name="fullname" type="text" value="{{ edit.full_name }}" placeholder="full name" required>
+                <label for="username">Username: </label>
+                <input name="username" type="text" value="{{ edit.login }}" placeholder="username" required>
+                <input class="button" type="submit" value="SUBMIT">
+                <input class="button" type="reset" value="RESET">
+        </form>
+        </div>
+        </div>
+{% endblock %}

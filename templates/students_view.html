@@ -24,6 +24,7 @@
                     <td>{{ student.get_team_name() }}</td>
                     <td>
                         {% if user.role_id == 1 %}
+                            <a href="/student/{{ student.id }}/edit">Edit</a>
                             <a href="/student/{{ student.id }}/delete">Remove</a>
                             <a href="/student/{{ student.id }}/teams">Add to team</a>
                         {% endif %}
