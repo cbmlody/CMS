@@ -361,75 +361,57 @@ tr:nth-child(odd) { background-color: #fff; }
     border-bottom: 1px dotted black;
 }
 
-.tooltip .green-card {
-    visibility: hidden;
-    width: 120px;
-    background-color: green;
+div.checkpoints {
+    display: inline-flex;
+    width: auto;
+    margin: 0 0 0 10px;
+    justify-content: space-around;
+}
+
+.checkpoints .green-card {
+    margin: 0 5px 0 5px;
+    width: 30px;
+    background-color: #00b634;
     color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    bottom: 100%;
-    right: -24px;
-    bottom: 27px;
 }
 
-.tooltip:hover .green-card { visibility: visible; }
+.checkpoints .green-card:hover { box-shadow: 2px 2px 6px #464646; }
 
-.tooltip .yellow-card {
-    visibility: hidden;
-    width: 120px;
+.checkpoints .yellow-card {
+    margin: 0 5px 0 5px;
+    width: 30px;
     background-color: #ffda0a;
+    color: #000;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+}
+
+.checkpoints .yellow-card:hover { box-shadow: 2px 2px 6px #464646; }
+
+.checkpoints .red-card {
+    margin: 0 5px 0 5px;
+    width: 30px;
+    background-color: #c50000;
     color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    bottom: 100%;
-    right: -24px;
-    bottom: 27px;
 }
 
-.tooltip:hover .yellow-card { visibility: visible; }
+.checkpoints .red-card:hover { box-shadow: 2px 2px 6px #464646; }
 
-.tooltip .red-card {
-    visibility: hidden;
-    width: 120px;
-    background-color: red;
-    color: #fff;
+.none-card {
+    margin: 0 5px 0 5px;
+    width: 30px;
+    background-color: #aac2d6;
+    color: #000;
     text-align: center;
     border-radius: 6px;
     padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    bottom: 100%;
-    right: -24px;
-    bottom: 27px;
 }
 
-.tooltip:hover .red-card { visibility: visible; }
-
-.tooltip .none-card {
-    visibility: hidden;
-    width: 120px;
-    background-color: lightslategrey;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    bottom: 100%;
-    right: -24px;
-    bottom: 27px;
-}
-
-.tooltip:hover .none-card { visibility: visible; }
-
+.checkpoints .none-card:hover { box-shadow: 2px 2px 6px #464646; }
