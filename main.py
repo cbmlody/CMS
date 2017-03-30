@@ -203,6 +203,10 @@ def student_create():
         error = "Passwords does not match"
         return render_template('student_mentor_form.html', form_url=url, error=error)
     else:
+        for user in User.get_all(3):
+            if user.login == username:
+                error = "User exists!"
+                return render_template('student_mentor_form.html', form_url=url, error=error)
         User(username, hashlib.md5(paswd.encode()).hexdigest(), fullname, User.STUDENT_ROLE, None).add()
         return redirect(url_for('student'))
 
