@@ -430,7 +430,8 @@ def checkpoint():
 @security
 def checkpoint_grade(checkpoint_id):
     """Returns a webpage with list of checkpoints, allowing mentor or manager to grade"""
-    if g.user.role_id < 2:
+    checkpoint_ids = [str(checkpoint.id) for checkpoint in Checkpoint.get_all()]
+    if g.user.role_id < 2 and checkpoint_id in checkpoint_ids and type(checkpoint_id) != int:
         students = User.get_all(User.STUDENT_ROLE)
         return render_template('checkpoints_grade.html', students=students, checkpoint_id=checkpoint_id)
     else:
