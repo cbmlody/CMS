@@ -11,20 +11,36 @@
                     <th>Name</th>
                     <th>Date</th>
                     <th>Content</th>
-                    {% if user.role_id == 1 %}
                     <th>Grade</th>
-                    {% endif %}
                 </tr>
                 </thead>
                 {% for submission in submissions %}
                 <tr>
                     <td>{{submission.assignment.title}}</td>
+                    {% if submission.assignment.as_team %}
+                        {% if submission.user.team_id %}
+                        <td>{{submission.team.name}}</td>
+                        {% else %}
+                        <td>{{submission.user.full_name}} alone</td>
+                        {%endif%}
+                    {%else%}
                     <td>{{submission.user.full_name}}</td>
+                    {%endif%}
                     <td>{{submission.submission_date}}</td>
                     <td><a href="{{submission.project}}">{{submission.project}}</a></td>
-                    {% if user.role_id == 1 %}
-                    <td><a href="/submissions/{{submission.id}}/grade">Grade</a></td>
-                {% endif %}
+                    {% if submission.grade %}
+                        {% if user.role_id == 1 %}
+                        <td><a href="/submissions/{{submission.id}}/grade"> {{submission.grade}}/{{submission.assignment.max_points}} points (reevaluate?)</a></td>
+                        {%else%}
+                        <td>{{submission.grade}}/{{submission.assignment.max_points}} points</td>
+                        {%endif%}
+                    {%else%}
+                        {% if user.role_id == 1 %}
+                        <td><a href="/submissions/{{submission.id}}/grade">Grade</a></td>
+                        {%else%}
+                        <td>Not graded</td>
+                        {%endif%}
+                    {% endif %}
                 </tr>
                 {%endfor%}
             </table>
