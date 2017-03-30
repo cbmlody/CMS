@@ -4,6 +4,7 @@ from time import strftime as stime
 from models import Assignment, Team, Attendance, Checkpoint, User, Submission, CheckpointGrades
 from models.database import init_db
 import os
+import hashlib
 from functools import wraps
 
 app = Flask(__name__)
@@ -36,9 +37,9 @@ def index():
     """Main login page, checks if login and username are correct(whether it exists in database)"""
     if request.method == 'POST':
         for user in User.get_all():
-            if request.form['username'] == user.login and request.form['password'] == user.password:
+            if request.form['username'] == user.login and hashlib.md5(request.form['password'].encode()).hexdigest() == user.password:
                 session['username'] = request.form['username']
-                session['password'] = request.form['password']
+                session['password'] = hashlib.md5(request.form['password'].encode()).hexdigest()
                 session['id'] = user.id
                 session['role'] = user.role_id
                 return redirect(url_for('protected'))
@@ -202,7 +203,7 @@ def student_create():
         error = "Passwords does not match"
         return render_template('student_mentor_form.html', form_url=url, error=error)
     else:
-        User(username, paswd, fullname, User.STUDENT_ROLE, None).add()
+        User(username, hashlib.md5(paswd.encode()).hexdigest(), fullname, User.STUDENT_ROLE, None).add()
         return redirect(url_for('student'))
 
 
@@ -347,7 +348,7 @@ def change_password():
         user_obj = None
         for key, value in user.items():
             user_obj = value
-        change_pass = user_obj.change_password(password, repeat_pass)
+        change_pass = user_obj.change_password(hashlib.md5(password.encode()).hexdigest(), hashlib.md5(repeat_pass.encode()).hexdigest())
         return render_template('change_password.html', change_pass=change_pass)
 
 
