@@ -231,6 +231,28 @@ def delete_student(id):
         to_delete.delete()
         return redirect('/student')
 
+@app.route('/student/<id>/edit', methods=['GET'])
+@security
+def edit_user(id):
+    """Allows mentor to edit user"""
+    if g.user.role_id == 3:
+        return redirect('error_404')
+    else:
+        edit = User.get_by_id(id)
+        return render_template('edit_user.html', edit=edit)
+
+@app.route('/student/<id>/edit', methods=['POST'])
+@security
+def edit_student(id):
+    """Allows mentor to remove certain student"""
+    if g.user.role_id == 3:
+        return redirect('error_404')
+    else:
+        edit = User.get_by_id(id)
+        edit.full_name = request.form['fullname']
+        edit.login = request.form['username']
+        edit.add()
+        return redirect('/student')
 
 @app.route('/student/<id>/grades', methods=['GET'])
 @security
