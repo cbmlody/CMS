@@ -43,6 +43,31 @@ class ccms(unittest.TestCase):
         self.driver.find_element_by_xpath("html/body/div[1]/div/div/div/form/input[5]").click()
         self.assertTrue('<td>mentor</td>' not in self.driver.page_source)
 
+    def test_c_create_student(self):
+        elem = self.driver.find_element_by_name("username")
+        elem.send_keys("marcinizw")
+        elem2 = self.driver.find_element_by_name("password")
+        elem2.send_keys("1234")
+        time.sleep(1)
+        elem2.send_keys(Keys.RETURN)
+        time.sleep(1)
+        self.assertTrue('id="error"' not in self.driver.page_source)
+        self.driver.find_element_by_xpath("//a[contains(@href,'/student')]").click()
+        time.sleep(2)
+        self.driver.find_element_by_xpath("//a[contains(.,'ADD')]").click()
+        name = self.driver.find_element_by_name("fullname")
+        username = self.driver.find_element_by_name("username")
+        password = self.driver.find_element_by_name("pass")
+        rpass = self.driver.find_element_by_name("rpass")
+        name.send_keys("Michał Wilk")
+        username.send_keys('Wilq')
+        password.send_keys("1234")
+        rpass.send_keys("1234")
+        time.sleep(2)
+        self.driver.find_element_by_xpath("//input[@type='submit']").click()
+        time.sleep(3)
+        self.driver.find_element_by_xpath("//a[contains(.,'Logout')]").click()
+
     def tearDown(self):
         self.driver.close()
 
