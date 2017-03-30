@@ -19,8 +19,13 @@ class CheckpointGrades(Base):
         self.card = card
 
     def grade(self):
-        db_session.add(self)
-        db_session.commit()
+        try:
+            exists = CheckpointGrades.query.filter_by(user_id=self.user_id, checkpoint_id=self.checkpoint_id).one()
+            exists.card = self.card
+            db_session.merge(exists)
+        except:
+            db_session.merge(self)
+            db_session.commit()
 
     @classmethod
     def get_user_checkpoints(cls, user_id):
