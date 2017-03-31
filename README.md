@@ -5,8 +5,9 @@ Technologies Used
 -------------
 
 > **Back-end**
->> - Python3.5
+>> - Python 3.5
 >> - Flask framework
+>> - SQLAlchemy
 >
 > **Front-end**
 >> - HTML5
@@ -14,6 +15,9 @@ Technologies Used
 >
 > **Database Engine**
 > >- SQLite 3
+
+> **Automated testing**
+>> - Selenium
 
 
 
@@ -24,11 +28,15 @@ Check that you have installed following:
 
 * Python >= 3.5
 * [PIP](https://pypi.python.org/pypi)
-* Flask
+* [Flask](http://flask.pocoo.org/)
+* [SQLAlchemy](https://www.sqlalchemy.org/)
+
+Optional:
+* [Selenium](http://www.seleniumhq.org/)
 
 
 ----------------------------------------------------
-##### :information_source: How to run CCmS
+#### :information_source: How to run CCmS
 Standard mode:
 ```
 python3 main.py
@@ -43,3 +51,10 @@ python3 main.py --debug
 ```
 In all modes the next step is:    
 Open web-browser and navigate to [http://localhost:5000](http://localhost:5000)
+
+----------------------------------
+#### Selenium Tests
+```
+In /tests/ run:
+python3 web_tests.py
+```
