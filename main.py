@@ -203,6 +203,10 @@ def student_create():
         error = "Passwords does not match"
         return render_template('student_mentor_form.html', form_url=url, error=error)
     else:
+        for user in User.get_active_unactive_users():
+            if user.login == username:
+                error = "User exists!"
+                return render_template('student_mentor_form.html', form_url=url, error=error)
         User(username, hashlib.md5(paswd.encode()).hexdigest(), fullname, User.STUDENT_ROLE, None).add()
         return redirect(url_for('student'))
 
@@ -239,28 +243,36 @@ def delete_student(id):
         to_delete.delete()
         return redirect('/student')
 
+
 @app.route('/student/<id>/edit', methods=['GET'])
 @security
 def edit_user(id):
-    """Allows mentor to edit user"""
-    if g.user.role_id == 3:
-        return redirect('error_404')
-    else:
+    """Allows mentor to edit student"""
+    student_ids = [str(student.id) for student in User.get_all(3)]
+    if g.user.role_id < 2 and id in student_ids and type(id) != int:
         edit = User.get_by_id(id)
         return render_template('edit_user.html', edit=edit)
+    else:
+        return redirect(url_for('error_404'))
+
 
 @app.route('/student/<id>/edit', methods=['POST'])
 @security
 def edit_student(id):
-    """Allows mentor to remove certain student"""
+    """Allows mentor to edit student"""
     if g.user.role_id == 3:
         return redirect('error_404')
     else:
         edit = User.get_by_id(id)
+        for user in User.get_active_unactive_users():
+            if user.login == request.form['username']:
+                error = "Username is already taken, please fill another!"
+                return render_template('edit_user.html', error=error, edit=edit)
         edit.full_name = request.form['fullname']
         edit.login = request.form['username']
         edit.add()
         return redirect('/student')
+
 
 @app.route('/student/<id>/grades', methods=['GET'])
 @security
@@ -319,6 +331,10 @@ def mentor_create():
         error = "Passwords does not match"
         return render_template('student_mentor_form.html', form_url=url, error=error)
     else:
+        for user in User.get_active_unactive_users():
+            if user.login == username:
+                error = "User exists!"
+                return render_template('student_mentor_form.html', form_url=url, error=error)
         User(username, hashlib.md5(paswd.encode()).hexdigest(), fullname, User.MENTOR_ROLE, None).add()
         return redirect(url_for('mentor'))
 

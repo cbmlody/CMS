@@ -12,6 +12,9 @@
                 <input name="username" type="text" value="{{ edit.login }}" placeholder="username" required>
                 <input class="button" type="submit" value="SUBMIT">
                 <input class="button" type="reset" value="RESET">
+        {% if error %}
+                <h3 class="error" style="color: red;">{{ error }}</h3>
+            {% endif %}
         </form>
         </div>
         </div>
