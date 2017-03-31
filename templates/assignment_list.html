@@ -13,6 +13,7 @@
                 <table>
                     <thead>
                     <th>Title</th>
+                    <th>Team</th>
                     <th>Due date</th>
                     <th>Max points</th>
                     {% if user.role_id == 3 %}
@@ -22,6 +23,13 @@
                     {%for assignment in assignments%}
                     <tr>
                         <td>{{assignment.title}}</td>
+                        <td>
+                            {% if assignment.as_team %}
+                            Yes
+                            {% else%}
+                            No
+                            {%endif%}
+                        </td>
                         <td>{{assignment.due_date}}</td>
                         <td>{{assignment.max_points}}</td>
                         {% if user.role_id == 3 %}
