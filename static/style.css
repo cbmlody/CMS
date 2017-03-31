@@ -364,7 +364,7 @@ tr:nth-child(odd) { background-color: #fff; }
 div.checkpoints {
     display: inline-flex;
     width: auto;
-    margin: 0 0 0 10px;
+    margin: 10px 0 10px 10px;
     justify-content: space-around;
 }
 
