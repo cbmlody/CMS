@@ -14,7 +14,7 @@
                     <th>Grade</th>
                 </tr>
                 </thead>
-                {% for submission in submissions if submission.assignment.as_team or submission.user.status %}
+                {% for submission in submissions if submission.assignment.as_team and submission.user.team_id or submission.user.status %}
                 <tr>
                     <td>{{submission.assignment.title}}</td>
                     {% if submission.assignment.as_team %}
