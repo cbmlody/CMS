@@ -57,4 +57,5 @@ Open web-browser and navigate to [http://localhost:5000](http://localhost:5000)
 ```
 In /tests/ run:
 python3 web_tests.py
+Must use empty db with admin account only.
 ```
